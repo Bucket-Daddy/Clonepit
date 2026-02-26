@@ -14,7 +14,7 @@ symbolMult = 1
 patternMult = 1
 patternValues = {'hor':1, 'vert':1, 'diag':1, 'horL':2, 'horXL':3, 'zig':4, 'zag':4, 'above':7, 'below':7, 'eye':8, 'jackpot':10}
 buttonPressed = False
-luck = 0
+luck = 15
 res = []
 chance666 = 1.5
 is666 = False
@@ -27,6 +27,11 @@ zigShape = (2, 6, 8, 10, 14)
 zagShape = (0, 4, 6, 8, 12)
 retrigger = 0
 modifiers = []
+patternOrder = {'hor1.1':1, 'hor1.2':2, 'hor1.3':3, 'hor2.1':4, 'hor2.2':5, 'hor2.3':6, 'hor3.1':7, 'hor3.2':8, 'hor3.3':9, 'vert1':10,
+                'vert2':11, 'vert3':12, 'vert4':13, 'vert5':14, 'bckDiag1':15, 'bckDiag2':16, 'bckDiag3':17, 'fwdDiag1':18, 'fwdDiag2':19,
+                'fwdDiag3':20, 'horL1.1':21, 'horL1.2':22, 'horL2.1':23, 'horL2.2':24, 'horL3.1':25, 'horL3.2':26, 'horXL1':27, 'horXL2':28,
+                'horXL3':29, 'zig':30, 'zag':31, 'above':32, 'below':33, 'eye':34, 'jackpot':35}
+
 
 goldChance = 0
 affGoldChance = 0
@@ -46,6 +51,7 @@ debtNum = 1
 spinNum = 1
 OLSSpin = 0
 pityCounter = 0
+
 baseLuck = luck
 
 #pre-roll items aktiveres
@@ -258,7 +264,7 @@ else:
                 for r in range(1 + retrigger + modTrigs.count(4)):
                     result.append(('fwdDiag1', payout, modTrigs))
             else: #Hvis den første diag ikke er der tjekkes der for den anden
-                diagshape = [2, 8, 14]
+                diagShape = [2, 8, 14]
                 diagList.clear()
                 for i in diagShape:
                     diagList.append(res[i])
@@ -419,6 +425,14 @@ for item in postrollItems:
 
 if result == []:
     pityCounter += 1
+
+luck = baseLuck
+
+def patternOrdering(e):
+    return(patternOrder[e[0]])
+
+
+result.sort(key = patternOrdering)
 
 print(res[:5])
 print(res[5:10])

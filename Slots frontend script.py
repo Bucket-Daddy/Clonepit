@@ -3,15 +3,30 @@ import pygame
 import random
 import math
 
+#initialiserer pygame
 pygame.init()
 
+#Definerer grafik variabler
+symbolScale = 2
+symbolSpaceVer = 16
+spinSpeed = 10
+symbolSpaceHor = 100
+squareDist = 5
+frameRate = 60
+font = pygame.font.Font(None, size = 30)
+
+
+#definerer reel variabler
 reels = []
-reelsY = [-1560, -1560, -1560, -1560, -1560]
+reelsY = [-(18 * symbolScale + symbolSpaceVer) * 30, -(18 * symbolScale + symbolSpaceVer) * 30, -(18 * symbolScale + symbolSpaceVer) * 30, -(18 * symbolScale + symbolSpaceVer) * 30, -(18 * symbolScale + symbolSpaceVer) * 30]
 patternInit = True
 
-
 #Opretter vindue
-screen = pygame.display.set_mode((640, 640))
+screen = pygame.display.set_mode((symbolSpaceHor * 5  + 2 * 18 * symbolScale, (18 * symbolScale + symbolSpaceVer) * 3 + symbolSpaceVer))
+
+#Opretter slot machine surface
+slotMachine = pygame.Surface((symbolSpaceHor * 5  + 2 * 18 * symbolScale, (18 * symbolScale + symbolSpaceVer) * 3 + symbolSpaceVer), pygame.SRCALPHA)
+
 
 #Loader billeder
 lemon = pygame.image.load('assets/SymbolLemon.webp')
@@ -23,13 +38,13 @@ treasure = pygame.image.load('assets/SymbolTreasureChest.webp')
 seven = pygame.image.load('assets/SymbolSeven.webp')
 
 #Skalerer billeder
-lemon = pygame.transform.scale(lemon, (36, 36))
-cherry = pygame.transform.scale(cherry, (36, 36))
-clover = pygame.transform.scale(clover, (36, 36))
-bell = pygame.transform.scale(bell, (36, 36))
-diamond = pygame.transform.scale(diamond, (36, 36))
-treasure = pygame.transform.scale(treasure, (36, 36))
-seven = pygame.transform.scale(seven, (36, 36))
+lemon = pygame.transform.scale(lemon, (18 * symbolScale, 18 * symbolScale))
+cherry = pygame.transform.scale(cherry, (18 * symbolScale, 18 * symbolScale))
+clover = pygame.transform.scale(clover, (18 * symbolScale, 18 * symbolScale))
+bell = pygame.transform.scale(bell, (18 * symbolScale, 18 * symbolScale))
+diamond = pygame.transform.scale(diamond, (18 * symbolScale, 18 * symbolScale))
+treasure = pygame.transform.scale(treasure, (18 * symbolScale, 18 * symbolScale))
+seven = pygame.transform.scale(seven, (18 * symbolScale, 18 * symbolScale))
 
 #temporary simulation of result from slots script
 res = [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4]
@@ -48,13 +63,13 @@ patterns = {'hor1.1':(0, 1, 2), 'hor1.2':(1, 2, 3), 'hor1.3':(2, 3, 4), 'hor2.1'
 #Danner reels
 for i in range(5):
     #reelName = 'reel' + str(i)
-    reel = pygame.Surface((36, 1560), pygame.SRCALPHA)
+    reel = pygame.Surface((18 * symbolScale, (18 * symbolScale + symbolSpaceVer) * 30), pygame.SRCALPHA)
 
     for slot in range(3):
-        reel.blit(symbols[res[slot * 5 + i]], (0, slot * 52))
+        reel.blit(symbols[res[slot * 5 + i]], (0, slot * (18 * symbolScale + symbolSpaceVer)))
 
     for slot in range(27):
-        reel.blit(random.choice((lemon, cherry, clover, bell, diamond, treasure, seven)), (0, 156 + slot * 52))
+        reel.blit(random.choice((lemon, cherry, clover, bell, diamond, treasure, seven)), (0, (18 * symbolScale + symbolSpaceVer) * 3 + slot * (18 * symbolScale + symbolSpaceVer)))
 
     reels.append(reel)
 
@@ -66,25 +81,29 @@ running = True
 clock = pygame.time.Clock()
 
 while running:
-    screen.fill((0, 0, 0))
+    slotMachine.fill((0, 0, 0))
 
     for reel in range(5):
-        if reelsY[reel] < 16:
-            reelsY[reel] += 10 - reel
+        if reelsY[reel] < symbolSpaceVer:
+            reelsY[reel] += spinSpeed - reel * spinSpeed / 10
         else:
-            reelsY[reel] = 16
+            reelsY[reel] = symbolSpaceVer
 
     for reel in range(5):
-        screen.blit(reels[reel], (100 + reel * 100, reelsY[reel]))
+        slotMachine.blit(reels[reel], (symbolSpaceHor - 18 * symbolScale + reel * symbolSpaceHor, reelsY[reel]))
 
     if reelsY.count(16) == 5 and patternInit:
         for pat in result:
             for slot in patterns[pat[0]]:
-                pygame.draw.rect(screen, (36, 252, 3), pygame.Rect(95 + slot % 5 * 100, 11 + math.floor(slot / 5) * 52, 46, 46), 2, 3)
+                pygame.draw.rect(slotMachine, (36, 252, 3), pygame.Rect(symbolSpaceHor - 18 * symbolScale - squareDist + slot % 5 * symbolSpaceHor, symbolSpaceVer - squareDist + math.floor(slot / 5) * (18 * symbolScale + symbolSpaceVer), 18 * symbolScale + 2 * squareDist, 18 * symbolScale + 2 * squareDist), 2, 3)
+            screen.blit(slotMachine, (0, 0))
+            text = font.render('+' + str(pat[1]), True, (245, 179, 66))
+            slotMachine.blit(text , text.get_rect(center=(slotMachine.get_width()/2, slotMachine.get_height()/2)))
             pygame.display.flip()
             pygame.time.wait(325)
             for slot in patterns[pat[0]]:
-                pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(95 + slot % 5 * 100, 11 + math.floor(slot / 5) * 52, 46, 46), 2, 3)
+                pygame.draw.rect(slotMachine, (0, 0, 0), pygame.Rect(symbolSpaceHor - 18 * symbolScale - squareDist + slot % 5 * symbolSpaceHor, symbolSpaceVer - squareDist + math.floor(slot / 5) * (18 * symbolScale + symbolSpaceVer), 18 * symbolScale + 2 * squareDist, 18 * symbolScale + 2 * squareDist), 2, 3)
+            screen.blit(slotMachine, (0, 0))
             pygame.display.flip()
             pygame.time.wait(100)
         patternInit = False
@@ -94,8 +113,10 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
+
+    screen.blit(slotMachine, (0, 0))
     pygame.display.flip()
 
-    clock.tick(60)
+    clock.tick(frameRate)
 
 pygame.quit()

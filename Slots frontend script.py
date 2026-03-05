@@ -14,12 +14,13 @@ symbolSpaceHor = 100
 squareDist = 5
 frameRate = 60
 font = pygame.font.Font(None, size = 30)
-
+dividerLineWidth = 8
 
 #definerer reel variabler
 reels = []
 reelsY = [-(18 * symbolScale + symbolSpaceVer) * 30, -(18 * symbolScale + symbolSpaceVer) * 30, -(18 * symbolScale + symbolSpaceVer) * 30, -(18 * symbolScale + symbolSpaceVer) * 30, -(18 * symbolScale + symbolSpaceVer) * 30]
-patternInit = True
+patternTimer = 0
+patternDuration = 1
 
 #Opretter vindue
 screen = pygame.display.set_mode((symbolSpaceHor * 5  + 2 * 18 * symbolScale, (18 * symbolScale + symbolSpaceVer) * 3 + symbolSpaceVer))
@@ -80,35 +81,37 @@ running = True
 
 clock = pygame.time.Clock()
 
+#Spil loopet
 while running:
     slotMachine.fill((0, 0, 0))
 
+#Flytter reels ned langs skærmen
     for reel in range(5):
         if reelsY[reel] < symbolSpaceVer:
             reelsY[reel] += spinSpeed - reel * spinSpeed / 10
         else:
             reelsY[reel] = symbolSpaceVer
 
+#Loader reels til slot machien surface
     for reel in range(5):
         slotMachine.blit(reels[reel], (symbolSpaceHor - 18 * symbolScale + reel * symbolSpaceHor, reelsY[reel]))
 
-    if reelsY.count(16) == 5 and patternInit:
-        for pat in result:
-            for slot in patterns[pat[0]]:
-                pygame.draw.rect(slotMachine, (36, 252, 3), pygame.Rect(symbolSpaceHor - 18 * symbolScale - squareDist + slot % 5 * symbolSpaceHor, symbolSpaceVer - squareDist + math.floor(slot / 5) * (18 * symbolScale + symbolSpaceVer), 18 * symbolScale + 2 * squareDist, 18 * symbolScale + 2 * squareDist), 2, 3)
-            screen.blit(slotMachine, (0, 0))
-            text = font.render('+' + str(pat[1]), True, (245, 179, 66))
-            slotMachine.blit(text , text.get_rect(center=(slotMachine.get_width()/2, slotMachine.get_height()/2)))
-            pygame.display.flip()
-            pygame.time.wait(325)
-            for slot in patterns[pat[0]]:
-                pygame.draw.rect(slotMachine, (0, 0, 0), pygame.Rect(symbolSpaceHor - 18 * symbolScale - squareDist + slot % 5 * symbolSpaceHor, symbolSpaceVer - squareDist + math.floor(slot / 5) * (18 * symbolScale + symbolSpaceVer), 18 * symbolScale + 2 * squareDist, 18 * symbolScale + 2 * squareDist), 2, 3)
-            screen.blit(slotMachine, (0, 0))
-            pygame.display.flip()
-            pygame.time.wait(100)
-        patternInit = False
-            
+#Når reelsene har noget bunden af skærmen vises hvert pattern for patternDuration sekunder
+    if reelsY.count(16) == 5 and patternTimer < len(result) * frameRate * patternDuration:
+#Tegner kasser om hvert symbol i et givent pattern
+        for slot in patterns[result[math.floor(patternTimer / (frameRate * patternDuration))][0]]:
+            pygame.draw.rect(slotMachine, (36, 252, 3), pygame.Rect(symbolSpaceHor - 18 * symbolScale - squareDist + slot % 5 * symbolSpaceHor, symbolSpaceVer - squareDist + math.floor(slot / 5) * (18 * symbolScale + symbolSpaceVer), 18 * symbolScale + 2 * squareDist, 18 * symbolScale + 2 * squareDist), 2, 3)
+#Viser værdien af et givent pattern 
+        text = font.render('+' + str(result[math.floor(patternTimer / (frameRate * patternDuration))][1]), True, (245, 179, 66))
+        slotMachine.blit(text , text.get_rect(center=(slotMachine.get_width()/2, slotMachine.get_height()/2)))
 
+        patternTimer += 1
+
+#Tegner linjer mellem reels
+    for i in range(4):
+        pygame.draw.rect(slotMachine, (237, 156, 50), pygame.Rect(1.5 * (symbolSpaceHor - 18 * symbolScale) + i * symbolSpaceHor + 18 * symbolScale - 0.5 * dividerLineWidth, 0, dividerLineWidth, slotMachine.get_height()))
+
+#Lukker spillet når vinduet lukkes
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False

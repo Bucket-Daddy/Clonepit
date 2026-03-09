@@ -10,7 +10,7 @@ pygame.init()
 overallScale = 2
 symbolScale = 2 * overallScale
 symbolSpaceVer = 16 * overallScale
-spinSpeed = 10 * overallScale
+spinSpeed = 20 * overallScale
 symbolSpaceHor = 100 * overallScale
 squareDist = 5 * overallScale
 frameRate = 60
@@ -29,6 +29,7 @@ screen = pygame.display.set_mode((symbolSpaceHor * 5  + 2 * 18 * symbolScale, (1
 #Opretter slot machine surface
 slotMachine = pygame.Surface((symbolSpaceHor * 5  + 2 * 18 * symbolScale, (18 * symbolScale + symbolSpaceVer) * 3 + symbolSpaceVer), pygame.SRCALPHA)
 
+pygame.mixer.set_num_channels(32)
 
 #Loader billeder
 lemon = pygame.image.load('assets/SymbolLemon.webp')
@@ -38,6 +39,7 @@ bell = pygame.image.load('assets/SymbolBell.webp')
 diamond = pygame.image.load('assets/SymbolDiamond.webp')
 treasure = pygame.image.load('assets/SymbolTreasureChest.webp')
 seven = pygame.image.load('assets/SymbolSeven.webp')
+six = pygame.image.load('assets/SymbolSix.webp')
 
 golden = pygame.image.load('assets/modifierGolden.webp')
 token = pygame.image.load('assets/modifierToken.webp')
@@ -45,6 +47,11 @@ ticket = pygame.image.load('assets/modifierTicket.webp')
 repetition = pygame.image.load('assets/modifierRepetition.webp')
 battery = pygame.image.load('assets/modifierBattery.webp')
 chain = pygame.image.load('assets/modifierChain.webp')
+
+#Loader lydeffekter
+scoreSFX = pygame.mixer.Sound('assets/1-18. Slot Machine Scored.mp3')
+jackpotSFX = pygame.mixer.Sound('assets/1-17. Slot Machine Jackpot.mp3')
+rollingSFX = pygame.mixer.Sound('assets/2-228. Slotmachinerollingtick.mp3')
 
 #Skalerer billeder
 lemon = pygame.transform.scale(lemon, (18 * symbolScale, 18 * symbolScale))
@@ -54,6 +61,7 @@ bell = pygame.transform.scale(bell, (18 * symbolScale, 18 * symbolScale))
 diamond = pygame.transform.scale(diamond, (18 * symbolScale, 18 * symbolScale))
 treasure = pygame.transform.scale(treasure, (18 * symbolScale, 18 * symbolScale))
 seven = pygame.transform.scale(seven, (18 * symbolScale, 18 * symbolScale))
+six = pygame.transform.scale(six, (18 * symbolScale, 18 * symbolScale))
 
 golden = pygame.transform.scale(golden, (9 * symbolScale, 9 * symbolScale))
 token = pygame.transform.scale(token, (9 * symbolScale, 9 * symbolScale))
@@ -66,6 +74,7 @@ chain = pygame.transform.scale(chain, (9 * symbolScale, 9 * symbolScale))
 res = [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4]
 result = [('vert1', 2, ()), ('vert3', 2, ()), ('vert5', 2, ()), ('bckDiag2', 2, ()), ('fwdDiag2', 2, ()), ('horXL2', 6, ()), ('above', 14, ()), ('below', 14, ()), ('eye', 16, ()), ('jackpot', 20, ())]
 modifiers = [0, 0, 0, 0, 0, 1, 5, 0, 0, 0, 0, 0, 1, 3, 5]
+is666 = True
 
 #Tuples og dictionaries til fortolkning af resultat
 symbolsTuple = (lemon, cherry, clover, bell, diamond, treasure, seven)
@@ -81,25 +90,33 @@ patterns = {'hor1.1':(0, 1, 2), 'hor1.2':(1, 2, 3), 'hor1.3':(2, 3, 4), 'hor2.1'
 
 #Danner reels
 for i in range(5):
-    #reelName = 'reel' + str(i)
     reel = pygame.Surface((18 * symbolScale, (18 * symbolScale + symbolSpaceVer) * 30), pygame.SRCALPHA)
 
-    for slot in range(3):
-        reel.blit(symbolsTuple[res[slot * 5 + i]], (0, slot * (18 * symbolScale + symbolSpaceVer)))
-        if modifiers[slot * 5 + i] > 0:
-            reel.blit(modifiersTuple[modifiers[slot * 5 + i]], (symbolScale * 9, slot * (18 * symbolScale + symbolSpaceVer) + 9 * symbolScale))
+    if is666:
+        reel.blit(random.choice((lemon, cherry, clover, bell, diamond, treasure, seven)), (0, 0))
+        if i < 4 and i > 0:
+            reel.blit(six, (0, 18 * symbolScale + symbolSpaceVer))
+        else:
+            reel.blit(random.choice((lemon, cherry, clover, bell, diamond, treasure, seven)), (0, 18 * symbolScale + symbolSpaceVer))
+        reel.blit(random.choice((lemon, cherry, clover, bell, diamond, treasure, seven)), (0, 36 * symbolScale + symbolSpaceVer))  
+    else:
+
+        for slot in range(3):
+            reel.blit(symbolsTuple[res[slot * 5 + i]], (0, slot * (18 * symbolScale + symbolSpaceVer)))
+            if modifiers[slot * 5 + i] > 0:
+                reel.blit(modifiersTuple[modifiers[slot * 5 + i]], (symbolScale * 9, slot * (18 * symbolScale + symbolSpaceVer) + 9 * symbolScale))
 
     for slot in range(27):
         reel.blit(random.choice((lemon, cherry, clover, bell, diamond, treasure, seven)), (0, (18 * symbolScale + symbolSpaceVer) * 3 + slot * (18 * symbolScale + symbolSpaceVer)))
 
     reels.append(reel)
 
-    #exec(reelName + ' = reel')
-
     
 running = True
 
 clock = pygame.time.Clock()
+
+rollingSFX.play()
 
 #Spil loopet
 while running:
@@ -112,7 +129,7 @@ while running:
         else:
             reelsY[reel] = symbolSpaceVer
 
-#Loader reels til slot machien surface
+#Loader reels til slot machine surface
     for reel in range(5):
         slotMachine.blit(reels[reel], (symbolSpaceHor - 18 * symbolScale + reel * symbolSpaceHor, reelsY[reel]))
 
@@ -121,7 +138,15 @@ while running:
         pygame.draw.rect(slotMachine, (120, 95, 26), pygame.Rect(1.5 * (symbolSpaceHor - 18 * symbolScale) + i * symbolSpaceHor + 18 * symbolScale - 0.5 * dividerLineWidth, 0, dividerLineWidth, slotMachine.get_height()))
 
 #Når reelsene har noget bunden af skærmen vises hvert pattern i {patternDuration} sekunder
-    if reelsY.count(symbolSpaceVer) == 5 and patternTimer < len(result) * frameRate * 1.25 * patternDuration:
+    if reelsY.count(symbolSpaceVer) == 5 and patternTimer < len(result) * frameRate * 1.25 * patternDuration and not is666:
+
+#Spiller lydeffekten for hvert pattern
+        if patternTimer == frameRate * 1.25 * patternDuration * math.floor(patternTimer / (frameRate * 1.25 * patternDuration)):
+            if result[math.floor(patternTimer / (frameRate * 1.25 * patternDuration))][0] == 'jackpot':
+                jackpotSFX.play()
+            else:
+                scoreSFX.play()
+
 #Tegner kasser om hvert symbol i et givent pattern
         if patternTimer <= frameRate * patternDuration * math.floor(patternTimer / (frameRate * 1.25 * patternDuration) + 1) + frameRate * patternDuration * 0.25 * math.floor(patternTimer / (frameRate * 1.25 * patternDuration)):
             for slot in patterns[result[math.floor(patternTimer / (frameRate * 1.25 * patternDuration))][0]]:

@@ -64,7 +64,7 @@ chain = pygame.transform.scale(chain, (9 * symbolScale, 9 * symbolScale))
 
 #temporary simulation of result from slots script
 res = [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4]
-result = [('vert1', 2190890, ()), ('vert3', 2, ()), ('vert5', 2, ()), ('bckDiag2', 2, ()), ('fwdDiag2', 2, ()), ('horXL2', 6, ()), ('above', 14, ()), ('below', 14, ()), ('eye', 16, ()), ('jackpot', 20, ())]
+result = [('vert1', 2, ()), ('vert3', 2, ()), ('vert5', 2, ()), ('bckDiag2', 2, ()), ('fwdDiag2', 2, ()), ('horXL2', 6, ()), ('above', 14, ()), ('below', 14, ()), ('eye', 16, ()), ('jackpot', 20, ())]
 modifiers = [0, 0, 0, 0, 0, 1, 5, 0, 0, 0, 0, 0, 1, 3, 5]
 
 #Tuples og dictionaries til fortolkning af resultat
@@ -120,19 +120,20 @@ while running:
     for i in range(4):
         pygame.draw.rect(slotMachine, (120, 95, 26), pygame.Rect(1.5 * (symbolSpaceHor - 18 * symbolScale) + i * symbolSpaceHor + 18 * symbolScale - 0.5 * dividerLineWidth, 0, dividerLineWidth, slotMachine.get_height()))
 
-#Når reelsene har noget bunden af skærmen vises hvert pattern for patternDuration sekunder
-    if reelsY.count(symbolSpaceVer) == 5 and patternTimer < len(result) * frameRate * patternDuration:
+#Når reelsene har noget bunden af skærmen vises hvert pattern i {patternDuration} sekunder
+    if reelsY.count(symbolSpaceVer) == 5 and patternTimer < len(result) * frameRate * 1.25 * patternDuration:
 #Tegner kasser om hvert symbol i et givent pattern
-        for slot in patterns[result[math.floor(patternTimer / (frameRate * patternDuration))][0]]:
-            pygame.draw.rect(slotMachine, (36, 252, 3), pygame.Rect(symbolSpaceHor - 18 * symbolScale - squareDist + slot % 5 * symbolSpaceHor, symbolSpaceVer - squareDist + math.floor(slot / 5) * (18 * symbolScale + symbolSpaceVer), 18 * symbolScale + 2 * squareDist, 18 * symbolScale + 2 * squareDist), 2, 3)
+        if patternTimer <= frameRate * patternDuration * math.floor(patternTimer / (frameRate * 1.25 * patternDuration) + 1) + frameRate * patternDuration * 0.25 * math.floor(patternTimer / (frameRate * 1.25 * patternDuration)):
+            for slot in patterns[result[math.floor(patternTimer / (frameRate * 1.25 * patternDuration))][0]]:
+                pygame.draw.rect(slotMachine, (36, 252, 3), pygame.Rect(symbolSpaceHor - 18 * symbolScale - squareDist + slot % 5 * symbolSpaceHor, symbolSpaceVer - squareDist + math.floor(slot / 5) * (18 * symbolScale + symbolSpaceVer), 18 * symbolScale + 2 * squareDist, 18 * symbolScale + 2 * squareDist), 2, 3)
 #Viser værdien af et givent pattern
-        if len(str(result[math.floor(patternTimer / (frameRate * patternDuration))][1])) > 7:
-            patternPayout = round(result[math.floor(patternTimer / (frameRate * patternDuration))][1] * 10**(-1 * (len(str(result[math.floor(patternTimer / (frameRate * patternDuration))][1])) - 1)), 5)
-            text = font.render('+' + str(patternPayout) + 'E+' + str(len(str(result[math.floor(patternTimer / (frameRate * patternDuration))][1])) - 1), True, (250, 10, 10))
-        else:
-            text = font.render('+' + str(result[math.floor(patternTimer / (frameRate * patternDuration))][1]), True, (246, 250, 10))
+            if len(str(result[math.floor(patternTimer / (frameRate * 1.25 * patternDuration))][1])) > 7:
+                patternPayout = round(result[math.floor(patternTimer / (frameRate * 1.25 * patternDuration))][1] * 10**(-1 * (len(str(result[math.floor(patternTimer / (frameRate * patternDuration))][1])) - 1)), 5)
+                text = font.render('+' + str(patternPayout) + 'E+' + str(len(str(result[math.floor(patternTimer / (frameRate * patternDuration))][1])) - 1), True, (250, 10, 10))
+            else:
+                text = font.render('+' + str(result[math.floor(patternTimer / (frameRate * 1.25 * patternDuration))][1]), True, (246, 250, 10))
 
-        slotMachine.blit(text , text.get_rect(center=(slotMachine.get_width()/2, slotMachine.get_height()/2)))
+            slotMachine.blit(text , text.get_rect(center=(slotMachine.get_width()/2, slotMachine.get_height()/2)))
 
         patternTimer += 1
 

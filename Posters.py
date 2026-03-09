@@ -8,7 +8,7 @@ symbolMult = 1
 patternMult = 1
 symbolValues = [2, 2, 3, 3, 5, 5, 7] #lemon, cherry, clover, bell, diamond, treasure, seven.
 symbolWeights = [1.3, 1.3, 1, 1, 0.8, 0.8, 0.5] #lemon, cherry, clover, bell, diamond, treasure, seven.
-patternValues = {'hor':1000000000000000000000, 'vert':1, 'diag':1, 'horL':2, 'horXL':3, 'zig':4, 'zag':4, 'above':7, 'below':7, 'eye':8, 'jackpot':10000000}
+patternValues = {'hor':1, 'vert':1, 'diag':1, 'horL':2, 'horXL':3, 'zig':4, 'zag':4, 'above':7, 'below':7, 'eye':8, 'jackpot':10}
 
 pygame.display.set_caption('Clonepit Slots - Posters')
 screen = pygame.display.set_mode((800, 600))
@@ -192,7 +192,7 @@ textBelow = font.render('BELOW', True, (0, 0, 0))
 textEye = font.render('EYE', True, (0, 0, 0))
 textJackpot = font.render('JACKPOT', True, (0, 0, 0))
 # hor
-if len(str(patternValues['hor'])) >= 10:
+if len(str(patternValues['hor'])) >= 11:
     patternValue = round(patternValues['hor'] * 10**(-1 * (len(str(patternValues['hor'])) - 1)), 2)
     textHorMult = font.render('X ' + str(patternValue) + 'E+' + str(len(str(patternValues['hor'])) - 1), True, (0, 0, 0))
     posters.blit(coin2, (patternPosterX + 250 - 5 * (len(str(patternValue)) + 3)**(1.50 - 0.012 * len(str(patternValue))), patternPosterY + 40))
@@ -202,7 +202,7 @@ else:
     posters.blit(coin2, (patternPosterX + 250 - 5 * len(str(patternValues['hor']))**(1.50 - 0.012 * len(str(patternValues['hor']))), patternPosterY + 40))
     posters.blit(textHorMult, (patternPosterX + 270 - 5 * len(str(patternValues['hor']))**(1.50 - 0.012 * len(str(patternValues['hor']))), patternPosterY + 40))
 # vert
-if len(str(patternValues['vert'])) >= 10:
+if len(str(patternValues['vert'])) >= 11:
     patternValue = round(patternValues['vert'] * 10**(-1 * (len(str(patternValues['vert'])) - 1)), 2)
     textVerMult = font.render('X ' + str(patternValue) + 'E+' + str(len(str(patternValues['vert'])) - 1), True, (0, 0, 0))
     posters.blit(textVerMult, (patternPosterX + 270 - 5 * (len(str(patternValue)) + 3)**(1.50 - 0.012 * (len(str(patternValue)))), patternPosterY + 68.5))
@@ -212,21 +212,29 @@ else:
     posters.blit(textVerMult, (patternPosterX + 270 - 5 * len(str(patternValues['vert']))**(1.50 - 0.012 * len(str(patternValues['vert']))), patternPosterY + 68.5))
     posters.blit(coin2, (patternPosterX + 250 - 5 * len(str(patternValues['vert']))**(1.50 - 0.012 * len(str(patternValues['vert']))), symbolScale + 80))
 # diag
-if len(str(patternValues['diag'])) >= 10:
+if len(str(patternValues['diag'])) >= 11:
     patternValue = round(patternValues['diag'] * 10**(-1 * (len(str(patternValues['diag'])) - 1)), 2)
     textDiagMult = font.render('X ' + str(patternValue) + 'E+' + str(len(str(patternValues['diag'])) - 1), True, (0, 0, 0))
-    posters.blit(textDiagMult, (patternPosterX + 270 - 5 * (len(str(patternValue)) + 3)**(1.50 - 0.012 * (len(str(patternValue)))), patternPosterY + 96))
-    posters.blit(coin2, (patternPosterX + 250 - 5 * (len(str(patternValue)) + 3)**(1.50 - 0.012 * len(str(patternValue))), symbolScale + 107.5))
+    if len(str(patternValues['diag'])) >= 11:
+        posters.blit(textDiagMult, (patternPosterX + 270 - 5 * (len(str(patternValue)) + 3)**(1.50 - 0.012 * (len(str(patternValue)))), patternPosterY + 96))
+        posters.blit(coin2, (patternPosterX + 250 - 5 * (len(str(patternValue)) + 3)**(1.50 - 0.012 * len(str(patternValue))), symbolScale + 107.5))
+    if len(str(patternValues['diag'])) < 11:
+        posters.blit(textDiagMult, (patternPosterX + 212, patternPosterY + 96))
+        posters.blit(coin2, (patternPosterX + 192, symbolScale + 107.5))
 else:
     textDiagMult = font.render('X ' + str(patternValues['diag']), True, (0, 0, 0))
     posters.blit(textDiagMult, (patternPosterX + 270 - 5 * len(str(patternValues['diag']))**(1.50 - 0.012 * len(str(patternValues['diag']))), patternPosterY + 96))
     posters.blit(coin2, (patternPosterX + 250 - 5 * len(str(patternValues['diag']))**(1.50 - 0.012 * len(str(patternValues['diag']))), symbolScale + 107.5))
 # horL
-if len(str(patternValues['horL'])) >= 9:
+if len(str(patternValues['horL'])) >= 10:
     patternValue = round(patternValues['horL'] * 10**(-1 * (len(str(patternValues['horL'])) - 1)), 2)
     textHorLMult = font.render('X ' + str(patternValue) + 'E+' + str(len(str(patternValues['horL'])) - 1), True, (0, 0, 0))
-    posters.blit(textHorLMult, (patternPosterX + 270 - 5 * (len(str(patternValue)) + 3)**(1.50 - 0.012 * (len(str(patternValue)))), patternPosterY + 123.5))
-    posters.blit(coin2, (patternPosterX + 250 - 5 * (len(str(patternValue)) + 3)**(1.50 - 0.012 * len(str(patternValue))), symbolScale + 134.5))
+    if len(str(patternValues['horL'])) >= 10:
+        posters.blit(textHorLMult, (patternPosterX + 270 - 5 * (len(str(patternValue)) + 3)**(1.50 - 0.012 * (len(str(patternValue)))), patternPosterY + 123.5))
+        posters.blit(coin2, (patternPosterX + 250 - 5 * (len(str(patternValue)) + 3)**(1.50 - 0.012 * len(str(patternValue))), symbolScale + 134.5))
+    if len(str(patternValues['horL'])) < 10:
+        posters.blit(textHorLMult, (patternPosterX + 212, patternPosterY + 123.5))
+        posters.blit(coin2, (patternPosterX + 192, symbolScale + 134.5))
 else:
     textHorLMult = font.render('X ' + str(patternValues['horL']), True, (0, 0, 0))
     posters.blit(textHorLMult, (patternPosterX + 270 - 5 * len(str(patternValues['horL']))**(1.50 - 0.012 * len(str(patternValues['horL']))), patternPosterY + 123.5))
@@ -235,14 +243,18 @@ else:
 if len(str(patternValues['horXL'])) >= 8:
     patternValue = round(patternValues['horXL'] * 10**(-1 * (len(str(patternValues['horXL'])) - 1)), 2)
     textHorXLMult = font.render('X ' + str(patternValue) + 'E+' + str(len(str(patternValues['horXL'])) - 1), True, (0, 0, 0))
-    posters.blit(textHorXLMult, (patternPosterX + 270 - 5 * (len(str(patternValue)) + 3)**(1.50 - 0.012 * (len(str(patternValue)))), patternPosterY + 151.5))
-    posters.blit(coin2, (patternPosterX + 250 - 5 * (len(str(patternValue)) + 3)**(1.50 - 0.012 * len(str(patternValue))), symbolScale + 161.5))
+    if len(str(patternValues['horXL'])) >= 10:
+        posters.blit(textHorXLMult, (patternPosterX + 270 - 5 * (len(str(patternValue)) + 3)**(1.50 - 0.012 * (len(str(patternValue)))), patternPosterY + 151.5))
+        posters.blit(coin2, (patternPosterX + 250 - 5 * (len(str(patternValue)) + 3)**(1.50 - 0.012 * len(str(patternValue))), symbolScale + 161.5))
+    if len(str(patternValues['horXL'])) < 10:
+        posters.blit(textHorXLMult, (patternPosterX + 212, patternPosterY + 151.5))
+        posters.blit(coin2, (patternPosterX + 192, symbolScale + 161.5))
 else:
     textHorXLMult = font.render('X ' + str(patternValues['horXL']), True, (0, 0, 0))
     posters.blit(textHorXLMult, (patternPosterX + 270 - 5 * len(str(patternValues['horXL']))**(1.50 - 0.012 * len(str(patternValues['horXL']))), patternPosterY + 151.5))
     posters.blit(coin2, (patternPosterX + 250 - 5 * len(str(patternValues['horXL']))**(1.50 - 0.012 * len(str(patternValues['horXL']))), symbolScale + 161.5))
 # zig
-if len(str(patternValues['zig'])) >= 10:
+if len(str(patternValues['zig'])) >= 11:
     patternValue = round(patternValues['zig'] * 10**(-1 * (len(str(patternValues['zig'])) - 1)), 2)
     textZigMult = font.render('X ' + str(patternValue) + 'E+' + str(len(str(patternValues['zig'])) - 1), True, (0, 0, 0))
     posters.blit(textZigMult, (patternPosterX + 270 - 5 * (len(str(patternValue)) + 3)**(1.50 - 0.012 * (len(str(patternValue)))), patternPosterY + 179.5))
@@ -252,7 +264,7 @@ else:
     posters.blit(textZigMult, (patternPosterX + 270 - 5 * len(str(patternValues['zig']))**(1.50 - 0.012 * len(str(patternValues['zig']))), patternPosterY + 179.5))
     posters.blit(coin2, (patternPosterX + 250 - 5 * len(str(patternValues['zig']))**(1.50 - 0.012 * len(str(patternValues['zig']))), symbolScale + 188.5))
 # zag
-if len(str(patternValues['zag'])) >= 10:
+if len(str(patternValues['zag'])) >= 11:
     patternValue = round(patternValues['zag'] * 10**(-1 * (len(str(patternValues['zag'])) - 1)), 2)
     textZagMult = font.render('X ' + str(patternValue) + 'E+' + str(len(str(patternValues['zag'])) - 1), True, (0, 0, 0))
     posters.blit(textZagMult, (patternPosterX + 270 - 5 * (len(str(patternValue)) + 3)**(1.50 - 0.012 * (len(str(patternValue)))), patternPosterY + 206.5))
@@ -265,8 +277,12 @@ else:
 if len(str(patternValues['above'])) >= 8:
     patternValue = round(patternValues['above'] * 10**(-1 * (len(str(patternValues['above'])) - 1)), 2)
     textAboveMult = font.render('X ' + str(patternValue) + 'E+' + str(len(str(patternValues['above'])) - 1), True, (0, 0, 0))
-    posters.blit(textAboveMult, (patternPosterX + 270 - 5 * (len(str(patternValue)) + 3)**(1.50 - 0.012 * (len(str(patternValue)))), patternPosterY + 233.5))
-    posters.blit(coin2, (patternPosterX + 250 - 5 * (len(str(patternValue)) + 3)**(1.50 - 0.012 * len(str(patternValue))), symbolScale + 242.5))
+    if len(str(patternValues['above'])) >= 10:
+        posters.blit(textAboveMult, (patternPosterX + 270 - 5 * (len(str(patternValue)) + 3)**(1.50 - 0.012 * (len(str(patternValue)))), patternPosterY + 233.5))
+        posters.blit(coin2, (patternPosterX + 250 - 5 * (len(str(patternValue)) + 3)**(1.50 - 0.012 * len(str(patternValue))), symbolScale + 242.5))
+    if len(str(patternValues['above'])) < 10:
+        posters.blit(textAboveMult, (patternPosterX + 212, patternPosterY + 233.5))
+        posters.blit(coin2, (patternPosterX + 192, symbolScale + 242.5))
 else:
     textAboveMult = font.render('X ' + str(patternValues['above']), True, (0, 0, 0))
     posters.blit(textAboveMult, (patternPosterX + 270 - 5 * len(str(patternValues['above']))**(1.50 - 0.012 * len(str(patternValues['above']))), patternPosterY + 233.5))
@@ -275,14 +291,18 @@ else:
 if len(str(patternValues['below'])) >= 8:
     patternValue = round(patternValues['below'] * 10**(-1 * (len(str(patternValues['below'])) - 1)), 2)
     textBelowMult = font.render('X ' + str(patternValue) + 'E+' + str(len(str(patternValues['below'])) - 1), True, (0, 0, 0))
-    posters.blit(textBelowMult, (patternPosterX + 270 - 5 * (len(str(patternValue)) + 3)**(1.50 - 0.012 * (len(str(patternValue)))), patternPosterY + 260.5))
-    posters.blit(coin2, (patternPosterX + 250 - 5 * (len(str(patternValue)) + 3)**(1.50 - 0.012 * len(str(patternValue))), symbolScale + 269.5))
+    if len(str(patternValues['below'])) >= 10:
+        posters.blit(textBelowMult, (patternPosterX + 270 - 5 * (len(str(patternValue)) + 3)**(1.50 - 0.012 * (len(str(patternValue)))), patternPosterY + 260))
+        posters.blit(coin2, (patternPosterX + 250 - 5 * (len(str(patternValue)) + 3)**(1.50 - 0.012 * len(str(patternValue))), symbolScale + 273.5))
+    if len(str(patternValues['below'])) < 10:
+        posters.blit(textBelowMult, (patternPosterX + 212, patternPosterY + 260))
+        posters.blit(coin2, (patternPosterX + 192, symbolScale + 273.5))
 else:
     textBelowMult = font.render('X ' + str(patternValues['below']), True, (0, 0, 0))  
     posters.blit(textBelowMult, (patternPosterX + 270 - 5 * len(str(patternValues['below']))**(1.50 - 0.012 * len(str(patternValues['below']))), patternPosterY + 260.5))
     posters.blit(coin2, (patternPosterX + 250 - 5 * len(str(patternValues['below']))**(1.50 - 0.012 * len(str(patternValues['below']))), symbolScale + 269.5))
 # eye
-if len(str(patternValues['eye'])) >= 10:
+if len(str(patternValues['eye'])) >= 11:
     patternValue = round(patternValues['eye'] * 10**(-1 * (len(str(patternValues['eye'])) - 1)), 2)
     textEyeMult = font.render('X ' + str(patternValue) + 'E+' + str(len(str(patternValues['eye'])) - 1), True, (0, 0, 0))
     posters.blit(textEyeMult, (patternPosterX + 270 - 5 * (len(str(patternValue)) + 3)**(1.50 - 0.012 * (len(str(patternValue)))), patternPosterY + 287.5))
@@ -295,8 +315,12 @@ else:
 if len(str(patternValues['jackpot'])) >= 8:
     patternValue = round(patternValues['jackpot'] * 10**(-1 * (len(str(patternValues['jackpot'])) - 1)), 2)
     textJackpotMult = font.render('X ' + str(patternValue) + 'E+' + str(len(str(patternValues['jackpot'])) - 1), True, (0, 0, 0))
-    posters.blit(textJackpotMult, (patternPosterX + 270 - 5 * (len(str(patternValue)) + 3)**(1.50 - 0.012 * (len(str(patternValue)))), patternPosterY + 314.5))
-    posters.blit(coin2, (patternPosterX + 250 - 5 * (len(str(patternValue)) + 3)**(1.50 - 0.012 * len(str(patternValue))), symbolScale + 323.5))
+    if len(str(patternValues['jackpot'])) >= 10:
+        posters.blit(textJackpotMult, (patternPosterX + 270 - 5 * (len(str(patternValue)) + 3)**(1.50 - 0.012 * (len(str(patternValue)))), patternPosterY + 314.5))
+        posters.blit(coin2, (patternPosterX + 250 - 5 * (len(str(patternValue)) + 3)**(1.50 - 0.012 * len(str(patternValue))), symbolScale + 323.5))
+    if len(str(patternValues['jackpot'])) < 10:
+        posters.blit(textJackpotMult, (patternPosterX + 212, patternPosterY + 314.5))
+        posters.blit(coin2, (patternPosterX + 192, symbolScale + 323.5))
 else:
     textJackpotMult = font.render('X ' + str(patternValues['jackpot']), True, (0, 0, 0)) 
     posters.blit(textJackpotMult, (patternPosterX + 270 - 5 * len(str(patternValues['jackpot']))**(1.50 - 0.012 * len(str(patternValues['jackpot']))), patternPosterY + 314.5))

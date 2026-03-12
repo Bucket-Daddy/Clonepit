@@ -1,5 +1,6 @@
 #ATM script
 import pygame
+import emoji
 
 pygame.init()
 overallScale = 2
@@ -36,7 +37,7 @@ atm.blit(textDeadline, textDeadline.get_rect(center=(deadlineX, deadlineY)))
 debtX = deadlineX - 40
 debtY = deadlineY + 100
 
-textRoundsLeft = font.render(str(roundNum) + ' ROUNDS LEFT', True, (246, 250, 10))
+textRoundsLeft = font.render("\U0001F480" + str(roundNum) + ' ROUNDS LEFT ' + "\U0001F480", True, (246, 250, 10))
 textDebt = font2.render('DEBT:', True, (246, 250, 10))
 textDebtAmount = font.render(str(debtAmount), True, (246, 250, 10))
 textDeposited = font2.render('DEPOSITED:', True, (246, 250, 10))
@@ -46,39 +47,44 @@ textInterestValue = font2.render(str(interest) + '% ' + '(' + str(interest * dep
 textScreenLine = font.render('-----------------------', True, (246, 250, 10))
 
 # Blit teksten og mønterne på ATM-overfladen
-atm.blit(textScreenLine, textScreenLine.get_rect(center=(debtX, debtY - 20)))
+atm.blit(textScreenLine, textScreenLine.get_rect(center=(debtX, debtY - 30)))
 
-atm.blit(textRoundsLeft, textRoundsLeft.get_rect(center=(debtX, debtY)))
+atm.blit(textRoundsLeft, textRoundsLeft.get_rect(center=(debtX, debtY- 10)))
 
-atm.blit(textScreenLine, textScreenLine.get_rect(center=(debtX, debtY + 20)))
+atm.blit(textScreenLine, textScreenLine.get_rect(center=(debtX, debtY + 10)))
 
-atm.blit(textDebt, textRoundsLeft.get_rect(center=(debtX, debtY + 35)))
-atm.blit(textDebtAmount, textDebtAmount.get_rect(center=(debtX + 45, debtY + 40)))
-atm.blit(coin, (debtX + 60, debtY + 26))
+atm.blit(textDebt, textRoundsLeft.get_rect(center=(debtX, debtY + 25)))
 
-atm.blit(textScreenLine, textScreenLine.get_rect(center=(debtX, debtY + 60)))
+if len(str(debtAmount)) >= 10:
+    deposit = round(debtAmount * 10**(-1 * (len(str(debtAmount)) - 1)), 2)
+    textDebtAmount = font.render(str(deposit) + 'E+' + str(len(str(debtAmount)) - 1), True, (246, 250, 10))
+    atm.blit(textDebtAmount, textDebtAmount.get_rect(center=(debtX + 45, debtY + 35)))
+    atm.blit(coin, (debtX + 62, debtY + 20))
+else:
+    textDebtAmount = font.render(str(debtAmount), True, (246, 250, 10))
+    atm.blit(textDebtAmount, textDebtAmount.get_rect(center=(debtX + 50 - len(str(debtAmount))**(1.50 - 0.012 * len(str(debtAmount))), debtY + 40)))
+    atm.blit(coin, (debtX + 62, debtY + 20))
 
-atm.blit(textDeposited, textDeposited.get_rect(center=(debtX - 45, debtY + 70)))
+atm.blit(textScreenLine, textScreenLine.get_rect(center=(debtX, debtY + 55)))
+
+atm.blit(textDeposited, textDeposited.get_rect(center=(debtX - 45, debtY + 65)))
 if len(str(depositedAmount)) >= 10:
     deposit = round(depositedAmount * 10**(-1 * (len(str(depositedAmount)) - 1)), 2)
     textDepositedAmount = font.render(str(deposit) + 'E+' + str(len(str(depositedAmount)) - 1), True, (246, 250, 10))
-    atm.blit(textDepositedAmount, textDepositedAmount.get_rect(center=(debtX + 50, debtY + 82)))
-    atm.blit(coin, (debtX + textDepositedAmount.get_width() + 45, debtY + 65))
+    atm.blit(textDepositedAmount, textDepositedAmount.get_rect(center=(debtX + 48, debtY + 82)))
+    atm.blit(coin, (debtX + 62, debtY + 65))
 else:
     textDepositedAmount = font.render(str(depositedAmount), True, (246, 250, 10))
-    atm.blit(textDepositedAmount, textDepositedAmount.get_rect(center=(debtX + 50, debtY + 82)))
-    atm.blit(coin, (debtX + textDepositedAmount.get_width() + 45, debtY + 65))
+    atm.blit(textDepositedAmount, textDepositedAmount.get_rect(center=(debtX + 48, debtY + 82)))
+    atm.blit(coin, (debtX + 62, debtY + 65))
 
 atm.blit(textScreenLine, textScreenLine.get_rect(center=(debtX, debtY + 100)))
 
 atm.blit(textInterest, textInterest.get_rect(center=(debtX - 50, debtY + 110)))
 atm.blit(textInterestValue, textInterestValue.get_rect(center=(debtX + 50, debtY + 110)))
-atm.blit(coin2, (debtX + 65, debtY + 101))
+atm.blit(coin2, (debtX + 62, debtY + 101))
 
 atm.blit(textScreenLine, textScreenLine.get_rect(center=(debtX, debtY + 120)))
-
-    
-# updateDebtAndDeposited()
     
 
 ##############################################################################################################

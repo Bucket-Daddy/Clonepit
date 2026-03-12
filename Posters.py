@@ -3,13 +3,13 @@ import pygame
 pygame.init()
 posterScale = 0.80
 symbolScale = 1
-font = pygame.font.Font(None, size = 30)
+overallScale = 2
+font = pygame.font.Font(None, size = 15 * overallScale)
 symbolMult = 1
 patternMult = 1
 symbolValues = [2, 2, 3, 3, 5, 5, 7] #lemon, cherry, clover, bell, diamond, treasure, seven.
 symbolWeights = [1.3, 1.3, 1, 1, 0.8, 0.8, 0.5] #lemon, cherry, clover, bell, diamond, treasure, seven.
 patternValues = {'hor':1, 'vert':1, 'diag':1, 'horL':2, 'horXL':3, 'zig':4, 'zag':4, 'above':7, 'below':7, 'eye':8, 'jackpot':10}
-
 pygame.display.set_caption('Clonepit Slots - Posters')
 screen = pygame.display.set_mode((800, 600))
 

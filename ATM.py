@@ -13,7 +13,7 @@ pygame.display.set_caption('Clonepit Slots - ATM')
 screen = pygame.display.set_mode((800, 600))
 atm = pygame.Surface((screen.get_width(), screen.get_height()), pygame.SRCALPHA)
 
-# pictures
+# importer billeder fra assets-mappen
 coin = pygame.image.load('assets/coin.webp')
 coin2 = pygame.image.load('assets/coin2.webp')
 cloverSkull = pygame.image.load('assets/cloverSkull.png')
@@ -21,21 +21,21 @@ coin = pygame.transform.scale(coin, (coin.get_width() * 0.075 * overallScale, co
 coin2 = pygame.transform.scale(coin2, (coin2.get_width() * 0.0395 * overallScale, coin2.get_height() * 0.0395 * overallScale))
 cloverSkull = pygame.transform.scale(cloverSkull, (cloverSkull.get_width() * 0.3 * overallScale, cloverSkull.get_height() * 0.3 * overallScale))
 
-# variables
+# importere variabler
 debtNum = 1
 roundNum = 1
 debtAmount = 75*10**222
 depositedAmount = 30*10**20
 interest = 71.00
 
-# deadline
+# texten med deadline placeres
 deadlineX = 300  
 deadlineY = 100
 
 textDeadline = font.render('DEADLINE: ' + '#' + str(debtNum), True, (246, 250, 10))
 atm.blit(textDeadline, textDeadline.get_rect(center=(deadlineX, deadlineY)))
 
-# Rounds left and debt and so on
+# Runder tilbage før man dør osv.
 debtX = deadlineX - 40
 debtY = deadlineY + 100
 

@@ -1,4 +1,5 @@
 #ATM script
+import math
 import pygame
 
 pygame.init()
@@ -22,11 +23,10 @@ cloverSkull = pygame.transform.scale(cloverSkull, (cloverSkull.get_width() * 0.3
 
 # variables
 debtNum = 1
-debtMult = 1
 roundNum = 1
-debtAmount = 75
-depositedAmount = 30
-interest = 7.0
+debtAmount = 75*10**222
+depositedAmount = 30*10**20
+interest = 71.00
 
 # deadline
 deadlineX = 300  
@@ -41,11 +41,9 @@ debtY = deadlineY + 100
 
 textRoundsLeft = font.render(str(roundNum) + ' ROUNDS LEFT', True, (246, 250, 10))
 textDebt = font2.render('DEBT:', True, (246, 250, 10))
-textDebtAmount = font.render(str(debtAmount), True, (246, 250, 10))
 textDeposited = font2.render('DEPOSITED:', True, (246, 250, 10))
-textDepositedAmount = font.render(str(depositedAmount), True, (246, 250, 10))
 textInterest = font2.render('INTEREST:', True, (246, 250, 10))
-textInterestValue = font2.render(str(interest) + '% ' + '(' + str(round(interest * depositedAmount / 100, 0)) + '    )', True, (246, 250, 10))
+textInterestValue = font2.render(str(interest) + '% ', True, (246, 250, 10))
 textScreenLine = font.render('-------------------------------', True, (246, 250, 10))
 
 # Blit teksten og mønterne på ATM-overfladen
@@ -56,43 +54,40 @@ atm.blit(textRoundsLeft, textRoundsLeft.get_rect(center=(debtX, debtY- 10)))
 atm.blit(cloverSkull, (debtX + 80, debtY - 25))
 
 atm.blit(textScreenLine, textScreenLine.get_rect(center=(debtX, debtY + 10)))
-atm.blit(textDebt, textRoundsLeft.get_rect(center=(debtX - 30, debtY + 25)))
+atm.blit(textDebt, textDebt.get_rect(center=(debtX - 92, debtY + 20)))
+atm.blit(coin, (debtX + 88, debtY + 20))
 
-if len(str(debtAmount)) >= 10:
+if math.log10(debtAmount) >= 10 and math.log10(debtAmount) < 100:
     deposit = round(debtAmount * 10**(-1 * (len(str(debtAmount)) - 1)), 2)
     textDebtAmount = font.render(str(deposit) + 'E+' + str(len(str(debtAmount)) - 1), True, (246, 250, 10))
-    atm.blit(textDebtAmount, textDebtAmount.get_rect(center=(debtX + 70, debtY + 35)))
-    atm.blit(coin, (debtX + 88, debtY + 20))
-else:
+    atm.blit(textDebtAmount, textDebtAmount.get_rect(center=(debtX + 45, debtY + 35)))
+if math.log10(debtAmount) >= 100:
+    deposit = round(debtAmount * 10**(-1 * (len(str(debtAmount)) - 1)), 2)
+    textDebtAmount = font.render(str(deposit) + 'E+' + str(len(str(debtAmount)) - 1), True, (246, 250, 10))
+    atm.blit(textDebtAmount, textDebtAmount.get_rect(center=(debtX + 40, debtY + 35)))
+if math.log10(debtAmount) < 10:
     textDebtAmount = font.render(str(debtAmount), True, (246, 250, 10))
     atm.blit(textDebtAmount, textDebtAmount.get_rect(center=(debtX + 75 - len(str(debtAmount))**(1.50 - 0.012 * len(str(debtAmount))), debtY + 40)))
-    atm.blit(coin, (debtX + 88, debtY + 20))
 
 atm.blit(textScreenLine, textScreenLine.get_rect(center=(debtX, debtY + 55)))
 atm.blit(textDeposited, textDeposited.get_rect(center=(debtX - 75, debtY + 65)))
+atm.blit(coin, (debtX + 88, debtY + 65))
 
-if len(str(depositedAmount)) >= 10:
+if math.log10(depositedAmount) >= 10 and math.log10(depositedAmount) < 100:
     deposit = round(depositedAmount * 10**(-1 * (len(str(depositedAmount)) - 1)), 2)
     textDepositedAmount = font.render(str(deposit) + 'E+' + str(len(str(depositedAmount)) - 1), True, (246, 250, 10))
-    atm.blit(textDepositedAmount, textDepositedAmount.get_rect(center=(debtX + 73, debtY + 82)))
-    atm.blit(coin, (debtX + 88, debtY + 65))
-else:
+    atm.blit(textDepositedAmount, textDepositedAmount.get_rect(center=(debtX + 45, debtY + 82)))
+if math.log10(depositedAmount) >= 100:
+    deposit = round(depositedAmount * 10**(-1 * (len(str(depositedAmount)) - 1)), 2)
+    textDepositedAmount = font.render(str(deposit) + 'E+' + str(len(str(depositedAmount)) - 1), True, (246, 250, 10))
+    atm.blit(textDepositedAmount, textDepositedAmount.get_rect(center=(debtX + 40, debtY + 82)))
+if math.log10(depositedAmount) < 10:
     textDepositedAmount = font.render(str(depositedAmount), True, (246, 250, 10))
     atm.blit(textDepositedAmount, textDepositedAmount.get_rect(center=(debtX + 73, debtY + 82)))
-    atm.blit(coin, (debtX + 88, debtY + 65))
 
 atm.blit(textScreenLine, textScreenLine.get_rect(center=(debtX, debtY + 100)))
 atm.blit(textInterest, textInterest.get_rect(center=(debtX - 79, debtY + 110)))
-
-if len(str(depositedAmount)) >= 10:
-    deposit = round(depositedAmount * 10**(-1 * (len(str(depositedAmount)) - 1)), 2)
-    textInterestValue = font.render(str(deposit) + 'E+' + str(len(str(depositedAmount)) - 1), True, (246, 250, 10))
-    atm.blit(textInterestValue, textDepositedAmount.get_rect(center=(debtX + 76, debtY + 110)))
-    atm.blit(coin2, (debtX + 92, debtY + 101))
-else:
-    textInterestValue = font2.render(str(interest) + '% ' + '(' + str(interest * depositedAmount / 100) + '    )', True, (246, 250, 10))
-    atm.blit(textInterestValue, textInterestValue.get_rect(center=(debtX + 76, debtY + 110)))
-    atm.blit(coin2, (debtX + 92, debtY + 102))
+atm.blit(textInterestValue, textInterestValue.get_rect(center=(debtX + 96, debtY + 110)))
 
 atm.blit(textScreenLine, textScreenLine.get_rect(center=(debtX, debtY + 120)))
     

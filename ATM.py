@@ -67,7 +67,7 @@ if math.log10(debtAmount) >= 100:
     atm.blit(textDebtAmount, textDebtAmount.get_rect(center=(debtX + 40, debtY + 35)))
 if math.log10(debtAmount) < 10:
     textDebtAmount = font.render(str(debtAmount), True, (246, 250, 10))
-    atm.blit(textDebtAmount, textDebtAmount.get_rect(center=(debtX + 75 - len(str(debtAmount))**(1.50 - 0.012 * len(str(debtAmount))), debtY + 40)))
+    atm.blit(textDebtAmount, textDebtAmount.get_rect(center=(debtX + 75 - len(str(debtAmount))**(1.50 - 0.012 * len(str(debtAmount))), debtY + 35)))
 
 atm.blit(textScreenLine, textScreenLine.get_rect(center=(debtX, debtY + 55)))
 atm.blit(textDeposited, textDeposited.get_rect(center=(debtX - 75, debtY + 65)))

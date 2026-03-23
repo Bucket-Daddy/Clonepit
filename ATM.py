@@ -24,9 +24,9 @@ cloverSkull = pygame.transform.scale(cloverSkull, (cloverSkull.get_width() * 0.3
 # importere variabler
 debtNum = 1
 roundNum = 1
-debtAmount = 75*10**222
-depositedAmount = 30*10**20
-interest = 71.00
+debtAmount = 75
+depositedAmount = 30
+interest = 7.00
 
 # texten med deadline placeres
 deadlineX = 300  

@@ -4,15 +4,16 @@ import random
 
 #Backend symbol and pattern configuration
 
-SYMBOLS = (0, 1, 2, 3, 4, 5, 6)  # lemon, cherry, clover, bell, diamond, treasure, seven
+symbols = (0, 1, 2, 3, 4, 5, 6)  # lemon, cherry, clover, bell, diamond, treasure, seven
 SYMBOL_NAMES = ['lemon', 'cherry', 'clover', 'bell', 'diamond', 'treasure', 'seven']
-SYMBOL_WEIGHTS = [1.3, 1.3, 1, 1, 0.8, 0.8, 0.5]
-SYMBOL_VALUES = [2, 2, 3, 3, 5, 5, 7]
+symbolWeights = [1.3, 1.3, 1, 1, 0.8, 0.8, 0.5]
+symbolValues = [2, 2, 3, 3, 5, 5, 7]
+baseSymbolValues = [2, 2, 3, 3, 5, 5, 7]
 
 SYMBOL_MULT_DEFAULT = 1
 PATTERN_MULT_DEFAULT = 1
 
-PATTERN_VALUES = {
+patternValues = {
     'hor': 1,
     'vert': 1,
     'diag': 1,
@@ -26,7 +27,7 @@ PATTERN_VALUES = {
     'jackpot': 10,
 }
 
-PATTERN_ORDER = {
+patternOrder = {
     'hor1.1': 1, 'hor1.2': 2, 'hor1.3': 3,
     'hor2.1': 4, 'hor2.2': 5, 'hor2.3': 6,
     'hor3.1': 7, 'hor3.2': 8, 'hor3.3': 9,
@@ -39,28 +40,51 @@ PATTERN_ORDER = {
     'zig': 30, 'zag': 31, 'above': 32, 'below': 33, 'eye': 34, 'jackpot': 35,
 }
 
-EYE_SHAPE = (1, 2, 3, 5, 6, 8, 9, 11, 12, 13)
-ABOVE_SHAPE = (2, 6, 8, 10, 11, 12, 13, 14)
-BELOW_SHAPE = (0, 1, 2, 3, 4, 6, 8, 12)
-ZIG_SHAPE = (2, 6, 8, 10, 14)
-ZAG_SHAPE = (0, 4, 6, 8, 12)
+eyeShape = (1, 2, 3, 5, 6, 8, 9, 11, 12, 13)
+aboveShape = (2, 6, 8, 10, 11, 12, 13, 14)
+belowShape = (0, 1, 2, 3, 4, 6, 8, 12)
+zigShape = (2, 6, 8, 10, 14)
+zagShape = (0, 4, 6, 8, 12)
 
-CHANCE_666 = 1.5
+symbolMult = 1
+patternMult = 1
+buttonPressed = False
+chance666 = 1.5
+is666 = False
 
 #Backend default chances for modifiers (all zero for now)
 
-GOLD_CHANCE = 0
-AFF_GOLD_CHANCE = 0
-TOKEN_CHANCE = 0
-AFF_TOKEN_CHANCE = 0
-TICKET_CHANCE = 0
-AFF_TICKET_CHANCE = 0
-REP_CHANCE = 0
-AFF_REP_CHANCE = 0
-BATT_CHANCE = 0
-AFF_BATT_CHANCE = 0
-CHAIN_CHANCE = 0
-AFF_CHAIN_CHANCE = 0
+
+lemonGoldChance = 0
+cherryGoldChance = 0
+cloverGoldChance = 0
+bellGoldChance = 0
+diamondGoldChance = 0
+treasureGoldChance = 0
+sevenGoldChance = 0
+
+lemonTokenChance = 0
+cherryTokenChance = 0
+cloverTokenChance = 0
+bellTokenChance = 0
+diamondTokenChance = 0
+treasureTokenChance = 0
+sevenTokenChance = 0
+
+lemonTicketChance = 0
+cherryTicketChance = 0
+cloverTicketChance = 0
+bellTicketChance = 0
+diamondTicketChance = 0
+treasureTicketChance = 0
+sevenTicketChance = 0
+
+repChance = 0
+affRepChance = 0
+battChance = 0
+affBattChance = 0
+chainChance = 0
+affChainChance = 0
 
 #Backend base luck / state defaults
 

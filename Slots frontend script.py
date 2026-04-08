@@ -98,7 +98,7 @@ for i in range(5):
             reel.blit(six, (0, 18 * symbolScale + symbolSpaceVer))
         else:
             reel.blit(random.choice((lemon, cherry, clover, bell, diamond, treasure, seven)), (0, 18 * symbolScale + symbolSpaceVer))
-        reel.blit(random.choice((lemon, cherry, clover, bell, diamond, treasure, seven)), (0, 36 * symbolScale + symbolSpaceVer))  
+        reel.blit(random.choice((lemon, cherry, clover, bell, diamond, treasure, seven)), (0, 36 * symbolScale + 2 * symbolSpaceVer))  
     else:
 
         for slot in range(3):

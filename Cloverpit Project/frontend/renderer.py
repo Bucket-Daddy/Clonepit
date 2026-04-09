@@ -73,7 +73,7 @@ def run_frontend(res, result, modifiers):
     symbolsTuple = (lemon, cherry, clover, bell, diamond, treasure, seven)
     modifiersTuple = (None, golden, token, ticket, repetition, battery, chain)
     patterns = {'hor1.1':(0, 1, 2), 'hor1.2':(1, 2, 3), 'hor1.3':(2, 3, 4), 'hor2.1':(5, 6, 7), 'hor2.2':(6, 7, 8), 'hor2.3':(7, 8, 9),
-                'hor3.1':(10, 11, 12), 'hor3.2':(11, 12, 23), 'hor3.3':(12, 13, 14), 'vert1':(0, 5, 10), 'vert2':(1, 6, 11), 'vert3':(2, 7, 12),
+                'hor3.1':(10, 11, 12), 'hor3.2':(11, 12, 13), 'hor3.3':(12, 13, 14), 'vert1':(0, 5, 10), 'vert2':(1, 6, 11), 'vert3':(2, 7, 12),
                 'vert4':(3, 8, 13), 'vert5':(4, 9, 14), 'bckDiag1':(0, 6, 12), 'bckDiag2':(1, 7, 13), 'bckDiag3':(2, 8, 14), 
                 'fwdDiag1':(2, 6, 10), 'fwdDiag2':(3, 7, 11), 'fwdDiag3':(4, 8, 12), 'horL1.1':(0, 1, 2, 3), 'horL1.2':(1, 2, 3, 4), 
                 'horL2.1':(5, 6, 7, 8), 'horL2.2':(6, 7, 8, 9), 'horL3.1':(10, 11, 12, 13), 'horL3.2':(11, 12, 13, 14),

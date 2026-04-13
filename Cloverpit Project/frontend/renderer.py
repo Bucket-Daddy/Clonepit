@@ -26,12 +26,11 @@ def run_frontend(res, result, modifiers):
     patternDuration = 1
 
     #Opretter vindue
-    screen = pygame.display.set_mode((symbolSpaceHor * 5  + 2 * 18 * symbolScale, (18 * symbolScale + symbolSpaceVer) * 3 + symbolSpaceVer))
+    screen = pygame.display.set_mode((symbolSpaceHor * 5  + 2 * 18 * symbolScale - 100 * overallScale, (18 * symbolScale + symbolSpaceVer) * 3 + symbolSpaceVer))
 
     #Opretter slot machine surface
-    slotMachine = pygame.Surface((symbolSpaceHor * 5  + 2 * 18 * symbolScale, (18 * symbolScale + symbolSpaceVer) * 3 + symbolSpaceVer), pygame.SRCALPHA)
-
-
+    slotMachine = pygame.Surface((symbolSpaceHor * 5  + 2 * 18 * symbolScale - 100 * overallScale, (18 * symbolScale + symbolSpaceVer) * 3 + symbolSpaceVer), pygame.SRCALPHA)
+    
     #Loader billeder
     lemon = pygame.image.load('assets/SymbolLemon.webp')
     cherry = pygame.image.load('assets/SymbolCherry.webp')
@@ -114,20 +113,20 @@ def run_frontend(res, result, modifiers):
             else:
                 reelsY[reel] = symbolSpaceVer
 
-    #Loader reels til slot machien surface
+    #Loader reels til slot machine surface
         for reel in range(5):
-            slotMachine.blit(reels[reel], (symbolSpaceHor - 18 * symbolScale + reel * symbolSpaceHor, reelsY[reel]))
+            slotMachine.blit(reels[reel], (- 0.22 * symbolSpaceHor + 18 * symbolScale + reel * symbolSpaceHor, reelsY[reel]))
 
     #Tegner linjer mellem reels
         for i in range(4):
-            pygame.draw.rect(slotMachine, (120, 95, 26), pygame.Rect(1.5 * (symbolSpaceHor - 18 * symbolScale) + i * symbolSpaceHor + 18 * symbolScale - 0.5 * dividerLineWidth, 0, dividerLineWidth, slotMachine.get_height()))
+            pygame.draw.rect(slotMachine, (120, 95, 26), pygame.Rect(-0.5 * symbolSpaceHor + 1.5 * (symbolSpaceHor - 18 * symbolScale) + i * symbolSpaceHor + 18 * symbolScale - 0.5 * dividerLineWidth, 0, dividerLineWidth, slotMachine.get_height()))
 
     #Når reelsene har noget bunden af skærmen vises hvert pattern i {patternDuration} sekunder
         if reelsY.count(symbolSpaceVer) == 5 and patternTimer < len(result) * frameRate * 1.25 * patternDuration:
     #Tegner kasser om hvert symbol i et givent pattern
             if patternTimer <= frameRate * patternDuration * math.floor(patternTimer / (frameRate * 1.25 * patternDuration) + 1) + frameRate * patternDuration * 0.25 * math.floor(patternTimer / (frameRate * 1.25 * patternDuration)):
                 for slot in patterns[result[math.floor(patternTimer / (frameRate * 1.25 * patternDuration))][0]]:
-                    pygame.draw.rect(slotMachine, (36, 252, 3), pygame.Rect(symbolSpaceHor - 18 * symbolScale - squareDist + slot % 5 * symbolSpaceHor, symbolSpaceVer - squareDist + math.floor(slot / 5) * (18 * symbolScale + symbolSpaceVer), 18 * symbolScale + 2 * squareDist, 18 * symbolScale + 2 * squareDist), 2, 3)
+                    pygame.draw.rect(slotMachine, (36, 252, 3), pygame.Rect(-0.5 * symbolSpaceHor + symbolSpaceHor - 18 * symbolScale - squareDist + slot % 5 * symbolSpaceHor, symbolSpaceVer - squareDist + math.floor(slot / 5) * (18 * symbolScale + symbolSpaceVer), 18 * symbolScale + 2 * squareDist, 18 * symbolScale + 2 * squareDist), 2, 3)
     #Viser værdien af et givent pattern
                 if len(str(result[math.floor(patternTimer / (frameRate * 1.25 * patternDuration))][1])) > 7:
                     patternPayout = round(result[math.floor(patternTimer / (frameRate * 1.25 * patternDuration))][1] * 10**(-1 * (len(str(result[math.floor(patternTimer / (frameRate * patternDuration))][1])) - 1)), 5)

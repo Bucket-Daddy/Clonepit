@@ -93,6 +93,16 @@ DEBT_NUM_DEFAULT = 1
 SPIN_NUM_START = 1
 PITY_COUNTER_START = 0
 OLS_SPIN_START = 0
+tempLuck = 0
+
+#Shop variabler
+freeRestocks = 0
+
+#Item variabler
+cigaretteCost = 1 #skal resettes ved slutningen af hver deadline
+cardboardInit = True #bestemmer om cardboard house kan dukke op i shoppen
+
+
 
 def random_ils_offset():
     return random.randint(0, 4)

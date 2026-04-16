@@ -12,16 +12,16 @@ running = True
 clock = pygame.time.Clock()
 deltaTime = 0.1
 pygame.display.set_caption('Clonepit Slots - ATM')
-screen = pygame.display.set_mode((1000, 750))
+screen = pygame.display.set_mode((1200, 750))
 atm = pygame.Surface((screen.get_width(), screen.get_height()), pygame.SRCALPHA)
 
 # importer billeder fra assets-mappen
 atmBackground = pygame.image.load('assets/Atm.png')
-coin = pygame.image.load('assets/coin.webp')
-cloverSkull = pygame.image.load('assets/cloverSkull.png')
 atmBackground = pygame.transform.scale(atmBackground, (atmBackground.get_width() * 0.67 * overallScale, atmBackground.get_height() * 0.67 * overallScale))
 atmBackground.set_colorkey((163, 73, 164))
+coin = pygame.image.load('assets/coin.webp')
 coin = pygame.transform.scale(coin, (coin.get_width() * 0.065 * overallScale, coin.get_height() * 0.065 * overallScale))
+cloverSkull = pygame.image.load('assets/cloverSkull.png')
 cloverSkull = pygame.transform.scale(cloverSkull, (cloverSkull.get_width() * 0.22 * overallScale, cloverSkull.get_height() * 0.22 * overallScale))
 
 # importere variabler
@@ -31,7 +31,12 @@ debtAmount = 75
 depositedAmount = 30
 interest = 7.00
 
-# Blit atm baggrunden på overfladen
+# danner baggrunden
+background = pygame.image.load('assets/Background.png')
+background = pygame.transform.scale(background, (screen.get_width(), screen.get_height()))
+atm.blit(background, (-3, -3))
+
+# Blit atm på overfladen
 atm.blit(atmBackground, (0, 0))
 
 # texten med deadline placeres
@@ -102,7 +107,7 @@ atm.blit(textScreenLine, textScreenLine.get_rect(center=(debtX - 10, debtY + 100
 # the window
 while running:
     screen.fill((0, 0, 0))
-    screen.blit(atm, (30, 30))
+    screen.blit(atm, (0, 0))
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:

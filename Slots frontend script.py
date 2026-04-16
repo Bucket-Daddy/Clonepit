@@ -24,10 +24,10 @@ patternTimer = 0
 patternDuration = 1
 
 #Opretter vindue
-screen = pygame.display.set_mode((symbolSpaceHor * 5  + 2 * 18 * symbolScale, (18 * symbolScale + symbolSpaceVer) * 3 + symbolSpaceVer))
+screen = pygame.display.set_mode((symbolSpaceHor * 5, (18 * symbolScale + symbolSpaceVer) * 3 + symbolSpaceVer))
 
 #Opretter slot machine surface
-slotMachine = pygame.Surface((symbolSpaceHor * 5  + 2 * 18 * symbolScale, (18 * symbolScale + symbolSpaceVer) * 3 + symbolSpaceVer), pygame.SRCALPHA)
+slotMachine = pygame.Surface((symbolSpaceHor * 5, (18 * symbolScale + symbolSpaceVer) * 3 + symbolSpaceVer), pygame.SRCALPHA)
 
 pygame.mixer.set_num_channels(32)
 
@@ -131,11 +131,11 @@ while running:
 
 #Loader reels til slot machine surface
     for reel in range(5):
-        slotMachine.blit(reels[reel], (symbolSpaceHor - 18 * symbolScale + reel * symbolSpaceHor, reelsY[reel]))
+        slotMachine.blit(reels[reel], (symbolSpaceHor - 2 * 18 * symbolScale + reel * symbolSpaceHor, reelsY[reel]))
 
 #Tegner linjer mellem reels
     for i in range(4):
-        pygame.draw.rect(slotMachine, (120, 95, 26), pygame.Rect(1.5 * (symbolSpaceHor - 18 * symbolScale) + i * symbolSpaceHor + 18 * symbolScale - 0.5 * dividerLineWidth, 0, dividerLineWidth, slotMachine.get_height()))
+        pygame.draw.rect(slotMachine, (120, 95, 26), pygame.Rect(1.5 * (symbolSpaceHor - 18 * symbolScale) + i * symbolSpaceHor - 0.5 * dividerLineWidth, 0, dividerLineWidth, slotMachine.get_height()))
 
 #Når reelsene har noget bunden af skærmen vises hvert pattern i {patternDuration} sekunder
     if reelsY.count(symbolSpaceVer) == 5 and patternTimer < len(result) * frameRate * 1.25 * patternDuration and not is666:

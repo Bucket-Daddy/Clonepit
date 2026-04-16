@@ -59,7 +59,7 @@ patternJackpot = pygame.transform.scale(patternJackpot, (patternJackpot.get_widt
 coin = pygame.transform.scale(coin, (coin.get_width() * 0.15, coin.get_height() * 0.15))
 coin2 = pygame.transform.scale(coin2, (coin2.get_width() * 0.12, coin2.get_height() * 0.12))
 dice = pygame.transform.scale(dice, (dice.get_width() * 0.05, dice.get_height() * 0.05)).convert()
-dice.set_colorkey((255, 0, 214))
+dice.set_colorkey((51, 46, 46))
 posterBackground = pygame.transform.scale(posterBackground, (posterBackground.get_width() * posterScale, posterBackground.get_height() * posterScale))
 posterBackground.set_colorkey((0, 0, 0))
 

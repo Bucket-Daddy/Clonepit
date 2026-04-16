@@ -1,5 +1,6 @@
 #item classes
 import math
+import pygame
 
 class item:
     pass
@@ -32,6 +33,9 @@ class deadlineEnd(item):
     pass
 
 class AABatteries(passive):
+    name = 'AA Batteries'
+    description = '+6% Chance for the Symbols Clover and Bell to have the Battery Modifier.'
+    sprite = pygame.image.load('assets/AA_Batteries.png')
     weight = 5
     cost = 3
 
@@ -45,6 +49,9 @@ class AABatteries(passive):
 
 
 class rotatedHamsa(lastRound):
+    name = 'Rotated Hamsa'
+    description = 'Grants \033[92mLuck\033[0m+7 for the last spin of a Round.'
+    sprite = pygame.image.load('assets/Rotated_Hamsa.png')
     weight = 10
     cost = 3
 
@@ -56,6 +63,9 @@ class rotatedHamsa(lastRound):
         pass
 
 class painKillers(postRoll):
+    name = ''
+    description = ''
+    sprite = pygame.image.load('assets/.png')
     weight = 6.5
     cost = 3
 
@@ -69,6 +79,9 @@ class painKillers(postRoll):
 
 
 class steamLocomotive(postRoll):
+    name = 'Steam Locomotive'
+    description = 'Increase all Symbols by their base value permanently if the previous 3 spins had no reward.'
+    sprite = pygame.image.load('assets/Steam_Locomotive.png')
     weight = 6.5
     cost = 2
 
@@ -82,6 +95,9 @@ class steamLocomotive(postRoll):
         pass
 
 class horseshoe(passive):
+    name = 'Horseshoe'
+    description = 'Charms with \"\033[93mTriggers Randomly\033[0m\" activate double more often.'
+    sprite = pygame.image.load('assets/Horseshoe.png')
     weight = 10
     cost = 3
 
@@ -92,6 +108,9 @@ class horseshoe(passive):
        randomTriggerMult *= 0.5
 
 class luckyCat(postRoll):
+    name = 'Lucky Cat'
+    description = 'Whenever 3+ Patterns trigger during a spin, you earn money equal to your current Interest.'
+    sprite = pygame.image.load('assets/Lucky_Cat.png')
     weight = 10
     cost = 1
 
@@ -104,6 +123,9 @@ class luckyCat(postRoll):
         pass
 
 class grandmasPurse(roundEnd):
+    name = ' Grandma\'s Purse'
+    description = 'Interest increases by +15%, but decreases by 3% after every Round. Discard this Charm when its bonus is 0.'
+    sprite = pygame.image.load('assets/Grandmas_Purse.png')
     weight = 10
     cost = 2
     def __init__(self):
@@ -123,6 +145,9 @@ class grandmasPurse(roundEnd):
         interest -= 0.15 - 0.03 * (roundNum - self.startRound)
 
 class stonks(passive):
+    name = 'Stonks'
+    description = '+5% to your Interest.'
+    sprite = pygame.image.load('assets/Stonks.png')
     weight = 10
     cost = 2
 
@@ -135,6 +160,9 @@ class stonks(passive):
        interest -= 0.05
 
 class megaphone(passive):
+    name = 'Megaphone'
+    description = 'All abilities that you pick at the telephone trigger one more time. -1 to Charms\' space.'
+    sprite = pygame.image.load('assets/Megaphone.png')
     weight = 2
     cost = 7
 
@@ -151,6 +179,9 @@ class megaphone(passive):
         itemSpace += 1
 
 class lostBriefcase(passive):
+    name = 'Lost Briefcase'
+    description = '\033[93mDoesn\'t take space\033[0m. Immediately earn 30% of the debt amount.'
+    sprite = pygame.image.load('assets/Lost_Briefcase.png')
     weight = 10
     cost = 2
     
@@ -164,6 +195,9 @@ class lostBriefcase(passive):
 
 
 class fakeCoin(randomTrigger):
+    name = 'Fake Coin'
+    description = '\033[93mTriggers Randomly\033[0m (10%): +1 extra spin, then \033[92mLuck+4\033[0m for that spin.'
+    sprite = pygame.image.load('assets/Fake_coin.png')
     weight = 10
     cost = 1
     chance = 10
@@ -176,6 +210,9 @@ class fakeCoin(randomTrigger):
         pass
 
 class catFood(passive):
+    name = 'Cat Food'
+    description = '+2 spins per Round.'
+    sprite = pygame.image.load('assets/Cat_Food.png')
     weight = 10
     cost = 4
 
@@ -188,6 +225,9 @@ class catFood(passive):
         bonusSpins -= 2
 
 class toyTrain(postRoll):
+    name = 'Toy Train'
+    description = '\033[92mLuck\033[0m+5 on next spin if the previous 2 had no reward. +2 extra \033[92mLuck\033[0m for every in sequence activation after the first one.'
+    sprite = pygame.image.load('assets/Toy_Train.png')
     weight = 10
     cost = 1
     def __init__(self):
@@ -213,6 +253,9 @@ class toyTrain(postRoll):
         luck -= self.extraLuck
 
 class goldenLemon(passive):
+    name = 'Golden Lemon'
+    description = '+20% Chance for Lemons to have the Golden Modifier.'
+    sprite = pygame.image.load('assets/Golden_Lemon.png')
     weight = 6.5
     cost = 3
 
@@ -225,6 +268,9 @@ class goldenLemon(passive):
         lemonGoldChance -= 20
 
 class goldenCherry(passive):
+    name = 'Golden Cherry'
+    description = '+20% Chance for Cherries to have the Golden Modifier.'
+    sprite = pygame.image.load('assets/Golden_Cherry.png')
     weight = 6.5
     cost = 3
 
@@ -237,6 +283,9 @@ class goldenCherry(passive):
         cherryGoldChance -= 20
 
 class goldenClover(passive):
+    name = 'Golden Clover'
+    description = '+20% Chance for Clovers to have the Golden Modifier.'
+    sprite = pygame.image.load('assets/Golden_Clover.png')
     weight = 8
     cost = 3
 
@@ -249,6 +298,9 @@ class goldenClover(passive):
         cloverGoldChance -= 20
 
 class goldenBell(passive):
+    name = 'Golden Bell'
+    description = '+20% Chance for Bells to have the Golden Modifier.'
+    sprite = pygame.image.load('assets/Golden_Bell.png')
     weight = 8
     cost = 3
 
@@ -261,6 +313,9 @@ class goldenBell(passive):
         bellGoldChance -= 20
 
 class goldenDiamond(passive):
+    name = 'Golden Diamond'
+    description = '+25% Chance for Diamonds to have the Golden Modifier.'
+    sprite = pygame.image.load('assets/Golden_Diamond.png')
     weight = 10
     cost = 2
 
@@ -273,6 +328,9 @@ class goldenDiamond(passive):
         diamondGoldChance -= 25
 
 class goldenTreasure(passive):
+    name = 'Golden Treasure'
+    description = '+25% Chance for Treasures to have the Golden Modifier.'
+    sprite = pygame.image.load('assets/Golden_Treasure.png')
     weight = 10
     cost = 2
 
@@ -285,6 +343,9 @@ class goldenTreasure(passive):
         treasureGoldChance -= 25
 
 class goldenSeven(passive):
+    name = 'Golden Seven'
+    description = '+30% Chance for Sevens to have the Golden Modifier.'
+    sprite = pygame.image.load('assets/Golden_Seven.png')
     weight = 10
     cost = 1
 
@@ -297,6 +358,9 @@ class goldenSeven(passive):
         sevenGoldChance -= 30
 
 class bricks(passive):
+    name = 'Bricks'
+    description = '+20% Chance for any Lemon to have the Token Modifier.'
+    sprite = pygame.image.load('assets/Bricks.png')
     weight = 10
     cost = 1
 
@@ -309,6 +373,9 @@ class bricks(passive):
         lemonTokenChance -= 20
 
 class wood(passive):
+    name = 'Wood'
+    description = '+20% Chance for any Cherry to have the Token Modifier.'
+    sprite = pygame.image.load('assets/Wood.png')
     weight = 10
     cost = 1
 
@@ -321,6 +388,9 @@ class wood(passive):
         cherryTokenChance -= 20
 
 class sheep(passive):
+    name = 'Sheep'
+    description = '+15% Chance for any Clover to have the Token Modifier.'
+    sprite = pygame.image.load('assets/Sheep.png')
     weight = 9
     cost = 2
 
@@ -333,6 +403,9 @@ class sheep(passive):
         cloverTokenChance -= 15
 
 class wheat(passive):
+    name = 'Wheat'
+    description = '+15% Chance for any Bell to have the Token Modifier.'
+    sprite = pygame.image.load('assets/Wheat.png')
     weight = 9
     cost = 2
 
@@ -345,6 +418,9 @@ class wheat(passive):
         bellTokenChance -= 15
 
 class stone(passive):
+    name = 'Stone'
+    description = '+10% Chance for any Diamond to have the Token Modifier.'
+    sprite = pygame.image.load('assets/Stone.png')
     weight = 8
     cost = 2
 
@@ -357,6 +433,9 @@ class stone(passive):
         diamondTokenChance -= 10
 
 class harbor(passive):
+    name = 'Harbor'
+    description = '+10% Chance for any Treasure to have the Token Modifier.'
+    sprite = pygame.image.load('assets/Harbor.png')
     weight = 10
     cost = 2
 
@@ -369,6 +448,9 @@ class harbor(passive):
         treasureTokenChance -= 10
 
 class thief(passive):
+    name = 'Thief'
+    description = '+10% Chance for any Seven to have the Token Modifier.'
+    sprite = pygame.image.load('assets/Thief.png')
     weight = 10
     cost = 2
 
@@ -381,6 +463,9 @@ class thief(passive):
         sevenTokenChance -= 10
 
 class wheelbarrow(passive):
+    name = 'Wheelbarrow'
+    description = '+20% Chance for any Lemon to have the Ticket Modifier.'
+    sprite = pygame.image.load('assets/Wheelbarrow.png')
     weight = 6.5
     cost = 4
 
@@ -393,6 +478,9 @@ class wheelbarrow(passive):
         lemonTicketChance -= 20
 
 class shoe(passive):
+    name = 'Shoe'
+    description = '+20% Chance for any Cherry to have the Ticket Modifier.'
+    sprite = pygame.image.load('assets/Shoe.png')
     weight = 6.5
     cost = 4
 
@@ -405,6 +493,9 @@ class shoe(passive):
         cherryTicketChance -= 20
 
 class thimble(passive):
+    name = 'Thimble'
+    description = '+20% Chance for any Clover to have the Ticket Modifier.'
+    sprite = pygame.image.load('assets/Thimble.png')
     weight = 10
     cost = 2
 
@@ -417,6 +508,9 @@ class thimble(passive):
         cloverTicketChance -= 20
 
 class iron(passive):
+    name = 'Iron'
+    description = '+20% Chance for any Bell to have the Ticket Modifier.'
+    sprite = pygame.image.load('assets/Iron.png')
     weight = 10
     cost = 2
 
@@ -428,7 +522,10 @@ class iron(passive):
         global bellTicketChance
         bellTicketChance -= 20
 
-class iron(passive):
+class car(passive):
+    name = 'Car'
+    description = '+20% Chance for any Diamond to have the Ticket Modifier.'
+    sprite = pygame.image.load('assets/Car.png')
     weight = 6.5
     cost = 3
 
@@ -441,6 +538,9 @@ class iron(passive):
         diamondTicketChance -= 20
 
 class ship(passive):
+    name = 'Ship'
+    description = '+20% Chance for Treasures to have the Ticket Modifier.'
+    sprite = pygame.image.load('assets/Ship.png')
     weight = 6.5
     cost = 3
 
@@ -453,6 +553,9 @@ class ship(passive):
         treasureTicketChance -= 20
 
 class tubaHat(passive):
+    name = 'Tuba Hat'
+    description = '+20% Chance for any Seven to have the Ticket Modifier.'
+    sprite = pygame.image.load('assets/Tuba_Hat.png')
     weight = 6.5
     cost = 3
 
@@ -465,6 +568,9 @@ class tubaHat(passive):
         sevenTicketChance -= 20
 
 class aceOfHearts(postRoll):
+    name = 'Ace of Hearts'
+    description = 'Whenever 3+ Patterns trigger during a spin, raise all fruits by their base value permanently.'
+    sprite = pygame.image.load('assets/Ace_of_Hearts.png')
     weight = 10
     cost = 3
 
@@ -478,6 +584,9 @@ class aceOfHearts(postRoll):
         pass
 
 class aceOfDiamonds(postRoll):
+    name = 'Ace of Diamonds'
+    description = 'Every time you score at least 1 Pattern of 4+ Symbols, raise Diamonds and Treasures by their base value permanently.'
+    sprite = pygame.image.load('assets/Ace_of_Diamonds.png')
     weight = 10
     cost = 3
 
@@ -493,6 +602,9 @@ class aceOfDiamonds(postRoll):
         pass
 
 class d6(roundEnd):
+    name = 'D6'
+    description = 'Restock the store for free at the end of every Round.'
+    sprite = pygame.image.load('assets/D6.png')
     weight = 6.5
     cost = 2
 
@@ -504,6 +616,9 @@ class d6(roundEnd):
         pass
 
 class d20(roundEnd):
+    name = 'D20'
+    description = 'At the end of each Round, replace all lucky Charms inside all drawers with new random ones.'
+    sprite = pygame.image.load('assets/D20.png')
     weight = 6.5
     cost = 5
 
@@ -515,6 +630,9 @@ class d20(roundEnd):
         pass
 
 class crystalSphere(passive):
+    name = 'Crystal Sphere'
+    description = '+12% Chance for the Symbols Diamond, Treasure, and Seven to have the Chain Modifier.'
+    sprite = pygame.image.load('assets/Crystal_Sphere.png')
     weight = 8
     cost = 3
 
@@ -527,6 +645,9 @@ class crystalSphere(passive):
         affChainChance -= 12
 
 class clicker(passive):
+    name = 'Clicker'
+    description = '+15% chance for every fruit to have the Repetition Modifier.'
+    sprite = pygame.image.load('assets/Clicker.png')
     weight = 8
     cost = 3
 
@@ -539,6 +660,9 @@ class clicker(passive):
         affRepChance -= 15
 
 class ritualBell(postRoll):
+    name = 'Ritual Bell'
+    description = 'Whenever you see a 666, gain 3 \033[32mFree Restocks\033[0m.'
+    sprite = pygame.image.load('assets/Ritual_Bell.png')
     weight = 10
     cost = 1
 
@@ -551,6 +675,9 @@ class ritualBell(postRoll):
         pass
 
 class necronomicon(passive):
+    name = 'Necronomicon'
+    description = '\033[33mPatterns Multiplier\033[0m +2. +3% chance of seeing a 666.'
+    sprite = pygame.image.load('assets/Necronomicon.png')
     weight = 9
     cost = 3
 
@@ -567,6 +694,9 @@ class necronomicon(passive):
         chance666 -= 3
 
 class redPepper(randomTrigger):
+    name = 'Red Pepper'
+    description = '\033[93mTriggers Randomly\033[0m (20%): \033[92mLuck\033[0m+5 for the current spin. Discard after 12 activations.'
+    sprite = pygame.image.load('assets/Red_Pepper.png')
     weight = 10
     cost = 1
     chance = 20
@@ -586,6 +716,9 @@ class redPepper(randomTrigger):
         pass
 
 class cloverPot(deadlineEnd):
+    name = 'CloverPot'
+    description = 'At the end of every Deadline, earn 1 Ticket for every X Ticket you own, where X is the current Deadline.'
+    sprite = pygame.image.load('assets/CloverPot.png')
     weight = 8
     cost = 2
 
@@ -597,6 +730,9 @@ class cloverPot(deadlineEnd):
         pass
 
 class cloverPet(preRoll):
+    name = 'CloverPet'
+    description = '\033[93mSymbols Multiplier\033[0m +1 for every 5 Ticket you own.'
+    sprite = pygame.image.load('assets/CloverPet.png')
     weight = 6.5
     cost = 1
 
@@ -615,6 +751,9 @@ class cloverPet(preRoll):
         
 
 class cigarettes(passive):
+    name = 'Cigarettes'
+    description = '\033[93mDoesn\'t take space\033[0m. Increase all Symbols by their base value, permanently. Then immediately restock the store together with this charm. The price of this charm increases by 1 ticket every time until Deadline end.'
+    sprite = pygame.image.load('assets/Cigarettes.png')
     weight = 10
     cost = cigaretteCost
 
@@ -631,6 +770,9 @@ class cigarettes(passive):
         pass
 
 class cardboardHouse(passive):
+    name = 'Cardboard House'
+    description = '\033[93mDoesn\'t take space\033[0m. Makes space for 1 more Lucky Charm! This Charm will not show up again after usage.'
+    sprite = pygame.image.load('assets/Cardboard_House.png')
     weight = 10
     cost = 2
 
@@ -645,6 +787,9 @@ class cardboardHouse(passive):
         pass
 
 class propertyCertificate(passive):
+    name = 'Property Certificate'
+    description = 'Makes space for 2 more Lucky Charms.'
+    sprite = pygame.image.load('assets/Property_Certificate.png')
     weight = 8
     cost = 2
 
@@ -657,6 +802,9 @@ class propertyCertificate(passive):
         pass
 
 class crowbar(passive):
+    name = 'Crowbar'
+    description = '\033[93mDoesn\'t take space\033[0m. +3 \033[32mFree Restocks\033[0m.'
+    sprite = pygame.image.load('assets/Crowbar.png')
     weight = 8
     cost = 2
 
@@ -669,6 +817,9 @@ class crowbar(passive):
         pass
 
 class consolationPrize(randomTrigger):
+    name = 'Consolation Prize'
+    description = '\033[93mTriggers Randomly\033[0m (25%): This Charm triggers only if the current spin has no Patterns. Increase all Symbols by their base value, permanently.'
+    sprite = pygame.image.load('assets/Consolation_Prize.png')
     weight = 10
     cost = 2
     chance = 25

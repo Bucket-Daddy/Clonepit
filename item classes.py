@@ -62,20 +62,20 @@ class rotatedHamsa(lastRound):
     def solds(self):
         pass
 
-class painKillers(postRoll):
-    name = ''
-    description = ''
-    sprite = pygame.image.load('assets/.png')
-    weight = 6.5
-    cost = 3
+#class painKillers(postRoll):
+    #name = ''
+    #description = ''
+    #sprite = pygame.image.load('assets/.png')
+    #weight = 6.5
+    #cost = 3
 
-    def trigger(self):
-        if len(result) == 1:
-            pass #temporary pass
+    #def trigger(self):
+        #if len(result) == 1:
+            #pass #temporary pass
             #"If only 1 Pattern shows during a spin, transform its Symbols into the most valued Symbol."
 
-    def sold(self):
-        pass
+    #def sold(self):
+        #pass
 
 
 class steamLocomotive(postRoll):
@@ -244,7 +244,6 @@ class toyTrain(postRoll):
                 luck += 2
                 self.extraLuck += 2
         else:
-            global luck
             luck -= self.extraLuck
             self.extraLuck = 0
                 

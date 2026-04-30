@@ -75,6 +75,7 @@ class SlotRoom:
 
         #Tuples og dictionaries til fortolkning af resultat
         self.symbolsTuple = (lemon, cherry, clover, bell, diamond, treasure, seven, six)
+        self.symbolsTuple2 = (lemon, cherry, clover, bell, diamond, treasure, seven)
         self.modifiersTuple = (None, golden, token, ticket, repetition, battery, chain)
         self.patterns = {'hor1.1':(0, 1, 2), 'hor1.2':(1, 2, 3), 'hor1.3':(2, 3, 4), 'hor2.1':(5, 6, 7), 'hor2.2':(6, 7, 8), 'hor2.3':(7, 8, 9),
                     'hor3.1':(10, 11, 12), 'hor3.2':(11, 12, 13), 'hor3.3':(12, 13, 14), 'vert1':(0, 5, 10), 'vert2':(1, 6, 11), 'vert3':(2, 7, 12),
@@ -109,8 +110,8 @@ class SlotRoom:
                 if i < 4 and i > 0:
                     reel.blit(self.six, (0, 18 * self.symbolScale + self.symbolSpaceVer))
                 else:
-                    reel.blit(random.choice(self.symbolsTuple), (0, 18 * self.symbolScale + self.symbolSpaceVer))
-                reel.blit(random.choice(self.symbolsTuple), (0, 36 * self.symbolScale + 2 * self.symbolSpaceVer))
+                    reel.blit(random.choice(self.symbolsTuple2), (0, 18 * self.symbolScale + self.symbolSpaceVer))
+                reel.blit(random.choice(self.symbolsTuple2), (0, 36 * self.symbolScale + 2 * self.symbolSpaceVer))
             else:
                 for slot in range(3):
                     reel.blit(self.symbolsTuple[self.res[slot * 5 + i]], (0, slot * (18 * self.symbolScale + self.symbolSpaceVer)))
@@ -118,7 +119,7 @@ class SlotRoom:
                         reel.blit(self.modifiersTuple[self.modifiers[slot * 5 + i]], (self.symbolScale * 9, slot * (18 * self.symbolScale + self.symbolSpaceVer) + 9 * self.symbolScale))
 
             for slot in range(27):
-                reel.blit(random.choice(self.symbolsTuple), (0, (18 * self.symbolScale + self.symbolSpaceVer) * 3 + slot * (18 * self.symbolScale + self.symbolSpaceVer)))
+                reel.blit(random.choice(self.symbolsTuple2), (0, (18 * self.symbolScale + self.symbolSpaceVer) * 3 + slot * (18 * self.symbolScale + self.symbolSpaceVer)))
 
             self.reels.append(reel)
 

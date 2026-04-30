@@ -178,7 +178,7 @@ else:
                 payout = symbolValues[vertList[0]] * symbolMult * patternValues['vert'] * patternMult
                 modTrigs = tuple([modifiers[slot] for slot in (1 + 2 * i, 6 + 2 * i, 11 + 2 * i) if modifiers[slot] != 0])
                 for r in range(1 + retrigger + modTrigs.count(4)):
-                    result.append(('vert' + str(i * 2), payout, modTrigs))
+                    result.append(('vert' + str((i + 1) * 2), payout, modTrigs))
 
 #De tre andre verts tjekkes lige meget hvad
     for i in range(3):

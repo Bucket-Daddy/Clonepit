@@ -77,7 +77,7 @@ modifiers = [0, 0, 0, 0, 0, 1, 5, 0, 0, 0, 0, 0, 1, 3, 5]
 is666 = True
 
 #Tuples og dictionaries til fortolkning af resultat
-symbolsTuple = (lemon, cherry, clover, bell, diamond, treasure, seven)
+symbolsTuple = (lemon, cherry, clover, bell, diamond, treasure, seven, six)
 modifiersTuple = (None, golden, token, ticket, repetition, battery, chain)
 patterns = {'hor1.1':(0, 1, 2), 'hor1.2':(1, 2, 3), 'hor1.3':(2, 3, 4), 'hor2.1':(5, 6, 7), 'hor2.2':(6, 7, 8), 'hor2.3':(7, 8, 9),
             'hor3.1':(10, 11, 12), 'hor3.2':(11, 12, 23), 'hor3.3':(12, 13, 14), 'vert1':(0, 5, 10), 'vert2':(1, 6, 11), 'vert3':(2, 7, 12),

@@ -13,7 +13,7 @@ class ShopRoom:
         self.shop = pygame.Surface((1200, 750), pygame.SRCALPHA)
         background = pygame.image.load('assets/Background.png')
         background = pygame.transform.scale(background, (1200, 750))
-        self.shop.blit(background, (0, 0))
+        self.shop.blit(background, (-5, -5))
 
         #Placeholder tekst
         textShop = self.font.render('--- SHOP ---', True, (246, 250, 10))

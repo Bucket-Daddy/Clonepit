@@ -13,7 +13,7 @@ class PhoneRoom:
         self.phone = pygame.Surface((1200, 750), pygame.SRCALPHA)
         background = pygame.image.load('assets/Background.png')
         background = pygame.transform.scale(background, (1200, 750))
-        self.phone.blit(background, (0, 0))
+        self.phone.blit(background, (-5, -5))
 
         #Placeholder tekst
         textPhone = self.font.render('--- PHONE ---', True, (246, 250, 10))

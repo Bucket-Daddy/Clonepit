@@ -241,7 +241,7 @@ def spin(state: GameState):
                         [modifiers[slot] for slot in (1 + 2 * i, 6 + 2 * i, 11 + 2 * i) if modifiers[slot] != 0]
                     )
                     for _ in range(1 + retrigger + modTrigs.count(4)):
-                        result.append(('vert' + str(i * 2), payout, modTrigs))
+                        result.append(('vert' + str((i + 1) * 2), payout, modTrigs))
 
         for i in range(3):
             for j in range(3):

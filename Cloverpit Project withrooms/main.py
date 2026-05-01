@@ -6,7 +6,8 @@ from frontend.atm_room import ATMRoom
 from frontend.posters_room import PostersRoom
 from frontend.shop_room import ShopRoom
 from frontend.phone_room import PhoneRoom
-
+from backend.item_classes import itemInit
+from backend.shop_restock import shopRestock
 
 def main():
     pygame.init()
@@ -15,6 +16,13 @@ def main():
     screen = pygame.display.set_mode((1200, 750))
     pygame.display.set_caption('Clonepit Slots')
     clock = pygame.time.Clock()
+
+    #Definerer items og deres weights
+    unlockedItems = itemInit()[0]
+    itemWeights = itemInit()[1]
+
+    #Fylder shoppen
+    shopRestock(unlockedItems, itemWeights)
 
     # Opretter alle rum en gang ved start
     rooms = [
@@ -60,6 +68,10 @@ def main():
                 # Space spinner kun i slots rummet
                 if event.key == pygame.K_SPACE and currentRoom == 2:
                     rooms[2].on_space()
+
+                if event.key == pygame.K_SPACE and currentRoom == 1:
+                    shopRestock(unlockedItems, itemWeights)
+
 
         screen.fill((0, 0, 0))
         rooms[currentRoom].draw(screen)

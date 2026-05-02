@@ -52,14 +52,15 @@ class Please_dont_throw_my_stuff_away (uncommon):
 
     def trigger(self):
         callText = 'Please don\'t throw my stuff away!'
+        callDiscription = '\033[93mIncrease Charm\'s space by 1, permanently\033[0m.'
         pass
-    
 
 class I_cant_quit_now (common):
     # Double Jackpot's value.
 
     def trigger(self):
         callText = 'I can\'t quit now!'
+        callDiscription = '\033[93mDouble Jackpot\'s value\033[0m.'
         pass
 
 class Can_I_borrow_some_green (common):
@@ -67,6 +68,7 @@ class Can_I_borrow_some_green (common):
 
     def trigger(self):
         callText = 'Can I borrow some green?'
+        callDiscription = '\033[93m+5 tickets\033[0m'
         pass
 
 class Can_I_eat_something (common):
@@ -75,6 +77,7 @@ class Can_I_eat_something (common):
     # this def needs something to disable the effect after the next restock
     def trigger(self):
         callText = 'Can I eat something?'
+        callDiscription = '\033[93mLucky Charms\033[0m at the \033[93mstore\033[0m are \033[93mdiscounted by 2\033[0m until the \033[93mnext Restock\033[0m of the store.'
         pass
 
 class Can_you_give_me_some_Energy_Drinks (common):
@@ -82,6 +85,7 @@ class Can_you_give_me_some_Energy_Drinks (common):
 
     def trigger(self):
         callText = 'Can you give me some Energy Drinks?'
+        callDiscription = 'Restore \033[93mall Charges\033[0m on all \033[93mCharms triggered\033[0m by the \033[93mRed Button\033[0m.'
         pass
 
 class lemonManifest (common):
@@ -89,6 +93,7 @@ class lemonManifest (common):
 
     def trigger(self):
         callText = 'Life gave me lemons'
+        callDiscription = '\033[93mLemons manifest\033[0m more often \033[93m(+1)\033[0m, \033[93mpermanently\033[0m.'
         pass
 
 class cherryManifest (common):
@@ -96,6 +101,7 @@ class cherryManifest (common):
 
     def trigger(self):
         callText = 'I used to eat healthy...'
+        callDiscription = '\033[93mCherries manifest\033[0m more often \033[93m(+1)\033[0m, \033[93mpermanently\033[0m.'
         pass
 
 class cloverManifest (uncommon):
@@ -103,6 +109,7 @@ class cloverManifest (uncommon):
 
     def trigger(self):
         callText = 'Today\'s my Lucky day!'
+        callDiscription = '\033[93mClovers manifest\033[0m more often \033[93m(+1)\033[0m, \033[93mpermanently\033[0m.'
         pass
 
 class bellManifest (uncommon):
@@ -110,6 +117,7 @@ class bellManifest (uncommon):
 
     def trigger(self):
         callText = 'I need to be there!'
+        callDiscription = '\033[93mBells manifest\033[0m more often \033[93m(+1)\033[0m, \033[93mpermanently\033[0m.'
         pass
 
 class diamondManifest (rare):
@@ -117,6 +125,7 @@ class diamondManifest (rare):
 
     def trigger(self):
         callText = 'Please! I\'ll give you anything!'
+        callDiscription = '\033[93mDiamonds manifest\033[0m more often \033[93m(+1)\033[0m, \033[93mpermanently\033[0m.'
         pass
 
 class treasureManifest (rare):
@@ -124,6 +133,7 @@ class treasureManifest (rare):
 
     def trigger(self):
         callText = 'I need money!'
+        callDiscription = '\033[93mTreasures manifest\033[0m more often \033[93m(+1)\033[0m, \033[93mpermanently\033[0m.'
         pass
 
 class sevenManifest (ultraRare):
@@ -131,13 +141,15 @@ class sevenManifest (ultraRare):
 
     def trigger(self):
         callText = 'I didn\'t hurt anybody...'
+        callDiscription = '\033[93mSevens manifest\033[0m more often \033[93m(+1)\033[0m, \033[93mpermanently\033[0m.'
         pass
-
+    
 class lemonValue (common):
     # Double the value of the lemon
 
     def trigger(self):
         callText = 'I need supplements!'
+        callDiscription = '\033[93mDouble\033[0m the \033[93mvalue\033[0m of the \033[93mlemon\033[0m'
         pass
 
 class cherryValue (common):
@@ -145,6 +157,7 @@ class cherryValue (common):
 
     def trigger(self):
         callText = 'I need supplements!'
+        callDiscription = '\033[93mDouble\033[0m the \033[93mvalue\033[0m of the \033[93mcherry\033[0m'
         pass
 
 class cloverValue (common):
@@ -152,6 +165,7 @@ class cloverValue (common):
 
     def trigger(self):
         callText = 'I\'m feeling lucky!'
+        callDiscription = '\033[93mDouble\033[0m the \033[93mvalue\033[0m of the \033[93mclover\033[0m'
         pass
 
 class bellValue (common):
@@ -159,6 +173,7 @@ class bellValue (common):
 
     def trigger(self):
         callText = 'I\'m feeling lucky!'
+        callDiscription = '\033[93mDouble\033[0m the \033[93mvalue\033[0m of the \033[93mbell\033[0m'
         pass
 
 class diamondValue (uncommon):
@@ -166,6 +181,7 @@ class diamondValue (uncommon):
 
     def trigger(self):
         callText = 'Gold and Diamonds are a good investment!'
+        callDiscription = '\033[93mDouble\033[0m the \033[93mvalue\033[0m of the \033[93mdiamond\033[0m'
         pass
 
 class treasureValue (uncommon):
@@ -173,13 +189,15 @@ class treasureValue (uncommon):
 
     def trigger(self):
         callText = 'Gold and Diamonds are a good investment!'
+        callDiscription = '\033[93mDouble\033[0m the \033[93mvalue\033[0m of the \033[93mtreasure\033[0m'
         pass
 
 class sevenValue (uncommon):
     # Triple the value of the Seven
 
     def trigger(self):
-        callText = 'I\'m gonna go "All In"!'
+        callText = 'I\'m gonna go "\033[93mAll In\033[0m"!'
+        callDiscription = '\033[93mTriple\033[0m the \033[93mvalue\033[0m of the \033[93mSeven\033[0m'
         pass
 
 class patternValue (uncommon):
@@ -190,9 +208,10 @@ class patternValue (uncommon):
         
         if patternValueRandom == 0:
             callText = 'I\'m thinking of some strategies!'
+            callDiscription = 'Increase the value of Patterns with \033[93m3 or less symbols\033[0m by their base value.'
         else:
             callText = 'I found a winning strategy!'
-        
+            callDiscription = 'Increase the value of Patterns with \033[93m4+ symbols\033[0m by their base value.'
         pass
 
 

@@ -208,10 +208,10 @@ class patternValue (uncommon):
         
         if patternValueRandom == 0:
             callText = 'I\'m thinking of some strategies!'
-            callDiscription = 'Increase the value of Patterns with \033[93m3 or less symbols\033[0m by their base value.'
+            callDiscription = '\033[93mIncrease\033[0m the \033[93mvalue\033[0m of Patterns with \033[93m3 or less symbols\033[0m by their \033[93mbase value\033[0m.'
         else:
             callText = 'I found a winning strategy!'
-            callDiscription = 'Increase the value of Patterns with \033[93m4+ symbols\033[0m by their base value.'
+            callDiscription = '\033[93mIncrease\033[0m the \033[93mvalue\033[0m of Patterns with \033[93m4+ symbols\033[0m by their \033[93mbase value\033[0m.'
         pass
 
 

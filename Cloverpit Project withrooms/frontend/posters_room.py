@@ -70,7 +70,7 @@ class PostersRoom:
         background = pygame.image.load('assets/Background.png')
         background = pygame.transform.scale(background, (1200, 750))
         self.posters = pygame.Surface((1200, 750), pygame.SRCALPHA)
-        self.posters.blit(background, (-5, -5))
+        self.posters.blit(background, (-3, -3))
 
         ##############################################################################################################
         # placering af plakaten

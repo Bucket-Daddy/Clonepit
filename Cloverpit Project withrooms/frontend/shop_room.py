@@ -2,13 +2,16 @@
 import pygame
 
 from backend.shop_restock import shopItems
+from frontend.mouseCheck import isSelected
+from frontend.text_rendering import renderText
 
 class ShopRoom:
 
     def __init__(self):
 
         overallScale = 2
-        self.font = pygame.font.Font(None, size = 15 * overallScale)
+        self.font = pygame.font.Font(None, size = 16 * overallScale)
+        self.titleFont = pygame.font.Font(None, size = 32 * overallScale)
 
     def draw(self, screen):
         # danner baggrunden
@@ -31,6 +34,10 @@ class ShopRoom:
         storeSign = pygame.transform.scale(storeSign, (storeSign.get_width() * 0.5, storeSign.get_height() * 0.5))
         glass = pygame.transform.scale(glass, (glass.get_width(), glass.get_height()))
 
+        for item in shopItems:
+            item.sprite = pygame.transform.scale(item.sprite, (glass.get_width(), glass.get_height()))
+            item.sprite.set_colorkey((51,46,46))
+
         # butikkens skilt
         self.shop_room.blit(storeSign, (self.shop_room.get_width() // 2 - storeSign.get_width() // 2, self.shop_room.get_height() // 30 - storePedestal.get_height() // 230))
 
@@ -52,22 +59,30 @@ class ShopRoom:
         self.shop_room.blit(priceTag, (self.shop_room.get_width() // 2 + storePedestal.get_width() + storePedestal.get_width() // 2 + 2.8, self.shop_room.get_height() // 1.7 - storePedestal.get_height() // 8 - 2.8))
 
         #Selve items i shop
-        self.shop_room.blit(shopItems[0].sprite, (20, 20))
-        self.shop_room.blit(shopItems[1].sprite, (120, 20))
-        self.shop_room.blit(shopItems[2].sprite, (220, 20))
-        self.shop_room.blit(shopItems[3].sprite, (320, 20))
+        for i in range(4):
+            self.shop_room.blit(shopItems[i].sprite, (200 + i * 100, 200))
+            self.shop_room.blit(self.font.render(str(shopItems[i].cost), True, (240, 170, 41)), ((240 + i * 100, 300)))
+            if isSelected(shopItems[i].sprite, (200 + i * 100, 200), self.shop_room):
+                tooltip = pygame.Surface((self.shop_room.get_width() // 2, self.shop_room.get_height() // 4))
+                #Viser navn og beskrivelse når musen føres over en item
+                tooltip.fill((0,0,0))
+                name = self.titleFont.render(shopItems[i].name, True, (240, 170, 41))
+                tooltip.blit(name, name.get_rect(center=(tooltip.get_width() / 2, 40)))
+                renderText(shopItems[i].description, self.font, tooltip, (8, 70), tooltip.get_width() - 8)
+                self.shop_room.blit(tooltip, (self.shop_room.get_width() // 4, 0))
+                #if pygame.mouse.get_just_pressed() and tickets >= shopItems[i].cost and shelfRoom <= shopItems[i].space:
+                    #tickets -= shopItems[i].cost
+                    #shelfRoom -= shopItems.space
+                    #shelfItems.append(shopItems[i])
 
-        #Prisen af items i shop
-        self.shop_room.blit(self.font.render(str(shopItems[0].cost), True, (240, 170, 41)), (60, 120))
-        self.shop_room.blit(self.font.render(str(shopItems[1].cost), True, (240, 170, 41)), (160, 120))
-        self.shop_room.blit(self.font.render(str(shopItems[2].cost), True, (240, 170, 41)), (260, 120))
-        self.shop_room.blit(self.font.render(str(shopItems[3].cost), True, (240, 170, 41)), (360, 120))
+                    
+
 
         # glas oven på holderne
         self.shop_room.blit(glass, (self.shop_room.get_width() // 2 - storePedestal.get_width() // 2, self.shop_room.get_height() // 1.7 - storePedestal.get_height() // 2 + 2.8))
         self.shop_room.blit(glass, (self.shop_room.get_width() // 2 + storePedestal.get_width() // 2, self.shop_room.get_height() // 1.7 - storePedestal.get_height() // 2 + 2.8))
         self.shop_room.blit(glass, (self.shop_room.get_width() // 2 - storePedestal.get_width() - storePedestal.get_width() // 2, self.shop_room.get_height() // 1.7 - storePedestal.get_height() // 2 + 2.8))
         self.shop_room.blit(glass, (self.shop_room.get_width() // 2 - storePedestal.get_width() - storePedestal.get_width() - storePedestal.get_width() // 2, self.shop_room.get_height() // 1.7 - storePedestal.get_height() // 2 + 2.8))
-        
+
 
         screen.blit(self.shop_room, (0, 0))

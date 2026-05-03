@@ -44,6 +44,7 @@ def itemInit():
         sprite = pygame.image.load('assets/AA_Batteries.png')
         weight = 5
         cost = 3
+        space = 1
 
         def trigger(self):
             global affBattChance
@@ -62,6 +63,7 @@ def itemInit():
         sprite = pygame.image.load('assets/Rotated_Hamsa.png')
         weight = 10
         cost = 3
+        space = 1
 
         def trigger(self):
             global luck
@@ -79,6 +81,7 @@ def itemInit():
         #sprite = pygame.image.load('assets/.png')
         #weight = 6.5
         #cost = 3
+        #space = 1
 
         #def trigger(self):
             #if len(result) == 1:
@@ -94,6 +97,7 @@ def itemInit():
         sprite = pygame.image.load('assets/Steam_Locomotive.png')
         weight = 6.5
         cost = 2
+        space = 1
 
         def trigger(self):
             if pityCounter >= 3:
@@ -113,6 +117,7 @@ def itemInit():
         sprite = pygame.image.load('assets/Horseshoe.png')
         weight = 10
         cost = 3
+        space = 1
 
         def trigger(self):
             randomTriggerMult *= 2
@@ -129,6 +134,7 @@ def itemInit():
         sprite = pygame.image.load('assets/Lucky_Cat.png')
         weight = 10
         cost = 1
+        space = 1
 
         def trigger(self):
             if len(result) > 2:
@@ -147,6 +153,8 @@ def itemInit():
         sprite = pygame.image.load('assets/Grandmas_Purse.png')
         weight = 10
         cost = 2
+        space = 1
+
         def __init__(self):
             self.startRound = roundNum
 
@@ -172,6 +180,7 @@ def itemInit():
         sprite = pygame.image.load('assets/Stonks.png')
         weight = 10
         cost = 2
+        space = 1
 
         def trigger(self):
             global interest
@@ -190,6 +199,7 @@ def itemInit():
         sprite = pygame.image.load('assets/Megaphone.png')
         weight = 2
         cost = 7
+        space = 2
 
         def trigger(self):
             global phonecallRep
@@ -212,6 +222,7 @@ def itemInit():
         sprite = pygame.image.load('assets/Lost_Briefcase.png')
         weight = 10
         cost = 2
+        space = 0
     
         def trigger(self):
             global coins
@@ -231,6 +242,7 @@ def itemInit():
         weight = 10
         cost = 1
         chance = 10
+        space = 1
 
         def trigger(self):
             global fakeCoinSpins
@@ -248,6 +260,7 @@ def itemInit():
         sprite = pygame.image.load('assets/Cat_Food.png')
         weight = 10
         cost = 4
+        space = 1
 
         def trigger(self):
             global bonusSpins
@@ -266,6 +279,8 @@ def itemInit():
         sprite = pygame.image.load('assets/Toy_Train.png')
         weight = 10
         cost = 1
+        space = 1
+
         def __init__(self):
             self.init = False
             self.extraLuck = 0
@@ -296,6 +311,7 @@ def itemInit():
         sprite = pygame.image.load('assets/Golden_Lemon.png')
         weight = 6.5
         cost = 3
+        space = 1
 
         def trigger(self):
             global lemonGoldChance
@@ -314,6 +330,7 @@ def itemInit():
         sprite = pygame.image.load('assets/Golden_Cherry.png')
         weight = 6.5
         cost = 3
+        space = 1
 
         def trigger(self):
             global cherryGoldChance
@@ -332,6 +349,7 @@ def itemInit():
         sprite = pygame.image.load('assets/Golden_Clover.png')
         weight = 8
         cost = 3
+        space = 1
 
         def trigger(self):
             global cloverGoldChance
@@ -350,6 +368,7 @@ def itemInit():
         sprite = pygame.image.load('assets/Golden_Bell.png')
         weight = 8
         cost = 3
+        space = 1
 
         def trigger(self):
             global bellGoldChance
@@ -368,6 +387,7 @@ def itemInit():
         sprite = pygame.image.load('assets/Golden_Diamond.png')
         weight = 10
         cost = 2
+        space = 1
 
         def trigger(self):
             global diamondGoldChance
@@ -386,6 +406,7 @@ def itemInit():
         sprite = pygame.image.load('assets/Golden_Treasure.png')
         weight = 10
         cost = 2
+        space = 1
 
         def trigger(self):
             global treasureGoldChance
@@ -404,6 +425,7 @@ def itemInit():
         sprite = pygame.image.load('assets/Golden_Seven.png')
         weight = 10
         cost = 1
+        space = 1
 
         def trigger(self):
             global sevenGoldChance
@@ -422,6 +444,7 @@ def itemInit():
         sprite = pygame.image.load('assets/Bricks.png')
         weight = 10
         cost = 1
+        space = 1
 
         def trigger(self):
             global lemonTokenChance
@@ -440,6 +463,7 @@ def itemInit():
         sprite = pygame.image.load('assets/Wood.png')
         weight = 10
         cost = 1
+        space = 1
 
         def trigger(self):
             global cherryTokenChance
@@ -458,6 +482,7 @@ def itemInit():
         sprite = pygame.image.load('assets/Sheep.png')
         weight = 9
         cost = 2
+        space = 1
 
         def trigger(self):
             global cloverTokenChance
@@ -476,6 +501,7 @@ def itemInit():
         sprite = pygame.image.load('assets/Wheat.png')
         weight = 9
         cost = 2
+        space = 1
 
         def trigger(self):
             global bellTokenChance
@@ -494,6 +520,7 @@ def itemInit():
         sprite = pygame.image.load('assets/Stone.png')
         weight = 8
         cost = 2
+        space = 1
 
         def trigger(self):
             global diamondTokenChance
@@ -512,6 +539,7 @@ def itemInit():
         sprite = pygame.image.load('assets/Harbor.png')
         weight = 10
         cost = 2
+        space = 1
 
         def trigger(self):
             global treasureTokenChance
@@ -530,6 +558,7 @@ def itemInit():
         sprite = pygame.image.load('assets/Thief.png')
         weight = 10
         cost = 2
+        space = 1
 
         def trigger(self):
             global sevenTokenChance
@@ -548,6 +577,7 @@ def itemInit():
         sprite = pygame.image.load('assets/Wheelbarrow.png')
         weight = 6.5
         cost = 4
+        space = 1
 
         def trigger(self):
             global lemonTicketChance
@@ -566,6 +596,7 @@ def itemInit():
         sprite = pygame.image.load('assets/Shoe.png')
         weight = 6.5
         cost = 4
+        space = 1
 
         def trigger(self):
             global cherryTicketChance
@@ -584,6 +615,7 @@ def itemInit():
         sprite = pygame.image.load('assets/Thimble.png')
         weight = 10
         cost = 2
+        space = 1
 
         def trigger(self):
             global cloverTicketChance
@@ -602,6 +634,7 @@ def itemInit():
         sprite = pygame.image.load('assets/Iron.png')
         weight = 10
         cost = 2
+        space = 1
 
         def trigger(self):
             global bellTicketChance
@@ -620,6 +653,7 @@ def itemInit():
         sprite = pygame.image.load('assets/Car.png')
         weight = 6.5
         cost = 3
+        space = 1
 
         def trigger(self):
             global diamondTicketChance
@@ -638,6 +672,7 @@ def itemInit():
         sprite = pygame.image.load('assets/Ship.png')
         weight = 6.5
         cost = 3
+        space = 1
 
         def trigger(self):
             global treasureTicketChance
@@ -656,6 +691,7 @@ def itemInit():
         sprite = pygame.image.load('assets/Tuba_Hat.png')
         weight = 6.5
         cost = 3
+        space = 1
 
         def trigger(self):
             global sevenTicketChance
@@ -674,6 +710,7 @@ def itemInit():
         sprite = pygame.image.load('assets/Ace_of_Hearts.png')
         weight = 10
         cost = 3
+        space = 1
 
         def trigger(self):
             if len(result) >= 3:
@@ -693,6 +730,7 @@ def itemInit():
         sprite = pygame.image.load('assets/Ace_of_Diamonds.png')
         weight = 10
         cost = 3
+        space = 1
 
         def trigger(self):
             for i in result:
@@ -714,6 +752,7 @@ def itemInit():
         sprite = pygame.image.load('assets/D6.png')
         weight = 6.5
         cost = 2
+        space = 1
 
         def trigger(self):
             pass #temporary pass
@@ -731,6 +770,7 @@ def itemInit():
         sprite = pygame.image.load('assets/D20.png')
         weight = 6.5
         cost = 5
+        space = 1
 
         def trigger(self):
             pass #temporary pass
@@ -748,6 +788,7 @@ def itemInit():
         sprite = pygame.image.load('assets/Crystal_Sphere.png')
         weight = 8
         cost = 3
+        space = 1
 
         def trigger(self):
             global affChainChance
@@ -766,6 +807,7 @@ def itemInit():
         sprite = pygame.image.load('assets/Clicker.png')
         weight = 8
         cost = 3
+        space = 1
 
         def trigger(self):
             global affRepChance
@@ -784,6 +826,7 @@ def itemInit():
         sprite = pygame.image.load('assets/Ritual_Bell.png')
         weight = 10
         cost = 1
+        space = 1
 
         def trigger(self):
             if is666:
@@ -802,6 +845,7 @@ def itemInit():
         sprite = pygame.image.load('assets/Necronomicon.png')
         weight = 9
         cost = 3
+        space = 1
 
         def trigger(self):
             global patternMult
@@ -825,6 +869,7 @@ def itemInit():
         weight = 10
         cost = 1
         chance = 20
+        space = 1
 
         def __init__(self):
             self.activations = 0
@@ -849,6 +894,7 @@ def itemInit():
         sprite = pygame.image.load('assets/CloverPot.png')
         weight = 8
         cost = 2
+        space = 1
 
         def trigger(self):
             global tickets
@@ -866,6 +912,7 @@ def itemInit():
         sprite = pygame.image.load('assets/CloverPet.png')
         weight = 6.5
         cost = 1
+        space = 1
 
         def __init__(self):
             self.extraMult = 0
@@ -889,6 +936,7 @@ def itemInit():
         sprite = pygame.image.load('assets/Cigarettes.png')
         weight = 10
         cost = cigaretteCost
+        space = 0
 
         def trigger(self):
             global cigaretteCost
@@ -911,12 +959,13 @@ def itemInit():
         sprite = pygame.image.load('assets/Cardboard_House.png')
         weight = 10
         cost = 2
+        space = 0
 
         def trigger(self):
             global cardboardInit
             cardboardInit = False
-            global itemSpace
-            itemSpace += 1
+            global shelfSpace
+            shelfSpace += 1
             #something to kill itself
     
         def sold(self): #this should never be triggered
@@ -930,7 +979,7 @@ def itemInit():
         description = 'Makes space for 2 more Lucky Charms.'
         sprite = pygame.image.load('assets/Property_Certificate.png')
         weight = 8
-        cost = 2
+        cost = -1
 
         def trigger(self):
             global itemSpace
@@ -949,6 +998,7 @@ def itemInit():
         sprite = pygame.image.load('assets/Crowbar.png')
         weight = 8
         cost = 2
+        space = 0
 
         def trigger(self):
             global freeRestocks
@@ -968,6 +1018,7 @@ def itemInit():
         weight = 10
         cost = 2
         chance = 25
+        space = 1
 
         def trigger(self):
             if pityCounter > 0:

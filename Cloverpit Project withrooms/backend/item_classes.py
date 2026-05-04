@@ -1,10 +1,10 @@
 #item classes
 import math
 import pygame
-from config.game_config import *
+import config.game_config as game_config
 from backend.shop_restock import shopRestock
 
-unlockedItems = []
+game_config.unlockedItems = []
 itemWeights = []
 
 
@@ -44,46 +44,43 @@ def itemInit():
         name = 'AA Batteries'
         description = '+6% Chance for the Symbols Clover and Bell to have the Battery Modifier.'
         sprite = pygame.image.load('assets/AA_Batteries.png')
-        weight = 5
+        weight = 50
         cost = 3
         space = 1
         type = 'passive'
 
         def trigger(self):
-            global affBattChance
-            affBattChance += 6
+            game_config.affBattChance += 6
     
         def sold(self):
-            global affBattChance
-            affBattChance -= 6
+            game_config.affBattChance -= 6
 
-    unlockedItems.append(AABatteries)
+    game_config.unlockedItems.append(AABatteries)
     itemWeights.append(AABatteries.weight)
 
     class rotatedHamsa(lastSpin):
         name = 'Rotated Hamsa'
         description = 'Grants \033[92mLuck\033[0m+7 for the last spin of a Round.'
         sprite = pygame.image.load('assets/Rotated_Hamsa.png')
-        weight = 10
+        weight = 100
         cost = 3
         space = 1
         type = 'lastSpin'
 
         def trigger(self):
-            global luck
-            luck += 6
+            game_config.luck += 6
     
         def solds(self):
             pass
 
-    unlockedItems.append(rotatedHamsa)
+    game_config.unlockedItems.append(rotatedHamsa)
     itemWeights.append(rotatedHamsa.weight)
 
     #class painKillers(postRoll):
         #name = ''
         #description = ''
         #sprite = pygame.image.load('assets/.png')
-        #weight = 6.5
+        #weight = 65
         #cost = 3
         #space = 1
         #type = 'postRoll'
@@ -100,7 +97,7 @@ def itemInit():
         name = 'Steam Locomotive'
         description = 'Increase all Symbols by their base value permanently if the previous 3 spins had no reward.'
         sprite = pygame.image.load('assets/Steam_Locomotive.png')
-        weight = 6.5
+        weight = 65
         cost = 2
         space = 1
         type = 'postRoll'
@@ -108,192 +105,176 @@ def itemInit():
         def trigger(self, result, pityCounter):
             if pityCounter >= 3:
                 for i in range(7):
-                    global symbolValues
-                    symbolValues[i] += baseSymbolValues[i]
+                    game_config.symbolValues[i] += game_config.baseSymbolValues[i]
     
         def sold(self):
             pass
 
-    unlockedItems.append(steamLocomotive)
+    game_config.unlockedItems.append(steamLocomotive)
     itemWeights.append(steamLocomotive.weight)
 
     class horseshoe(passive):
         name = 'Horseshoe'
         description = 'Charms with \"\033[93mTriggers Randomly\033[0m\" activate double more often.'
         sprite = pygame.image.load('assets/Horseshoe.png')
-        weight = 10
+        weight = 100
         cost = 3
         space = 1
         type = 'passive'
 
         def trigger(self):
-            global randomTriggerMult
-            randomTriggerMult *= 2
+            game_config.randomTriggerMult *= 2
 
         def sold(self):
-            global randomTriggerMult
-            randomTriggerMult *= 0.5
+            game_config.randomTriggerMult *= 0.5
 
-    unlockedItems.append(horseshoe)
+    game_config.unlockedItems.append(horseshoe)
     itemWeights.append(horseshoe.weight)
 
     class luckyCat(postRoll):
         name = 'Lucky Cat'
         description = 'Whenever 3+ Patterns trigger during a spin, you earn money equal to your current Interest.'
         sprite = pygame.image.load('assets/Lucky_Cat.png')
-        weight = 10
+        weight = 100
         cost = 1
         space = 1
         type = 'postRoll'
 
         def trigger(self, result, pityCounter):
             if len(result) > 2:
-                global coins
-                coins += (interest - 1) * depositedAmount
+                game_config.coins += (game_config.interest - 1) * game_config.depositedAmount
     
         def sold(self):
             pass
 
-    unlockedItems.append(luckyCat)
+    game_config.unlockedItems.append(luckyCat)
     itemWeights.append(luckyCat.weight)
 
     class grandmasPurse(roundEnd):
         name = ' Grandma\'s Purse'
         description = 'Interest increases by +15%, but decreases by 3% after every Round. Discard this Charm when its bonus is 0.'
         sprite = pygame.image.load('assets/Grandmas_Purse.png')
-        weight = 10
+        weight = 100
         cost = 2
         space = 1
         type = 'roundEnd'
 
         def __init__(self):
-            self.startRound = roundNum
+            self.startRound = game_config.roundNum
 
         def trigger(self):
-            if roundNum - self.startRound < 5:
-                global interest
-                interest -= 0.15 - 0.03 * (roundNum - self.startRound - 1)
-                interest += 0.15 - 0.03 * (roundNum - self.startRound)
+            if game_config.roundNum - self.startRound < 5:
+                game_config.interest -= 0.15 - 0.03 * (game_config.roundNum - self.startRound - 1)
+                game_config.interest += 0.15 - 0.03 * (game_config.roundNum - self.startRound)
             else:
                 pass #temporary pass
                 #something to kill itself
 
         def sold(self):
-            global interest
-            interest -= 0.15 - 0.03 * (roundNum - self.startRound)
+            game_config.interest -= 0.15 - 0.03 * (game_config.roundNum - self.startRound)
 
-    unlockedItems.append(grandmasPurse)
+    game_config.unlockedItems.append(grandmasPurse)
     itemWeights.append(grandmasPurse.weight)
 
     class stonks(passive):
         name = 'Stonks'
         description = '+5% to your Interest.'
         sprite = pygame.image.load('assets/Stonks.png')
-        weight = 10
+        weight = 100
         cost = 2
         space = 1
         type = 'passive'
 
         def trigger(self):
-            global interest
-            interest += 0.05
+            game_config.interest += 0.05
     
         def sold(self):
-            global interest
-            interest -= 0.05
+            game_config.interest -= 0.05
 
-    unlockedItems.append(stonks)
+    game_config.unlockedItems.append(stonks)
     itemWeights.append(stonks.weight)
 
     class megaphone(passive):
         name = 'Megaphone'
         description = 'All abilities that you pick at the telephone trigger one more time. -1 to Charms\' space.'
         sprite = pygame.image.load('assets/Megaphone.png')
-        weight = 2
+        weight = 20
         cost = 7
         space = 2
         type = 'passive'
 
         def trigger(self):
-            global phonecallRep
-            global itemSpace
-            phonecallRep += 1
-            itemSpace -= 1
+            game_config.phonecallRep += 1
+            game_config.itemSpace -= 1
     
         def sold(self):
-            global phonecallRep
-            global itemSpace
-            phonecallRep -= 1
-            itemSpace += 1
+            game_config.phonecallRep -= 1
+            game_config.itemSpace += 1
 
-    unlockedItems.append(megaphone)
+    game_config.unlockedItems.append(megaphone)
     itemWeights.append(megaphone.weight)
 
     class lostBriefcase(passive):
         name = 'Lost Briefcase'
         description = '\033[93mDoesn\'t take space\033[0m. Immediately earn 30% of the debt amount.'
         sprite = pygame.image.load('assets/Lost_Briefcase.png')
-        weight = 10
+        weight = 100
         cost = 2
         space = 0
         type = 'passive'
     
         def trigger(self):
-            global coins
-            coins += 0.3 * debtAmount
+            game_config.coins += 0.3 * game_config.debtAmount
             #Something to kill itself
     
         def sold(self): #this should never be triggered
             pass
 
-    unlockedItems.append(lostBriefcase)
+    game_config.unlockedItems.append(lostBriefcase)
     itemWeights.append(lostBriefcase.weight)
 
     class fakeCoin(random):
         name = 'Fake Coin'
         description = '\033[93mTriggers Randomly\033[0m (10%): +1 extra spin, then \033[92mLuck+4\033[0m for that spin.'
         sprite = pygame.image.load('assets/Fake_coin.png')
-        weight = 10
+        weight = 100
         cost = 1
         chance = 10
         space = 1
         type = 'random'
 
         def trigger(self, result, pityCounter):
-            global fakeCoinSpins
-            fakeCoinSpins += 1
+            game_config.fakeCoinSpins += 1
     
         def sold(self):
             pass
 
-    unlockedItems.append(fakeCoin)
+    game_config.unlockedItems.append(fakeCoin)
     itemWeights.append(fakeCoin.weight)
 
     class catFood(passive):
         name = 'Cat Food'
         description = '+2 spins per Round.'
         sprite = pygame.image.load('assets/Cat_Food.png')
-        weight = 10
+        weight = 100
         cost = 4
         space = 1
         type = 'passive'
 
         def trigger(self):
-            global bonusSpins
-            bonusSpins += 2
+            game_config.bonusSpins += 2
     
         def sold(self):
-            global bonusSpins
-            bonusSpins -= 2
+            game_config.bonusSpins -= 2
 
-    unlockedItems.append(catFood)
+    game_config.unlockedItems.append(catFood)
     itemWeights.append(catFood.weight)
 
     class toyTrain(postRoll):
         name = 'Toy Train'
         description = '\033[92mLuck\033[0m+5 on next spin if the previous 2 had no reward. +2 extra \033[92mLuck\033[0m for every in sequence activation after the first one.'
         sprite = pygame.image.load('assets/Toy_Train.png')
-        weight = 10
+        weight = 100
         cost = 1
         space = 1
         type = 'postRoll'
@@ -305,510 +286,464 @@ def itemInit():
         def trigger(self, result, pityCounter):
             if pityCounter >= 2:
                 if self.init:
-                    global luck
-                    luck += 5
+                    game_config.luck += 5
                     self.extraLuck += 5
                 else:
-                    luck += 2
+                    game_config.luck += 2
                     self.extraLuck += 2
             else:
-                luck -= self.extraLuck
+                game_config.luck -= self.extraLuck
                 self.extraLuck = 0
                 
         def sold(self):
-            global luck
-            luck -= self.extraLuck
+            game_config.luck -= self.extraLuck
 
-    unlockedItems.append(toyTrain)
+    game_config.unlockedItems.append(toyTrain)
     itemWeights.append(toyTrain.weight)
 
     class goldenLemon(passive):
         name = 'Golden Lemon'
         description = '+20% Chance for Lemons to have the Golden Modifier.'
         sprite = pygame.image.load('assets/Golden_Lemon.png')
-        weight = 6.5
+        weight = 65
         cost = 3
         space = 1
         type = 'passive'
 
         def trigger(self):
-            global lemonGoldChance
-            lemonGoldChance += 20
+            game_config.lemonGoldChance += 20
 
         def sold(self):
-            global lemonGoldChance
-            lemonGoldChance -= 20
+            game_config.lemonGoldChance -= 20
 
-    unlockedItems.append(goldenLemon)
+    game_config.unlockedItems.append(goldenLemon)
     itemWeights.append(goldenLemon.weight)
 
     class goldenCherry(passive):
         name = 'Golden Cherry'
         description = '+20% Chance for Cherries to have the Golden Modifier.'
         sprite = pygame.image.load('assets/Golden_Cherry.png')
-        weight = 6.5
+        weight = 65
         cost = 3
         space = 1
         type = 'passive'
 
         def trigger(self):
-            global cherryGoldChance
-            cherryGoldChance += 20
+            game_config.cherryGoldChance += 20
 
         def sold(self):
-            global cherryGoldChance
-            cherryGoldChance -= 20
+            game_config.cherryGoldChance -= 20
 
-    unlockedItems.append(goldenCherry)
+    game_config.unlockedItems.append(goldenCherry)
     itemWeights.append(goldenCherry.weight)
 
     class goldenClover(passive):
         name = 'Golden Clover'
         description = '+20% Chance for Clovers to have the Golden Modifier.'
         sprite = pygame.image.load('assets/Golden_Clover.png')
-        weight = 8
+        weight = 80
         cost = 3
         space = 1
         type = 'passive'
 
         def trigger(self):
-            global cloverGoldChance
-            cloverGoldChance += 20
+            game_config.cloverGoldChance += 20
 
         def sold(self):
-            global cloverGoldChance
-            cloverGoldChance -= 20
+            game_config.cloverGoldChance -= 20
 
-    unlockedItems.append(goldenClover)
+    game_config.unlockedItems.append(goldenClover)
     itemWeights.append(goldenClover.weight)
 
     class goldenBell(passive):
         name = 'Golden Bell'
         description = '+20% Chance for Bells to have the Golden Modifier.'
         sprite = pygame.image.load('assets/Golden_Bell.png')
-        weight = 8
+        weight = 80
         cost = 3
         space = 1
         type = 'passive'
 
         def trigger(self):
-            global bellGoldChance
-            bellGoldChance += 20
+            game_config.bellGoldChance += 20
 
         def sold(self):
-            global bellGoldChance
-            bellGoldChance -= 20
+            game_config.bellGoldChance -= 20
 
-    unlockedItems.append(goldenBell)
+    game_config.unlockedItems.append(goldenBell)
     itemWeights.append(goldenBell.weight)
 
     class goldenDiamond(passive):
         name = 'Golden Diamond'
         description = '+25% Chance for Diamonds to have the Golden Modifier.'
         sprite = pygame.image.load('assets/Golden_Diamond.png')
-        weight = 10
+        weight = 100
         cost = 2
         space = 1
         type = 'passive'
 
         def trigger(self):
-            global diamondGoldChance
-            diamondGoldChance += 25
+            game_config.diamondGoldChance += 25
 
         def sold(self):
-            global diamondGoldChance
-            diamondGoldChance -= 25
+            game_config.diamondGoldChance -= 25
 
-    unlockedItems.append(goldenDiamond)
+    game_config.unlockedItems.append(goldenDiamond)
     itemWeights.append(goldenDiamond.weight)
 
     class goldenTreasure(passive):
         name = 'Golden Treasure'
         description = '+25% Chance for Treasures to have the Golden Modifier.'
         sprite = pygame.image.load('assets/Golden_Treasure.png')
-        weight = 10
+        weight = 100
         cost = 2
         space = 1
         type = 'passive'
 
         def trigger(self):
-            global treasureGoldChance
-            treasureGoldChance += 25
+            game_config.treasureGoldChance += 25
 
         def sold(self):
-            global treasureGoldChance
-            treasureGoldChance -= 25
+            game_config.treasureGoldChance -= 25
 
-    unlockedItems.append(goldenTreasure)
+    game_config.unlockedItems.append(goldenTreasure)
     itemWeights.append(goldenTreasure.weight)
 
     class goldenSeven(passive):
         name = 'Golden Seven'
         description = '+30% Chance for Sevens to have the Golden Modifier.'
         sprite = pygame.image.load('assets/Golden_Seven.png')
-        weight = 10
+        weight = 100
         cost = 1
         space = 1
         type = 'passive'
 
         def trigger(self):
-            global sevenGoldChance
-            sevenGoldChance += 30
+            game_config.sevenGoldChance += 30
 
         def sold(self):
-            global sevenGoldChance
-            sevenGoldChance -= 30
+            game_config.sevenGoldChance -= 30
 
-    unlockedItems.append(goldenSeven)
+    game_config.unlockedItems.append(goldenSeven)
     itemWeights.append(goldenSeven.weight)
 
     class bricks(passive):
         name = 'Bricks'
         description = '+20% Chance for any Lemon to have the Token Modifier.'
         sprite = pygame.image.load('assets/Bricks.png')
-        weight = 10
+        weight = 100
         cost = 1
         space = 1
         type = 'passive'
 
         def trigger(self):
-            global lemonTokenChance
-            lemonTokenChance += 20
+            game_config.lemonTokenChance += 20
 
         def sold(self):
-            global lemonTokenChance
-            lemonTokenChance -= 20
+            game_config.lemonTokenChance -= 20
 
-    unlockedItems.append(bricks)
+    game_config.unlockedItems.append(bricks)
     itemWeights.append(bricks.weight)
 
     class wood(passive):
         name = 'Wood'
         description = '+20% Chance for any Cherry to have the Token Modifier.'
         sprite = pygame.image.load('assets/Wood.png')
-        weight = 10
+        weight = 100
         cost = 1
         space = 1
         type = 'passive'
 
         def trigger(self):
-            global cherryTokenChance
-            cherryTokenChance += 20
+            game_config.cherryTokenChance += 20
 
         def sold(self):
-            global cherryTokenChance
-            cherryTokenChance -= 20
+            game_config.cherryTokenChance -= 20
 
-    unlockedItems.append(wood)
+    game_config.unlockedItems.append(wood)
     itemWeights.append(wood.weight)
 
     class sheep(passive):
         name = 'Sheep'
         description = '+15% Chance for any Clover to have the Token Modifier.'
         sprite = pygame.image.load('assets/Sheep.png')
-        weight = 9
+        weight = 90
         cost = 2
         space = 1
         type = 'passive'
 
         def trigger(self):
-            global cloverTokenChance
-            cloverTokenChance += 15
+            game_config.cloverTokenChance += 15
 
         def sold(self):
-            global cloverTokenChance
-            cloverTokenChance -= 15
+            game_config.cloverTokenChance -= 15
 
-    unlockedItems.append(sheep)
+    game_config.unlockedItems.append(sheep)
     itemWeights.append(sheep.weight)
 
     class wheat(passive):
         name = 'Wheat'
         description = '+15% Chance for any Bell to have the Token Modifier.'
         sprite = pygame.image.load('assets/Wheat.png')
-        weight = 9
+        weight = 90
         cost = 2
         space = 1
         type = 'passive'
 
         def trigger(self):
-            global bellTokenChance
-            bellTokenChance += 15
+            game_config.bellTokenChance += 15
 
         def sold(self):
-            global bellTokenChance
-            bellTokenChance -= 15
+            game_config.bellTokenChance -= 15
 
-    unlockedItems.append(wheat)
+    game_config.unlockedItems.append(wheat)
     itemWeights.append(wheat.weight)
 
     class stone(passive):
         name = 'Stone'
         description = '+10% Chance for any Diamond to have the Token Modifier.'
         sprite = pygame.image.load('assets/Stone.png')
-        weight = 8
+        weight = 80
         cost = 2
         space = 1
         type = 'passive'
 
         def trigger(self):
-            global diamondTokenChance
-            diamondTokenChance += 10
+            game_config.diamondTokenChance += 10
 
         def sold(self):
-            global diamondTokenChance
-            diamondTokenChance -= 10
+            game_config.diamondTokenChance -= 10
 
-    unlockedItems.append(stone)
+    game_config.unlockedItems.append(stone)
     itemWeights.append(stone.weight)
 
     class harbor(passive):
         name = 'Harbor'
         description = '+10% Chance for any Treasure to have the Token Modifier.'
         sprite = pygame.image.load('assets/Harbor.png')
-        weight = 10
+        weight = 100
         cost = 2
         space = 1
         type = 'passive'
 
         def trigger(self):
-            global treasureTokenChance
-            treasureTokenChance += 10
+            game_config.treasureTokenChance += 10
 
         def sold(self):
-            global treasureTokenChance
-            treasureTokenChance -= 10
+            game_config.treasureTokenChance -= 10
 
-    unlockedItems.append(harbor)
+    game_config.unlockedItems.append(harbor)
     itemWeights.append(harbor.weight)
 
     class thief(passive):
         name = 'Thief'
         description = '+10% Chance for any Seven to have the Token Modifier.'
         sprite = pygame.image.load('assets/Thief.png')
-        weight = 10
+        weight = 100
         cost = 2
         space = 1
         type = 'passive'
 
         def trigger(self):
-            global sevenTokenChance
-            sevenTokenChance += 10
+            game_config.sevenTokenChance += 10
 
         def sold(self):
-            global sevenTokenChance
-            sevenTokenChance -= 10
+            game_config.sevenTokenChance -= 10
 
-    unlockedItems.append(thief)
+    game_config.unlockedItems.append(thief)
     itemWeights.append(thief.weight)
 
     class wheelbarrow(passive):
         name = 'Wheelbarrow'
         description = '+20% Chance for any Lemon to have the Ticket Modifier.'
         sprite = pygame.image.load('assets/Wheelbarrow.png')
-        weight = 6.5
+        weight = 65
         cost = 4
         space = 1
         type = 'passive'
 
         def trigger(self):
-            global lemonTicketChance
-            lemonTicketChance += 20
+            game_config.lemonTicketChance += 20
     
         def sold(self):
-            global lemonTicketChance
-            lemonTicketChance -= 20
+            game_config.lemonTicketChance -= 20
 
-    unlockedItems.append(wheelbarrow)
+    game_config.unlockedItems.append(wheelbarrow)
     itemWeights.append(wheelbarrow.weight)
 
     class shoe(passive):
         name = 'Shoe'
         description = '+20% Chance for any Cherry to have the Ticket Modifier.'
         sprite = pygame.image.load('assets/Shoe.png')
-        weight = 6.5
+        weight = 65
         cost = 4
         space = 1
         type = 'passive'
 
         def trigger(self):
-            global cherryTicketChance
-            cherryTicketChance += 20
+            game_config.cherryTicketChance += 20
     
         def sold(self):
-            global cherryTicketChance
-            cherryTicketChance -= 20
+            game_config.cherryTicketChance -= 20
 
-    unlockedItems.append(shoe)
+    game_config.unlockedItems.append(shoe)
     itemWeights.append(shoe.weight)
 
     class thimble(passive):
         name = 'Thimble'
         description = '+20% Chance for any Clover to have the Ticket Modifier.'
         sprite = pygame.image.load('assets/Thimble.png')
-        weight = 10
+        weight = 100
         cost = 2
         space = 1
         type = 'passive'
 
         def trigger(self):
-            global cloverTicketChance
-            cloverTicketChance += 20
+            game_config.cloverTicketChance += 20
     
         def sold(self):
-            global cloverTicketChance
-            cloverTicketChance -= 20
+            game_config.cloverTicketChance -= 20
 
-    unlockedItems.append(thimble)
+    game_config.unlockedItems.append(thimble)
     itemWeights.append(thimble.weight)
 
     class iron(passive):
         name = 'Iron'
         description = '+20% Chance for any Bell to have the Ticket Modifier.'
         sprite = pygame.image.load('assets/Iron.png')
-        weight = 10
+        weight = 100
         cost = 2
         space = 1
         type = 'passive'
 
         def trigger(self):
-            global bellTicketChance
-            bellTicketChance += 20
+            game_config.bellTicketChance += 20
     
         def sold(self):
-            global bellTicketChance
-            bellTicketChance -= 20
+            game_config.bellTicketChance -= 20
 
-    unlockedItems.append(iron)
+    game_config.unlockedItems.append(iron)
     itemWeights.append(iron.weight)
 
     class car(passive):
         name = 'Car'
         description = '+20% Chance for any Diamond to have the Ticket Modifier.'
         sprite = pygame.image.load('assets/Car.png')
-        weight = 6.5
+        weight = 65
         cost = 3
         space = 1
         type = 'passive'
 
         def trigger(self):
-            global diamondTicketChance
-            diamondTicketChance += 20
+            game_config.diamondTicketChance += 20
     
         def sold(self):
-            global diamondTicketChance
-            diamondTicketChance -= 20
+            game_config.diamondTicketChance -= 20
 
-    unlockedItems.append(car)
+    game_config.unlockedItems.append(car)
     itemWeights.append(car.weight)
 
     class ship(passive):
         name = 'Ship'
         description = '+20% Chance for Treasures to have the Ticket Modifier.'
         sprite = pygame.image.load('assets/Ship.png')
-        weight = 6.5
+        weight = 65
         cost = 3
         space = 1
         type = 'passive'
 
         def trigger(self):
-            global treasureTicketChance
-            treasureTicketChance += 20
+            game_config.treasureTicketChance += 20
     
         def sold(self):
-            global treasureTicketChance
-            treasureTicketChance -= 20
+            game_config.treasureTicketChance -= 20
 
-    unlockedItems.append(ship)
+    game_config.unlockedItems.append(ship)
     itemWeights.append(ship.weight)
 
     class tubaHat(passive):
         name = 'Tuba Hat'
         description = '+20% Chance for any Seven to have the Ticket Modifier.'
         sprite = pygame.image.load('assets/Tuba_Hat.png')
-        weight = 6.5
+        weight = 65
         cost = 3
         space = 1
         type = 'passive'
 
         def trigger(self):
-            global sevenTicketChance
-            sevenTicketChance += 20
+            game_config.sevenTicketChance += 20
     
         def sold(self):
-            global sevenTicketChance
-            sevenTicketChance -= 20
+            game_config.sevenTicketChance -= 20
 
-    unlockedItems.append(tubaHat)
+    game_config.unlockedItems.append(tubaHat)
     itemWeights.append(tubaHat.weight)
 
     class aceOfHearts(postRoll):
         name = 'Ace of Hearts'
         description = 'Whenever 3+ Patterns trigger during a spin, raise all fruits by their base value permanently.'
         sprite = pygame.image.load('assets/Ace_of_Hearts.png')
-        weight = 10
+        weight = 100
         cost = 3
         space = 1
         type = 'postRoll'
 
         def trigger(self, result, pityCounter):
             if len(result) >= 3:
-                global symbolValues
-                symbolValues[0] += baseSymbolValues[0]
-                symbolValues[1] += baseSymbolValues[1]
+                game_config.symbolValues[0] += game_config.baseSymbolValues[0]
+                game_config.symbolValues[1] += game_config.baseSymbolValues[1]
     
         def sold(self):
             pass
 
-    unlockedItems.append(aceOfHearts)
+    game_config.unlockedItems.append(aceOfHearts)
     itemWeights.append(aceOfHearts.weight)
 
     class aceOfDiamonds(postRoll):
         name = 'Ace of Diamonds'
         description = 'Every time you score at least 1 Pattern of 4+ Symbols, raise Diamonds and Treasures by their base value permanently.'
         sprite = pygame.image.load('assets/Ace_of_Diamonds.png')
-        weight = 10
+        weight = 100
         cost = 3
         space = 1
         type = 'postRoll'
 
         def trigger(self, result, pityCounter):
             for i in result:
-                if len(patterns[result[i][0]]) > 3:
-                    global symbolValues
-                    symbolValues[4] += baseSymbolValues[4]
-                    symbolValues[5] += baseSymbolValues[5]
+                if len(game_config.patterns[result[i][0]]) > 3:
+                    game_config.symbolValues[4] += game_config.baseSymbolValues[4]
+                    game_config.symbolValues[5] += game_config.baseSymbolValues[5]
                     break
     
         def sold(self):
             pass
 
-    unlockedItems.append(aceOfDiamonds)
+    game_config.unlockedItems.append(aceOfDiamonds)
     itemWeights.append(aceOfDiamonds.weight)
 
     class d6(roundEnd):
         name = 'D6'
         description = 'Restock the store for free at the end of every Round.'
         sprite = pygame.image.load('assets/D6.png')
-        weight = 6.5
+        weight = 65
         cost = 2
         space = 1
         type = 'roundEnd'
 
         def trigger(self):
-            shopRestock(unlockedItems, itemWeights)
+            shopRestock(game_config.unlockedItems, itemWeights)
     
         def sold(self):
             pass
 
-    unlockedItems.append(d6)
+    game_config.unlockedItems.append(d6)
     itemWeights.append(d6.weight)
 
     class d20(roundEnd):
         name = 'D20'
         description = 'At the end of each Round, replace all lucky Charms inside all drawers with new random ones.'
         sprite = pygame.image.load('assets/D20.png')
-        weight = 6.5
+        weight = 65
         cost = 5
         space = 1
         type = 'roundEnd'
@@ -820,98 +755,89 @@ def itemInit():
         def sold(self):
             pass
 
-    unlockedItems.append(d20)
+    game_config.unlockedItems.append(d20)
     itemWeights.append(d20.weight)
 
     class crystalSphere(passive):
         name = 'Crystal Sphere'
         description = '+12% Chance for the Symbols Diamond, Treasure, and Seven to have the Chain Modifier.'
         sprite = pygame.image.load('assets/Crystal_Sphere.png')
-        weight = 8
+        weight = 80
         cost = 3
         space = 1
         type = 'passive'
 
         def trigger(self):
-            global affChainChance
-            affChainChance += 12
+            game_config.affChainChance += 12
     
         def sold(self):
-            global affChainChance
-            affChainChance -= 12
+            game_config.affChainChance -= 12
 
-    unlockedItems.append(crystalSphere)
+    game_config.unlockedItems.append(crystalSphere)
     itemWeights.append(crystalSphere.weight)
 
     class clicker(passive):
         name = 'Clicker'
         description = '+15% chance for every fruit to have the Repetition Modifier.'
         sprite = pygame.image.load('assets/Clicker.png')
-        weight = 8
+        weight = 80
         cost = 3
         space = 1
         type = 'passive'
 
         def trigger(self):
-            global affRepChance
-            affRepChance += 15
+            game_config.affRepChance += 15
     
         def sold(self):
-            global affRepChance
-            affRepChance -= 15
+            game_config.affRepChance -= 15
 
-    unlockedItems.append(clicker)
+    game_config.unlockedItems.append(clicker)
     itemWeights.append(clicker.weight)
 
     class ritualBell(postRoll):
         name = 'Ritual Bell'
         description = 'Whenever you see a 666, gain 3 \033[32mFree Restocks\033[0m.'
         sprite = pygame.image.load('assets/Ritual_Bell.png')
-        weight = 10
+        weight = 100
         cost = 1
         space = 1
         type = 'postRoll'
 
         def trigger(self, result, pityCounter):
-            if is666:
-                global freeRestocks
-                freeRestocks += 3
+            if game_config.is666:
+                game_config.freeRestocks += 3
     
         def sold(self):
             pass
 
-    unlockedItems.append(ritualBell)
+    game_config.unlockedItems.append(ritualBell)
     itemWeights.append(ritualBell.weight)
 
     class necronomicon(passive):
         name = 'Necronomicon'
         description = '\033[33mPatterns Multiplier\033[0m +2. +3% chance of seeing a 666.'
         sprite = pygame.image.load('assets/Necronomicon.png')
-        weight = 9
+        weight = 90
         cost = 3
         space = 1
         type = 'passive'
 
         def trigger(self):
-            global patternMult
-            patternMult += 2
-            global chance666
-            chance666 += 3
+            game_config.patternMult += 2
+            game_config.chance666 += 3
     
         def sold(self):
-            global patternMult
-            patternMult -= 2
-            global chance666
-            chance666 -= 3
+            game_config.patternMult -= 2
+            game_config.chance666 -= 3
 
-    unlockedItems.append(necronomicon)
+    game_config.unlockedItems.append(necronomicon)
     itemWeights.append(necronomicon.weight)
 
     class redPepper(random):
         name = 'Red Pepper'
         description = '\033[93mTriggers Randomly\033[0m (20%): \033[92mLuck\033[0m+5 for the next spin. Discard after 12 activations.'
         sprite = pygame.image.load('assets/Red_Pepper.png')
-        weight = 10
+        weight = 100
         cost = 1
         chance = 20
         space = 1
@@ -921,8 +847,7 @@ def itemInit():
             self.activations = 0
 
         def trigger(self, result, pityCounter):
-            global tempLuck
-            tempLuck += 5
+            game_config.tempLuck += 5
             self.activations += 1
             if self.activation == 12:
                 pass #temporary pass
@@ -931,33 +856,32 @@ def itemInit():
         def sold(self):
             pass
 
-    unlockedItems.append(redPepper)
+    game_config.unlockedItems.append(redPepper)
     itemWeights.append(redPepper.weight)
 
     class cloverPot(deadlineEnd):
         name = 'CloverPot'
         description = 'At the end of every Deadline, earn 1 Ticket for every X Ticket you own, where X is the current Deadline.'
         sprite = pygame.image.load('assets/CloverPot.png')
-        weight = 8
+        weight = 80
         cost = 2
         space = 1
         type = 'deadlineEnd'
 
         def trigger(self):
-            global tickets
-            tickets += math.floor(tickets/debtNum)
+            game_config.tickets += math.floor(game_config.tickets/game_config.debtNum)
     
         def sold(self):
             pass
 
-    unlockedItems.append(cloverPot)
+    game_config.unlockedItems.append(cloverPot)
     itemWeights.append(cloverPot.weight)
 
     class cloverPet(preRoll):
         name = 'CloverPet'
         description = '\033[93mSymbols Multiplier\033[0m +1 for every 5 Ticket you own.'
         sprite = pygame.image.load('assets/CloverPet.png')
-        weight = 6.5
+        weight = 65
         cost = 1
         space = 1
         type = 'preRoll'
@@ -966,109 +890,100 @@ def itemInit():
             self.extraMult = 0
 
         def trigger(self):
-            global symbolMult
-            symbolmult -= self.extraMult
-            self.extraMult = math.floor(tickets/5)
-            symbolMult += self.extraMult
+            game_config.symbolmult -= self.extraMult
+            self.extraMult = math.floor(game_config.tickets/5)
+            game_config.symbolMult += self.extraMult
     
         def sold(self):
-            global symbolMult
-            symbolmult -= self.extraMult
+            game_config.symbolmult -= self.extraMult
 
-    unlockedItems.append(cloverPet)
+    game_config.unlockedItems.append(cloverPet)
     itemWeights.append(cloverPet.weight)        
 
     class cigarettes(passive):
         name = 'Cigarettes'
         description = '\033[93mDoesn\'t take space\033[0m. Increase all Symbols by their base value, permanently. Then immediately restock the store together with this charm. The price of this charm increases by 1 ticket every time until Deadline end.'
         sprite = pygame.image.load('assets/Cigarettes.png')
-        weight = 10
+        weight = 100
         cost = 1
         space = 0
         type = 'passive'
 
         def trigger(self):
-            global unlockedItems
-            unlockedItems[44].cost += 1
+            game_config.unlockedItems[44].cost += 1
             for i in range(7):
-                global symbolValues
-                symbolValues[i] += baseSymbolValues[i]
-                shopRestock(unlockedItems, itemWeights)
+                game_config.symbolValues[i] += game_config.baseSymbolValues[i]
+                shopRestock(game_config.unlockedItems, itemWeights)
                 #something to kill itself
 
         def sold(self): #this should never be triggered
             pass
 
-    unlockedItems.append(cigarettes)
+    game_config.unlockedItems.append(cigarettes)
     itemWeights.append(cigarettes.weight)
 
     class cardboardHouse(passive):
         name = 'Cardboard House'
         description = '\033[93mDoesn\'t take space\033[0m. Makes space for 1 more Lucky Charm! This Charm will not show up again after usage.'
         sprite = pygame.image.load('assets/Cardboard_House.png')
-        weight = 10
+        weight = 100
         cost = 2
         space = 0
         type = 'passive'
 
         def trigger(self):
-            global cardboardInit
-            cardboardInit = False
-            global shelfSpace
-            shelfSpace += 1
+            game_config.cardboardInit = False
+            game_config.shelfSpace += 1
             #something to kill itself
     
         def sold(self): #this should never be triggered
             pass
 
-    unlockedItems.append(cardboardHouse)
+    game_config.unlockedItems.append(cardboardHouse)
     itemWeights.append(cardboardHouse.weight)
 
     class propertyCertificate(passive):
         name = 'Property Certificate'
         description = 'Makes space for 2 more Lucky Charms.'
         sprite = pygame.image.load('assets/Property_Certificate.png')
-        weight = 8
+        weight = 80
         cost = 2
         space = 1
         type = 'passive'
 
         def trigger(self):
-            global shelfSpace
-            shelfSpace += 2
+            game_config.shelfSpace += 2
     
         def sold(self):
-            global shelfSpace
-            shelfSpace -= 2
+            game_config.shelfSpace -= 2
 
-    unlockedItems.append(propertyCertificate)
+    game_config.unlockedItems.append(propertyCertificate)
     itemWeights.append(propertyCertificate.weight)
 
     class crowbar(passive):
         name = 'Crowbar'
         description = '\033[93mDoesn\'t take space\033[0m. +3 \033[32mFree Restocks\033[0m.'
         sprite = pygame.image.load('assets/Crowbar.png')
-        weight = 8
+        weight = 80
         cost = 2
         space = 0
         type = 'passive'
 
         def trigger(self):
-            global freeRestocks
-            freeRestocks += 3
+            game_config.freeRestocks += 3
             #something to kill itself
 
         def sold(self): #this should never be triggered
             pass
 
-    unlockedItems.append(crowbar)
+    game_config.unlockedItems.append(crowbar)
     itemWeights.append(crowbar.weight)
 
     class consolationPrize(random):
         name = 'Consolation Prize'
         description = '\033[93mTriggers Randomly\033[0m (25%): This Charm triggers only if the current spin has no Patterns. Increase all Symbols by their base value, permanently.'
         sprite = pygame.image.load('assets/Consolation_Prize.png')
-        weight = 10
+        weight = 100
         cost = 2
         chance = 25
         space = 1
@@ -1077,174 +992,159 @@ def itemInit():
         def trigger(self, result, pityCounter):
             if pityCounter > 0:
                 for i in range(7):
-                    global symbolValues
-                    symbolValues[i] += baseSymbolValues[i]
+                    game_config.symbolValues[i] += game_config.baseSymbolValues[i]
     
         def sold(self):
             pass
 
-    unlockedItems.append(consolationPrize)
+    game_config.unlockedItems.append(consolationPrize)
     itemWeights.append(consolationPrize.weight)
 
     class lemonPicture(button):
         name = 'Lemon Picture'
         description = 'Lemons manifest more often (+2) for the rest of the deadline'
         sprite = pygame.image.load('assets/Lemon_Picture.png')
-        weight = 10
+        weight = 100
         cost = 2
         charges = 4
         space = 1
         type = 'button'
         
         def trigger(self):
-            global symbolWeights, tempSymbolWeights
-            symbolWeights[0] += 2
-            tempSymbolWeights[0] += 2
+            game_config.symbolWeights[0] += 2
+            game_config.tempSymbolWeights[0] += 2
         
         def sold(self):
-            global symbolWeights, tempSymbolWeights
-            symbolWeights[0] -= 2
-            tempSymbolWeights[0] -= 2
+            game_config.symbolWeights[0] -= 2
+            game_config.tempSymbolWeights[0] -= 2
 
-    unlockedItems.append(lemonPicture)
+    game_config.unlockedItems.append(lemonPicture)
     itemWeights.append(lemonPicture.weight)
 
     class cherryPicture(button):
         name = 'Cherry Picture'
         description = 'Cherries manifest more often (+2) for the rest of the deadline'
         sprite = pygame.image.load('assets/Cherry_Picture.png')
-        weight = 10
+        weight = 100
         cost = 2
         charges = 4
         space = 1
         type = 'button'
         
         def trigger(self):
-            global symbolWeights, tempSymbolWeights
-            symbolWeights[1] += 2
-            tempSymbolWeights[1] += 2
+            game_config.symbolWeights[1] += 2
+            game_config.tempSymbolWeights[1] += 2
         
         def sold(self):
-            global symbolWeights, tempSymbolWeights
-            symbolWeights[1] -= 2
-            tempSymbolWeights[1] -= 2
+            game_config.symbolWeights[1] -= 2
+            game_config.tempSymbolWeights[1] -= 2
 
-    unlockedItems.append(cherryPicture)
+    game_config.unlockedItems.append(cherryPicture)
     itemWeights.append(cherryPicture.weight)
 
     class cloverPicture(button):
         name = 'Clover Picture'
         description = 'Clovers manifest more often (+2) for the rest of the deadline'
         sprite = pygame.image.load('assets/Clover_Picture.png')
-        weight = 9
+        weight = 90
         cost = 3
         charges = 4
         space = 1
         type = 'button'
         
         def trigger(self):
-            global symbolWeights, tempSymbolWeights
-            symbolWeights[2] += 2
-            tempSymbolWeights[2] += 2
+            game_config.symbolWeights[2] += 2
+            game_config.tempSymbolWeights[2] += 2
         
         def sold(self):
-            global symbolWeights, tempSymbolWeights
-            symbolWeights[2] -= 2
-            tempSymbolWeights[2] -= 2
+            game_config.symbolWeights[2] -= 2
+            game_config.tempSymbolWeights[2] -= 2
 
-    unlockedItems.append(cloverPicture)
+    game_config.unlockedItems.append(cloverPicture)
     itemWeights.append(cloverPicture.weight)
 
     class bellPicture(button):
         name = 'Bell Picture'
         description = 'Bells manifest more often (+2) for the rest of the deadline'
         sprite = pygame.image.load('assets/Bell_Picture.png')
-        weight = 9
+        weight = 90
         cost = 3
         charges = 4
         space = 1
         type = 'button'
         
         def trigger(self):
-            global symbolWeights, tempSymbolWeights
-            symbolWeights[3] += 2
-            tempSymbolWeights[3] += 2
+            game_config.symbolWeights[3] += 2
+            game_config.tempSymbolWeights[3] += 2
         
         def sold(self):
-            global symbolWeights, tempSymbolWeights
-            symbolWeights[3] -= 2
-            tempSymbolWeights[3] -= 2
+            game_config.symbolWeights[3] -= 2
+            game_config.tempSymbolWeights[3] -= 2
 
-    unlockedItems.append(bellPicture)
+    game_config.unlockedItems.append(bellPicture)
     itemWeights.append(bellPicture.weight)
 
     class diamondPicture(button):
         name = 'Diamond Picture'
         description = 'Diamonds manifest more often (+2) for the rest of the deadline'
         sprite = pygame.image.load('assets/Diamond_Picture.png')
-        weight = 8
+        weight = 80
         cost = 4
         charges = 4
         space = 1
         type = 'button'
         
         def trigger(self):
-            global symbolWeights, tempSymbolWeights
-            symbolWeights[4] += 2
-            tempSymbolWeights[4] += 2
+            game_config.symbolWeights[4] += 2
+            game_config.tempSymbolWeights[4] += 2
         
         def sold(self):
-            global symbolWeights, tempSymbolWeights
-            symbolWeights[4] -= 2
-            tempSymbolWeights[4] -= 2
+            game_config.symbolWeights[4] -= 2
+            game_config.tempSymbolWeights[4] -= 2
 
-    unlockedItems.append(diamondPicture)
+    game_config.unlockedItems.append(diamondPicture)
     itemWeights.append(diamondPicture.weight)
 
     class treasurePicture(button):
         name = 'Treasure Picture'
         description = 'Treasures manifest more often (+2) for the rest of the deadline'
         sprite = pygame.image.load('assets/Treasure_Picture.png')
-        weight = 8
+        weight = 80
         cost = 4
         charges = 4
         space = 1
         type = 'button'
         
         def trigger(self):
-            global symbolWeights, tempSymbolWeights
-            symbolWeights[5] += 2
-            tempSymbolWeights[5] += 2
+            game_config.symbolWeights[5] += 2
+            game_config.tempSymbolWeights[5] += 2
         
         def sold(self):
-            global symbolWeights, tempSymbolWeights
-            symbolWeights[5] -= 2
-            tempSymbolWeights[5] -= 2
+            game_config.symbolWeights[5] -= 2
+            game_config.tempSymbolWeights[5] -= 2
 
-    unlockedItems.append(treasurePicture)
+    game_config.unlockedItems.append(treasurePicture)
     itemWeights.append(treasurePicture.weight)
 
     class sevenPicture(button):
         name = 'Seven Picture'
         description = 'Sevens manifest more often (+2) for the rest of the deadline'
         sprite = pygame.image.load('assets/Seven_Picture.png')
-        weight = 6.5
+        weight = 65
         cost = 4
         charges = 4
         space = 1
         type = 'button'
         
         def trigger(self):
-            global symbolWeights, tempSymbolWeights
-            symbolWeights[6] += 2
-            tempSymbolWeights[6] += 2
+            game_config.symbolWeights[6] += 2
+            game_config.tempSymbolWeights[6] += 2
         
         def sold(self):
-            global symbolWeights, tempSymbolWeights
-            symbolWeights[6] -= 2
-            tempSymbolWeights[6] -= 2
+            game_config.symbolWeights[6] -= 2
+            game_config.tempSymbolWeights[6] -= 2
 
-    unlockedItems.append(sevenPicture)
+    game_config.unlockedItems.append(sevenPicture)
     itemWeights.append(sevenPicture.weight)    
 
-    return unlockedItems, itemWeights
+    return game_config.unlockedItems, itemWeights

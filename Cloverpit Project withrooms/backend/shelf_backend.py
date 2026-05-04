@@ -1,6 +1,6 @@
 #administrering af shelf items
-
-from config.game_config import (ShelfSpace, shelfRoom, shelfItems)
+import random
+from config.game_config import (shelfSpace, shelfRoom, shelfItems, randomTriggerMult)
 
 def passiveTrigger(item):
     if item.type == 'passive':
@@ -16,15 +16,15 @@ def preRollTrigger():
         if item.type == 'preRoll':
             item.trigger()
 
-def postRollTrigger():
+def postRollTrigger(pityCounter, result):
     for item in shelfItems:
         if item.type == 'postRoll':
-            item.trigger()
+            item.trigger(pityCounter, result)
 
-def randomTrigger():
+def randomTrigger(pityCounter, result):
     for item in shelfItems:
-        if item.type == 'random':
-            item.trigger()
+        if item.type == 'random' and 100 * random.random() <= item.chance * randomTriggerMult:
+            item.trigger(pityCounter, result)
 
 def buttonTrigger():
     for item in shelfItems:
@@ -39,4 +39,9 @@ def roundEndTrigger():
 def deadlineEndTrigger():
     for item in shelfItems:
         if item.type == 'deadlineEnd':
+            item.trigger()
+
+def interventionTrigger():
+    for item in shelfItems:
+        if item.type == 'intervention':
             item.trigger()

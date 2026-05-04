@@ -4,6 +4,8 @@ import random
 import math
 import config.game_config
 
+from backend.shelf_backend import (preRollTrigger, postRollTrigger, randomTrigger, buttonTrigger, interventionTrigger)
+
 from config.game_config import (
     symbols,
     symbolWeights,
@@ -96,8 +98,7 @@ def spin(state: GameState):
     pityCounter = state.pityCounter
     ILSOffset = state.ILSOffset
 
-    for item in prerollItems:
-        item.trigger
+    preRollTrigger()
 
     if debtNum == 1 and spinNum != 1 and (spinNum + ILSOffset + 1) % (4 + math.floor(spinNum / 6)) == 0:
         luck += random.choice((4, 5, 6, 6, 7, 8))
@@ -211,8 +212,7 @@ def spin(state: GameState):
         elif 100 * random.random() <= 7.5:
             res[6] = 7
 
-        for item in interventions:
-            item.trigger
+        interventionTrigger()
 
         vertList = [0, 0, 0]
         horXLList = [0, 0, 0, 0, 0]
@@ -507,8 +507,8 @@ def spin(state: GameState):
 
     luck = baseLuck
 
-    for item in postrollItems:
-        item.trigger
+    postRollTrigger(result, pityCounter)
+    randomTrigger(result, pityCounter)
 
     def patternOrdering(e):
         return patternOrder[e[0]]

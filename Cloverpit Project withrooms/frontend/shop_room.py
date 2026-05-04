@@ -67,7 +67,6 @@ class ShopRoom:
                 self.shop_room.blit(shopItems[i].sprite, (200 + i * 100, 200))
                 self.shop_room.blit(self.font.render(str(shopItems[i].cost), True, (240, 170, 41)), ((240 + i * 100, 300)))
                 if isSelected(shopItems[i].sprite, (200 + i * 100, 200), self.shop_room):
-                    print(shopItems[i])
                     tooltip = pygame.Surface((self.shop_room.get_width() // 2, self.shop_room.get_height() // 4))
                     #Viser navn og beskrivelse når musen føres over en item
                     tooltip.fill((0,0,0))

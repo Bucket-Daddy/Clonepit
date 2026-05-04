@@ -224,7 +224,7 @@ def itemInit():
         type = 'passive'
     
         def trigger(self):
-            game_config.coins += 0.3 * game_config.debtAmount
+            game_config.coins += round(0.3 * game_config.debtAmount)
             game_config.shelfItems[-1] = 0
     
         def sold(self): #this should never be triggered

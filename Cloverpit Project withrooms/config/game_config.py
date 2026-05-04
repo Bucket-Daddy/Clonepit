@@ -13,6 +13,12 @@ baseSymbolValues = [2, 2, 3, 3, 5, 5, 7]
 SYMBOL_MULT_DEFAULT = 1
 PATTERN_MULT_DEFAULT = 1
 
+debtNum = 1
+roundNum = 1
+debtAmount = 75
+depositedAmount = 30
+interest = 7.00
+
 patternValues = {
     'hor': 1,
     'vert': 1,
@@ -97,15 +103,6 @@ tempLuck = 0
 
 #Shop variabler
 freeRestocks = 0
-
-#Shelf variabler
-ShelfSpace = 7
-shelfRoom = 7
-shelfItems = []
-
-#Money variabler
-coins = 0
-tickets = 0
 
 #Item variabler
 cigaretteCost = 1 #skal resettes ved slutningen af hver deadline

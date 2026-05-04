@@ -204,7 +204,7 @@ def spin(state: GameState):
         res[6] = 7
         res[7] = 7
         res[8] = 7
-        is666 = True
+        config.game_config.is666 = True
     else:
         if 100 * random.random() <= 6:
             res[6] = 7

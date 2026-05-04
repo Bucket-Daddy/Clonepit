@@ -2,7 +2,7 @@
 import pygame
 import random
 import math
-import config.game_config as game_config
+from config.game_config import (coins, patterns, is666)
 
 from backend.spin_engine import GameState, spin
 
@@ -78,16 +78,6 @@ class SlotRoom:
         self.symbolsTuple2 = (lemon, cherry, clover, bell, diamond, treasure, seven)
         self.modifiersTuple = (None, golden, token, ticket, repetition, battery, chain)
 
-        self.patterns = {'hor1.1':(0, 1, 2), 'hor1.2':(1, 2, 3), 'hor1.3':(2, 3, 4), 'hor2.1':(5, 6, 7), 'hor2.2':(6, 7, 8), 'hor2.3':(7, 8, 9),
-                    'hor3.1':(10, 11, 12), 'hor3.2':(11, 12, 13), 'hor3.3':(12, 13, 14), 'vert1':(0, 5, 10), 'vert2':(1, 6, 11), 'vert3':(2, 7, 12),
-                    'vert4':(3, 8, 13), 'vert5':(4, 9, 14), 'bckDiag1':(0, 6, 12), 'bckDiag2':(1, 7, 13), 'bckDiag3':(2, 8, 14),
-                    'fwdDiag1':(2, 6, 10), 'fwdDiag2':(3, 7, 11), 'fwdDiag3':(4, 8, 12), 'horL1.1':(0, 1, 2, 3), 'horL1.2':(1, 2, 3, 4),
-                    'horL2.1':(5, 6, 7, 8), 'horL2.2':(6, 7, 8, 9), 'horL3.1':(10, 11, 12, 13), 'horL3.2':(11, 12, 13, 14),
-                    'horXL1':(0, 1, 2, 3, 4), 'horXL2':(5, 6, 7, 8, 9), 'horXL3':(10, 11, 12, 13, 14), 'zig':(2, 6, 8, 10, 14),
-                    'zag':(0, 4, 6, 8, 12), 'above':(2, 6, 8, 10, 11, 12, 13, 14), 'below':(0, 1, 2, 3, 4, 6, 8, 12),
-                    'eye':(1, 2, 3, 5, 6, 8, 9, 11, 12, 13), 'jackpot':(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14)}
-
-        #Opretter game state - ingen spin endnu, venter på space
         self.gameState = GameState()
         self.spinning = False
         self.hasSpun = False
@@ -132,7 +122,7 @@ class SlotRoom:
 
         #Henter nyt resultat fra spin engine
         self.res, self.modifiers, self.result = spin(self.gameState)
-        self.is666 = game_config.is666
+        self.is666 = is666
 
         #Nulstiller reel animation og pattern timer
         self.reelsY = [-(18 * self.symbolScale + self.symbolSpaceVer) * 30] * 5
@@ -186,13 +176,14 @@ class SlotRoom:
                     self.scoreSFX.play()
                 #Giver coins for pattern når animationen starter
                 if currentPatternIdx != self.lastPaidPattern:
-                    game_config.coins += self.result[currentPatternIdx][1]
+                    global coins
+                    coins += self.result[currentPatternIdx][1]
                     self.lastPaidPattern = currentPatternIdx
 
             #Tegner kasser om hvert symbol i et givent pattern
             #X bruger reelOriginX som base så kasserne sidder præcis over symbolerne
             if self.patternTimer <= self.frameRate * self.patternDuration * math.floor(self.patternTimer / (self.frameRate * 1.25 * self.patternDuration) + 1) + self.frameRate * self.patternDuration * 0.25 * math.floor(self.patternTimer / (self.frameRate * 1.25 * self.patternDuration)):
-                for slot in self.patterns[self.result[math.floor(self.patternTimer / (self.frameRate * 1.25 * self.patternDuration))][0]]:
+                for slot in patterns[self.result[math.floor(self.patternTimer / (self.frameRate * 1.25 * self.patternDuration))][0]]:
                     boxX = self.reelOriginX + slot % 5 * self.symbolSpaceHor - self.squareDist
                     boxY = self.reelOriginY + self.symbolSpaceVer - self.squareDist + math.floor(slot / 5) * (18 * self.symbolScale + self.symbolSpaceVer)
                     pygame.draw.rect(self.slotMachine, (36, 252, 3), pygame.Rect(boxX, boxY, 18 * self.symbolScale + 2 * self.squareDist, 18 * self.symbolScale + 2 * self.squareDist), 2, 3)

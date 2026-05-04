@@ -26,7 +26,7 @@ def itemInit():
     class postRoll(item):
         pass
 
-    class randomTrigger(item):
+    class random(item):
         pass
 
     class button(item):
@@ -245,7 +245,7 @@ def itemInit():
     unlockedItems.append(lostBriefcase)
     itemWeights.append(lostBriefcase.weight)
 
-    class fakeCoin(randomTrigger):
+    class fakeCoin(random):
         name = 'Fake Coin'
         description = '\033[93mTriggers Randomly\033[0m (10%): +1 extra spin, then \033[92mLuck+4\033[0m for that spin.'
         sprite = pygame.image.load('assets/Fake_coin.png')
@@ -253,7 +253,7 @@ def itemInit():
         cost = 1
         chance = 10
         space = 1
-        type = 'randomTrigger'
+        type = 'random'
 
         def trigger(self):
             global fakeCoinSpins
@@ -903,7 +903,7 @@ def itemInit():
     unlockedItems.append(necronomicon)
     itemWeights.append(necronomicon.weight)
 
-    class redPepper(randomTrigger):
+    class redPepper(random):
         name = 'Red Pepper'
         description = '\033[93mTriggers Randomly\033[0m (20%): \033[92mLuck\033[0m+5 for the next spin. Discard after 12 activations.'
         sprite = pygame.image.load('assets/Red_Pepper.png')
@@ -911,7 +911,7 @@ def itemInit():
         cost = 1
         chance = 20
         space = 1
-        type = 'randomTrigger'
+        type = 'random'
 
         def __init__(self):
             self.activations = 0
@@ -1060,7 +1060,7 @@ def itemInit():
     unlockedItems.append(crowbar)
     itemWeights.append(crowbar.weight)
 
-    class consolationPrize(randomTrigger):
+    class consolationPrize(random):
         name = 'Consolation Prize'
         description = '\033[93mTriggers Randomly\033[0m (25%): This Charm triggers only if the current spin has no Patterns. Increase all Symbols by their base value, permanently.'
         sprite = pygame.image.load('assets/Consolation_Prize.png')
@@ -1068,7 +1068,7 @@ def itemInit():
         cost = 2
         chance = 25
         space = 1
-        type = 'randomTrigger'
+        type = 'random'
 
         def trigger(self):
             if pityCounter > 0:

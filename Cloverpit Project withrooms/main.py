@@ -25,8 +25,7 @@ def main():
     hudFont = pygame.font.Font(None, size=40)
 
     #Definerer items og deres weights
-    unlockedItems = itemInit()[0]
-    itemWeights = itemInit()[1]
+    unlockedItems, itemWeights = itemInit()
 
     #Fylder shoppen
     shopRestock(unlockedItems, itemWeights)
@@ -108,7 +107,6 @@ def main():
         clock.tick(60)
 
     pygame.quit()
-
 
 if __name__ == '__main__':
     main()

@@ -4,6 +4,9 @@ import pygame
 from backend.shop_restock import shopItems
 from frontend.mouseCheck import isSelected
 from frontend.text_rendering import renderText
+from backend.shelf_backend import (shelfRoom, shelfItems, passiveTrigger)
+from config.game_config import (tickets, coins)
+from frontend.atm_room import debtAmount
 
 class ShopRoom:
 
@@ -60,29 +63,31 @@ class ShopRoom:
 
         #Selve items i shop
         for i in range(4):
-            self.shop_room.blit(shopItems[i].sprite, (200 + i * 100, 200))
-            self.shop_room.blit(self.font.render(str(shopItems[i].cost), True, (240, 170, 41)), ((240 + i * 100, 300)))
-            if isSelected(shopItems[i].sprite, (200 + i * 100, 200), self.shop_room):
-                tooltip = pygame.Surface((self.shop_room.get_width() // 2, self.shop_room.get_height() // 4))
-                #Viser navn og beskrivelse når musen føres over en item
-                tooltip.fill((0,0,0))
-                name = self.titleFont.render(shopItems[i].name, True, (240, 170, 41))
-                tooltip.blit(name, name.get_rect(center=(tooltip.get_width() / 2, 40)))
-                renderText(shopItems[i].description, self.font, tooltip, (8, 70), tooltip.get_width() - 8)
-                self.shop_room.blit(tooltip, (self.shop_room.get_width() // 4, 0))
-                #if pygame.mouse.get_just_pressed() and tickets >= shopItems[i].cost and shelfRoom <= shopItems[i].space:
-                    #tickets -= shopItems[i].cost
-                    #shelfRoom -= shopItems.space
-                    #shelfItems.append(shopItems[i])
-
-                    
-
+            if shopItems[i] != 0:
+                self.shop_room.blit(shopItems[i].sprite, (200 + i * 100, 200))
+                self.shop_room.blit(self.font.render(str(shopItems[i].cost), True, (240, 170, 41)), ((240 + i * 100, 300)))
+                if isSelected(shopItems[i].sprite, (200 + i * 100, 200), self.shop_room):
+                    print(shopItems[i])
+                    tooltip = pygame.Surface((self.shop_room.get_width() // 2, self.shop_room.get_height() // 4))
+                    #Viser navn og beskrivelse når musen føres over en item
+                    tooltip.fill((0,0,0))
+                    name = self.titleFont.render(shopItems[i].name, True, (240, 170, 41))
+                    tooltip.blit(name, name.get_rect(center=(tooltip.get_width() / 2, 40)))
+                    renderText(shopItems[i].description, self.font, tooltip, (8, 70), tooltip.get_width() - 8)
+                    #Køber item hvis spilleren clicker på den, spilleren har råd til den og spilleren har plads til den
+                    self.shop_room.blit(tooltip, (self.shop_room.get_width() // 4, 0))
+                    if pygame.mouse.get_just_pressed()[0] and tickets >= shopItems[i].cost and shelfRoom >= shopItems[i].space:
+                        tickets -= shopItems[i].cost
+                        shelfRoom -= shopItems.space
+                        passiveTrigger(shopItems[i])
+                        shelfItems.append(shopItems[i])
+                        shopItems[i] = 0
+    
 
         # glas oven på holderne
         self.shop_room.blit(glass, (self.shop_room.get_width() // 2 - storePedestal.get_width() // 2, self.shop_room.get_height() // 1.7 - storePedestal.get_height() // 2 + 2.8))
         self.shop_room.blit(glass, (self.shop_room.get_width() // 2 + storePedestal.get_width() // 2, self.shop_room.get_height() // 1.7 - storePedestal.get_height() // 2 + 2.8))
         self.shop_room.blit(glass, (self.shop_room.get_width() // 2 - storePedestal.get_width() - storePedestal.get_width() // 2, self.shop_room.get_height() // 1.7 - storePedestal.get_height() // 2 + 2.8))
         self.shop_room.blit(glass, (self.shop_room.get_width() // 2 - storePedestal.get_width() - storePedestal.get_width() - storePedestal.get_width() // 2, self.shop_room.get_height() // 1.7 - storePedestal.get_height() // 2 + 2.8))
-
 
         screen.blit(self.shop_room, (0, 0))

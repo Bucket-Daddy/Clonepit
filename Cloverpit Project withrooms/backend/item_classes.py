@@ -14,7 +14,7 @@ def itemInit():
     class passive(item):
         pass
 
-    class lastRound(item):
+    class lastSpin(item):
         pass
 
     class intervention(item):
@@ -45,6 +45,7 @@ def itemInit():
         weight = 5
         cost = 3
         space = 1
+        type = 'passive'
 
         def trigger(self):
             global affBattChance
@@ -57,13 +58,14 @@ def itemInit():
     unlockedItems.append(AABatteries)
     itemWeights.append(AABatteries.weight)
 
-    class rotatedHamsa(lastRound):
+    class rotatedHamsa(lastSpin):
         name = 'Rotated Hamsa'
         description = 'Grants \033[92mLuck\033[0m+7 for the last spin of a Round.'
         sprite = pygame.image.load('assets/Rotated_Hamsa.png')
         weight = 10
         cost = 3
         space = 1
+        type = 'lastSpin'
 
         def trigger(self):
             global luck
@@ -82,6 +84,7 @@ def itemInit():
         #weight = 6.5
         #cost = 3
         #space = 1
+        #type = 'postRoll'
 
         #def trigger(self):
             #if len(result) == 1:
@@ -98,6 +101,7 @@ def itemInit():
         weight = 6.5
         cost = 2
         space = 1
+        type = 'postRoll'
 
         def trigger(self):
             if pityCounter >= 3:
@@ -118,6 +122,7 @@ def itemInit():
         weight = 10
         cost = 3
         space = 1
+        type = 'passive'
 
         def trigger(self):
             randomTriggerMult *= 2
@@ -135,6 +140,7 @@ def itemInit():
         weight = 10
         cost = 1
         space = 1
+        type = 'postRoll'
 
         def trigger(self):
             if len(result) > 2:
@@ -154,6 +160,7 @@ def itemInit():
         weight = 10
         cost = 2
         space = 1
+        type = 'roundEnd'
 
         def __init__(self):
             self.startRound = roundNum
@@ -181,6 +188,7 @@ def itemInit():
         weight = 10
         cost = 2
         space = 1
+        type = 'passive'
 
         def trigger(self):
             global interest
@@ -200,6 +208,7 @@ def itemInit():
         weight = 2
         cost = 7
         space = 2
+        type = 'passive'
 
         def trigger(self):
             global phonecallRep
@@ -223,6 +232,7 @@ def itemInit():
         weight = 10
         cost = 2
         space = 0
+        type = 'passive'
     
         def trigger(self):
             global coins
@@ -243,6 +253,7 @@ def itemInit():
         cost = 1
         chance = 10
         space = 1
+        type = 'randomTrigger'
 
         def trigger(self):
             global fakeCoinSpins
@@ -261,6 +272,7 @@ def itemInit():
         weight = 10
         cost = 4
         space = 1
+        type = 'passive'
 
         def trigger(self):
             global bonusSpins
@@ -280,6 +292,7 @@ def itemInit():
         weight = 10
         cost = 1
         space = 1
+        type = 'postRoll'
 
         def __init__(self):
             self.init = False
@@ -312,6 +325,7 @@ def itemInit():
         weight = 6.5
         cost = 3
         space = 1
+        type = 'passive'
 
         def trigger(self):
             global lemonGoldChance
@@ -331,6 +345,7 @@ def itemInit():
         weight = 6.5
         cost = 3
         space = 1
+        type = 'passive'
 
         def trigger(self):
             global cherryGoldChance
@@ -350,6 +365,7 @@ def itemInit():
         weight = 8
         cost = 3
         space = 1
+        type = 'passive'
 
         def trigger(self):
             global cloverGoldChance
@@ -369,6 +385,7 @@ def itemInit():
         weight = 8
         cost = 3
         space = 1
+        type = 'passive'
 
         def trigger(self):
             global bellGoldChance
@@ -388,6 +405,7 @@ def itemInit():
         weight = 10
         cost = 2
         space = 1
+        type = 'passive'
 
         def trigger(self):
             global diamondGoldChance
@@ -407,6 +425,7 @@ def itemInit():
         weight = 10
         cost = 2
         space = 1
+        type = 'passive'
 
         def trigger(self):
             global treasureGoldChance
@@ -426,6 +445,7 @@ def itemInit():
         weight = 10
         cost = 1
         space = 1
+        type = 'passive'
 
         def trigger(self):
             global sevenGoldChance
@@ -445,6 +465,7 @@ def itemInit():
         weight = 10
         cost = 1
         space = 1
+        type = 'passive'
 
         def trigger(self):
             global lemonTokenChance
@@ -464,6 +485,7 @@ def itemInit():
         weight = 10
         cost = 1
         space = 1
+        type = 'passive'
 
         def trigger(self):
             global cherryTokenChance
@@ -483,6 +505,7 @@ def itemInit():
         weight = 9
         cost = 2
         space = 1
+        type = 'passive'
 
         def trigger(self):
             global cloverTokenChance
@@ -502,6 +525,7 @@ def itemInit():
         weight = 9
         cost = 2
         space = 1
+        type = 'passive'
 
         def trigger(self):
             global bellTokenChance
@@ -521,6 +545,7 @@ def itemInit():
         weight = 8
         cost = 2
         space = 1
+        type = 'passive'
 
         def trigger(self):
             global diamondTokenChance
@@ -540,6 +565,7 @@ def itemInit():
         weight = 10
         cost = 2
         space = 1
+        type = 'passive'
 
         def trigger(self):
             global treasureTokenChance
@@ -559,6 +585,7 @@ def itemInit():
         weight = 10
         cost = 2
         space = 1
+        type = 'passive'
 
         def trigger(self):
             global sevenTokenChance
@@ -578,6 +605,7 @@ def itemInit():
         weight = 6.5
         cost = 4
         space = 1
+        type = 'passive'
 
         def trigger(self):
             global lemonTicketChance
@@ -597,6 +625,7 @@ def itemInit():
         weight = 6.5
         cost = 4
         space = 1
+        type = 'passive'
 
         def trigger(self):
             global cherryTicketChance
@@ -616,6 +645,7 @@ def itemInit():
         weight = 10
         cost = 2
         space = 1
+        type = 'passive'
 
         def trigger(self):
             global cloverTicketChance
@@ -635,6 +665,7 @@ def itemInit():
         weight = 10
         cost = 2
         space = 1
+        type = 'passive'
 
         def trigger(self):
             global bellTicketChance
@@ -654,6 +685,7 @@ def itemInit():
         weight = 6.5
         cost = 3
         space = 1
+        type = 'passive'
 
         def trigger(self):
             global diamondTicketChance
@@ -673,6 +705,7 @@ def itemInit():
         weight = 6.5
         cost = 3
         space = 1
+        type = 'passive'
 
         def trigger(self):
             global treasureTicketChance
@@ -692,6 +725,7 @@ def itemInit():
         weight = 6.5
         cost = 3
         space = 1
+        type = 'passive'
 
         def trigger(self):
             global sevenTicketChance
@@ -711,6 +745,7 @@ def itemInit():
         weight = 10
         cost = 3
         space = 1
+        type = 'postRoll'
 
         def trigger(self):
             if len(result) >= 3:
@@ -731,6 +766,7 @@ def itemInit():
         weight = 10
         cost = 3
         space = 1
+        type = 'postRoll'
 
         def trigger(self):
             for i in result:
@@ -753,10 +789,10 @@ def itemInit():
         weight = 6.5
         cost = 2
         space = 1
+        type = 'roundEnd'
 
         def trigger(self):
-            pass #temporary pass
-            #call the shop restock function
+            shopRestock(unlockedItems, itemWeights)
     
         def sold(self):
             pass
@@ -771,6 +807,7 @@ def itemInit():
         weight = 6.5
         cost = 5
         space = 1
+        type = 'roundEnd'
 
         def trigger(self):
             pass #temporary pass
@@ -789,6 +826,7 @@ def itemInit():
         weight = 8
         cost = 3
         space = 1
+        type = 'passive'
 
         def trigger(self):
             global affChainChance
@@ -808,6 +846,7 @@ def itemInit():
         weight = 8
         cost = 3
         space = 1
+        type = 'passive'
 
         def trigger(self):
             global affRepChance
@@ -827,6 +866,7 @@ def itemInit():
         weight = 10
         cost = 1
         space = 1
+        type = 'postRoll'
 
         def trigger(self):
             if is666:
@@ -846,6 +886,7 @@ def itemInit():
         weight = 9
         cost = 3
         space = 1
+        type = 'passive'
 
         def trigger(self):
             global patternMult
@@ -864,12 +905,13 @@ def itemInit():
 
     class redPepper(randomTrigger):
         name = 'Red Pepper'
-        description = '\033[93mTriggers Randomly\033[0m (20%): \033[92mLuck\033[0m+5 for the current spin. Discard after 12 activations.'
+        description = '\033[93mTriggers Randomly\033[0m (20%): \033[92mLuck\033[0m+5 for the next spin. Discard after 12 activations.'
         sprite = pygame.image.load('assets/Red_Pepper.png')
         weight = 10
         cost = 1
         chance = 20
         space = 1
+        type = 'randomTrigger'
 
         def __init__(self):
             self.activations = 0
@@ -895,6 +937,7 @@ def itemInit():
         weight = 8
         cost = 2
         space = 1
+        type = 'deadlineEnd'
 
         def trigger(self):
             global tickets
@@ -913,6 +956,7 @@ def itemInit():
         weight = 6.5
         cost = 1
         space = 1
+        type = 'preRoll'
 
         def __init__(self):
             self.extraMult = 0
@@ -937,6 +981,7 @@ def itemInit():
         weight = 10
         cost = cigaretteCost
         space = 0
+        type = 'passive'
 
         def trigger(self):
             global cigaretteCost
@@ -960,6 +1005,7 @@ def itemInit():
         weight = 10
         cost = 2
         space = 0
+        type = 'passive'
 
         def trigger(self):
             global cardboardInit
@@ -979,15 +1025,17 @@ def itemInit():
         description = 'Makes space for 2 more Lucky Charms.'
         sprite = pygame.image.load('assets/Property_Certificate.png')
         weight = 8
-        cost = -1
+        cost = 2
+        space = 1
+        type = 'passive'
 
         def trigger(self):
-            global itemSpace
-            itemSpace += 2
-            #something to kill itself
+            global shelfSpace
+            shelfSpace += 2
     
-        def sold(self): #this should never be triggered
-            pass
+        def sold(self):
+            global shelfSpace
+            shelfSpace -= 2
 
     unlockedItems.append(propertyCertificate)
     itemWeights.append(propertyCertificate.weight)
@@ -999,6 +1047,7 @@ def itemInit():
         weight = 8
         cost = 2
         space = 0
+        type = 'passive'
 
         def trigger(self):
             global freeRestocks
@@ -1019,6 +1068,7 @@ def itemInit():
         cost = 2
         chance = 25
         space = 1
+        type = 'randomTrigger'
 
         def trigger(self):
             if pityCounter > 0:

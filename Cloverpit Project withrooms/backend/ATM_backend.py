@@ -1,8 +1,8 @@
 #ATM backend script
 
 def newDeadline(debtNum, debtMult):
-    InitialDebtAmounts = (75, 200, 666, 2222, 12500, 33333, 66666, 200000, 1000000)
-    if debtNum < 10:
+    InitialDebtAmounts = (200, 666, 2222, 12500, 33333, 66666, 200000, 1000000)
+    if debtNum < 9:
         debtAmount = InitialDebtAmounts[debtNum - 1] * debtMult
     else:
         overLimit = debtNum - 9
@@ -10,4 +10,4 @@ def newDeadline(debtNum, debtMult):
         if overLimit > 7:
             overLimit += overLimit - 7
         debtAmount = 1000000 * ((6 * 2 ** (overLimit - 1)) ** overLimit) * scaleFactor * debtMult
-        return(debtAmount)
+    return(debtAmount)

@@ -4,6 +4,7 @@ import pygame
 from backend.ATM_backend import newDeadline
 from frontend.mouseCheck import isSelected
 from config.game_config import (debtNum, roundNum, debtAmount, depositedAmount, interest, interestStorage)
+from backend.shelf_backend import deadlineEndTrigger
 
 class ATMRoom:
 
@@ -79,6 +80,7 @@ class ATMRoom:
                 roundNum = 1
                 # interestStorage = debtAmount * 0.08
                 # tickets += 16 - 4 * roundNum
+                deadlineEndTrigger()
             pass
 
         # blit interest payout og få den til at knappe
@@ -112,11 +114,11 @@ class ATMRoom:
         if math.log10(debtAmount) >= 7 and math.log10(debtAmount) < 100:
             deposit = round(debtAmount * 10**(-1 * (len(str(debtAmount)) - 1)), 2)
             textDebtAmount = self.font2.render(str(deposit) + 'E+' + str(len(str(debtAmount)) - 1), True, (246, 250, 10))
-            self.atm.blit(textDebtAmount, textDebtAmount.get_rect(center=(self.debtX + 35, self.debtY + 30)))
+            self.atm.blit(textDebtAmount, textDebtAmount.get_rect(center=(self.debtX + 30, self.debtY + 30)))
         if math.log10(debtAmount) >= 100:
             deposit = round(debtAmount * 10**(-1 * (len(str(debtAmount)) - 1)), 2)
             textDebtAmount = self.font2.render(str(deposit) + 'E+' + str(len(str(debtAmount)) - 1), True, (246, 250, 10))
-            self.atm.blit(textDebtAmount, textDebtAmount.get_rect(center=(self.debtX + 30, self.debtY + 30)))
+            self.atm.blit(textDebtAmount, textDebtAmount.get_rect(center=(self.debtX + 25, self.debtY + 30)))
         if math.log10(debtAmount) < 7:
             textDebtAmount = self.font2.render(str(debtAmount), True, (246, 250, 10))
             self.atm.blit(textDebtAmount, textDebtAmount.get_rect(center=(self.debtX + 50 - math.log10(debtAmount)**(1.50 - 0.012 * math.log10(debtAmount)), self.debtY + 30)))

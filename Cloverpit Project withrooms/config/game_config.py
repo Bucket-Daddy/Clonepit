@@ -19,6 +19,7 @@ roundNum = 1
 debtAmount = 75
 depositedAmount = 30
 interest = 7.00
+interestStorage = 0
 
 patternValues = {
     'hor': 1,

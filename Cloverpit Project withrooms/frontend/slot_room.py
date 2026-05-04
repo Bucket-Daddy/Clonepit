@@ -2,7 +2,7 @@
 import pygame
 import random
 import math
-from config.game_config import (coins, patterns, is666)
+import config.game_config as game_config
 
 from backend.spin_engine import GameState, spin
 
@@ -122,7 +122,7 @@ class SlotRoom:
 
         #Henter nyt resultat fra spin engine
         self.res, self.modifiers, self.result = spin(self.gameState)
-        self.is666 = is666
+        self.is666 = game_config.is666
 
         #Nulstiller reel animation og pattern timer
         self.reelsY = [-(18 * self.symbolScale + self.symbolSpaceVer) * 30] * 5
@@ -176,14 +176,13 @@ class SlotRoom:
                     self.scoreSFX.play()
                 #Giver coins for pattern når animationen starter
                 if currentPatternIdx != self.lastPaidPattern:
-                    global coins
-                    coins += self.result[currentPatternIdx][1]
+                    game_config.coins += self.result[currentPatternIdx][1]
                     self.lastPaidPattern = currentPatternIdx
 
             #Tegner kasser om hvert symbol i et givent pattern
             #X bruger reelOriginX som base så kasserne sidder præcis over symbolerne
             if self.patternTimer <= self.frameRate * self.patternDuration * math.floor(self.patternTimer / (self.frameRate * 1.25 * self.patternDuration) + 1) + self.frameRate * self.patternDuration * 0.25 * math.floor(self.patternTimer / (self.frameRate * 1.25 * self.patternDuration)):
-                for slot in patterns[self.result[math.floor(self.patternTimer / (self.frameRate * 1.25 * self.patternDuration))][0]]:
+                for slot in game_config.patterns[self.result[math.floor(self.patternTimer / (self.frameRate * 1.25 * self.patternDuration))][0]]:
                     boxX = self.reelOriginX + slot % 5 * self.symbolSpaceHor - self.squareDist
                     boxY = self.reelOriginY + self.symbolSpaceVer - self.squareDist + math.floor(slot / 5) * (18 * self.symbolScale + self.symbolSpaceVer)
                     pygame.draw.rect(self.slotMachine, (36, 252, 3), pygame.Rect(boxX, boxY, 18 * self.symbolScale + 2 * self.squareDist, 18 * self.symbolScale + 2 * self.squareDist), 2, 3)

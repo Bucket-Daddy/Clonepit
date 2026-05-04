@@ -106,7 +106,7 @@ affChainChance = 0
 
 #Backend base luck / state defaults
 
-BASE_LUCK_DEFAULT = 15
+BASE_LUCK_DEFAULT = 0
 DEBT_NUM_DEFAULT = 1
 SPIN_NUM_START = 1
 PITY_COUNTER_START = 0
@@ -117,7 +117,7 @@ tempLuck = 0
 freeRestocks = 0
 
 #Shelf variabler
-ShelfSpace = 6
+shelfSpace = 6
 shelfRoom = 6
 shelfItems = []
 
@@ -129,7 +129,7 @@ tickets = 10
 cigaretteCost = 1 #skal resettes ved slutningen af hver deadline
 cardboardInit = True #bestemmer om cardboard house kan dukke op i shoppen
 
-
+randomTriggerMult = 1
 
 def random_ils_offset():
     return random.randint(0, 4)

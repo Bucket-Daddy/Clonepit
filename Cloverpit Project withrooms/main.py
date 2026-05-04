@@ -8,6 +8,7 @@ from frontend.shop_room import ShopRoom
 from frontend.phone_room import PhoneRoom
 from backend.item_classes import itemInit
 from backend.shop_restock import shopRestock
+import config.game_config as game_config
 
 def main():
     pygame.init()
@@ -16,6 +17,12 @@ def main():
     screen = pygame.display.set_mode((1200, 750))
     pygame.display.set_caption('Clonepit Slots')
     clock = pygame.time.Clock()
+
+    #HUD assets indlæses
+    hudIconSize = 48
+    hudCoinIcon = pygame.transform.scale(pygame.image.load('assets/Coin.webp'), (hudIconSize, hudIconSize))
+    hudTicketIcon = pygame.transform.scale(pygame.image.load('assets/ModifierTicket.webp'), (hudIconSize, hudIconSize))
+    hudFont = pygame.font.Font(None, size=40)
 
     #Definerer items og deres weights
     unlockedItems = itemInit()[0]
@@ -75,6 +82,27 @@ def main():
 
         screen.fill((0, 0, 0))
         rooms[currentRoom].draw(screen)
+
+        #Tegner HUD med coins og tickets altid øverst i alle rum
+        hudPadding = 12
+        textGap = 8
+        rowGap = 6
+
+        coinText = hudFont.render(str(game_config.coins), True, (246, 214, 50))
+        ticketText = hudFont.render(str(game_config.tickets), True, (180, 230, 255))
+
+        hudW = max(hudIconSize + textGap + coinText.get_width(),
+                   hudIconSize + textGap + ticketText.get_width()) + hudPadding * 2
+        hudH = hudIconSize * 2 + rowGap + hudPadding * 2
+
+        hudSurf = pygame.Surface((hudW, hudH), pygame.SRCALPHA)
+        pygame.draw.rect(hudSurf, (0, 0, 0, 160), hudSurf.get_rect(), border_radius=8)
+        hudSurf.blit(hudCoinIcon, (hudPadding, hudPadding))
+        hudSurf.blit(coinText, (hudPadding + hudIconSize + textGap, hudPadding + hudIconSize // 2 - coinText.get_height() // 2))
+        hudSurf.blit(hudTicketIcon, (hudPadding, hudPadding + hudIconSize + rowGap))
+        hudSurf.blit(ticketText, (hudPadding + hudIconSize + textGap, hudPadding + hudIconSize + rowGap + hudIconSize // 2 - ticketText.get_height() // 2))
+
+        screen.blit(hudSurf, (1200 - hudW - hudPadding, hudPadding))
 
         pygame.display.flip()
         clock.tick(60)

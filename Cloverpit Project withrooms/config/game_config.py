@@ -98,6 +98,11 @@ tempLuck = 0
 #Shop variabler
 freeRestocks = 0
 
+#Shelf variabler
+ShelfSpace = 7
+shelfRoom = 7
+shelfItems = []
+
 #Money variabler
 coins = 0
 tickets = 0

@@ -1,10 +1,10 @@
 #ATM script
 import math
 import pygame
+import subprocess
 from backend.ATM_backend import newDeadline
 from frontend.mouseCheck import isSelected
 from config.game_config import (debtNum, roundNum, debtAmount, depositedAmount, interest, interestStorage)
-from backend.shelf_backend import deadlineEndTrigger
 
 class ATMRoom:
 
@@ -44,7 +44,9 @@ class ATMRoom:
         self.atmRoundBonusCollectionBox = pygame.image.load('assets/collectionBlackBox.png')
         self.atmRoundBonusCollectionBox = pygame.transform.scale(self.atmRoundBonusCollectionBox, (self.atmRoundBonusCollectionBox.get_width() * 0.60 * overallScale, self.atmRoundBonusCollectionBox.get_height() * 0.60 * overallScale))
         self.atmRoundBonusCollectionBox.set_colorkey((163, 73, 164))
-        
+        self.littleGuy = pygame.image.load('assets/little_guy.png')
+        self.littleGuy.set_colorkey((0, 0, 0))
+
         # Opretter atm surface og danner baggrunden
         self.atm = pygame.Surface((1200, 750), pygame.SRCALPHA)
         self.background = pygame.image.load('assets/Background.png')
@@ -80,7 +82,6 @@ class ATMRoom:
                 roundNum = 1
                 # interestStorage = debtAmount * 0.08
                 # tickets += 16 - 4 * roundNum
-                deadlineEndTrigger()
             pass
 
         # blit interest payout og få den til at knappe
@@ -114,11 +115,11 @@ class ATMRoom:
         if math.log10(debtAmount) >= 7 and math.log10(debtAmount) < 100:
             deposit = round(debtAmount * 10**(-1 * (len(str(debtAmount)) - 1)), 2)
             textDebtAmount = self.font2.render(str(deposit) + 'E+' + str(len(str(debtAmount)) - 1), True, (246, 250, 10))
-            self.atm.blit(textDebtAmount, textDebtAmount.get_rect(center=(self.debtX + 30, self.debtY + 30)))
+            self.atm.blit(textDebtAmount, textDebtAmount.get_rect(center=(self.debtX + 35, self.debtY + 30)))
         if math.log10(debtAmount) >= 100:
             deposit = round(debtAmount * 10**(-1 * (len(str(debtAmount)) - 1)), 2)
             textDebtAmount = self.font2.render(str(deposit) + 'E+' + str(len(str(debtAmount)) - 1), True, (246, 250, 10))
-            self.atm.blit(textDebtAmount, textDebtAmount.get_rect(center=(self.debtX + 25, self.debtY + 30)))
+            self.atm.blit(textDebtAmount, textDebtAmount.get_rect(center=(self.debtX + 30, self.debtY + 30)))
         if math.log10(debtAmount) < 7:
             textDebtAmount = self.font2.render(str(debtAmount), True, (246, 250, 10))
             self.atm.blit(textDebtAmount, textDebtAmount.get_rect(center=(self.debtX + 50 - math.log10(debtAmount)**(1.50 - 0.012 * math.log10(debtAmount)), self.debtY + 30)))
@@ -144,7 +145,9 @@ class ATMRoom:
         self.atm.blit(textInterestValue, textInterestValue.get_rect(center=(self.debtX + 70, self.debtY + 92.5)))
         self.atm.blit(textScreenLine, textScreenLine.get_rect(center=(self.debtX - 10, self.debtY + 100)))
         
-        
+        #Intet at se her
+        self.atm.blit(self.littleGuy, (500, 700))
+        if isSelected(self.littleGuy, (500, 700), self.atm) and pygame.mouse.get_just_pressed()[0]:
+            subprocess.run('Little Guy Goes To Verdun/Little Guy Goes To Verdun.exe')
         
         screen.blit(self.atm, (0, 0))
-

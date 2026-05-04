@@ -167,8 +167,8 @@ def itemInit():
                 game_config.interest -= 0.15 - 0.03 * (game_config.roundNum - self.startRound - 1)
                 game_config.interest += 0.15 - 0.03 * (game_config.roundNum - self.startRound)
             else:
-                pass #temporary pass
-                #something to kill itself
+                game_config.shelfItems[-1] = 0
+                
 
         def sold(self):
             game_config.interest -= 0.15 - 0.03 * (game_config.roundNum - self.startRound)
@@ -225,7 +225,7 @@ def itemInit():
     
         def trigger(self):
             game_config.coins += 0.3 * game_config.debtAmount
-            #Something to kill itself
+            game_config.shelfItems[-1] = 0
     
         def sold(self): #this should never be triggered
             pass
@@ -850,8 +850,7 @@ def itemInit():
             game_config.tempLuck += 5
             self.activations += 1
             if self.activation == 12:
-                pass #temporary pass
-                #something to kill itself
+                game_config.shelfItems[-1] = 0
 
         def sold(self):
             pass
@@ -914,7 +913,7 @@ def itemInit():
             for i in range(7):
                 game_config.symbolValues[i] += game_config.baseSymbolValues[i]
                 shopRestock(game_config.unlockedItems, itemWeights)
-                #something to kill itself
+                game_config.shelfItems[-1] = 0
 
         def sold(self): #this should never be triggered
             pass
@@ -934,7 +933,7 @@ def itemInit():
         def trigger(self):
             game_config.cardboardInit = False
             game_config.shelfSpace += 1
-            #something to kill itself
+            game_config.shelfItems[-1] = 0
     
         def sold(self): #this should never be triggered
             pass
@@ -971,7 +970,7 @@ def itemInit():
 
         def trigger(self):
             game_config.freeRestocks += 3
-            #something to kill itself
+            game_config.shelfItems[-1] = 0
 
         def sold(self): #this should never be triggered
             pass

@@ -77,6 +77,7 @@ class SlotRoom:
         self.symbolsTuple = (lemon, cherry, clover, bell, diamond, treasure, seven, six)
         self.symbolsTuple2 = (lemon, cherry, clover, bell, diamond, treasure, seven)
         self.modifiersTuple = (None, golden, token, ticket, repetition, battery, chain)
+
         self.patterns = {'hor1.1':(0, 1, 2), 'hor1.2':(1, 2, 3), 'hor1.3':(2, 3, 4), 'hor2.1':(5, 6, 7), 'hor2.2':(6, 7, 8), 'hor2.3':(7, 8, 9),
                     'hor3.1':(10, 11, 12), 'hor3.2':(11, 12, 13), 'hor3.3':(12, 13, 14), 'vert1':(0, 5, 10), 'vert2':(1, 6, 11), 'vert3':(2, 7, 12),
                     'vert4':(3, 8, 13), 'vert5':(4, 9, 14), 'bckDiag1':(0, 6, 12), 'bckDiag2':(1, 7, 13), 'bckDiag3':(2, 8, 14),
@@ -98,6 +99,7 @@ class SlotRoom:
         self.reelsY = [-(18 * self.symbolScale + self.symbolSpaceVer) * 30] * 5
         self.patternTimer = 0
         self.patternDuration = 1
+        self.lastPaidPattern = -1
 
     def _build_reels(self):
         #Danner reels ud fra det nuværende resultat
@@ -135,6 +137,7 @@ class SlotRoom:
         #Nulstiller reel animation og pattern timer
         self.reelsY = [-(18 * self.symbolScale + self.symbolSpaceVer) * 30] * 5
         self.patternTimer = 0
+        self.lastPaidPattern = -1
         self.spinning = True
         self.hasSpun = True
 
@@ -176,10 +179,15 @@ class SlotRoom:
 
             #Spiller lydeffekten for hvert pattern
             if self.patternTimer == self.frameRate * 1.25 * self.patternDuration * math.floor(self.patternTimer / (self.frameRate * 1.25 * self.patternDuration)):
-                if self.result[math.floor(self.patternTimer / (self.frameRate * 1.25 * self.patternDuration))][0] == 'jackpot':
+                currentPatternIdx = math.floor(self.patternTimer / (self.frameRate * 1.25 * self.patternDuration))
+                if self.result[currentPatternIdx][0] == 'jackpot':
                     self.jackpotSFX.play()
                 else:
                     self.scoreSFX.play()
+                #Giver coins for pattern når animationen starter
+                if currentPatternIdx != self.lastPaidPattern:
+                    game_config.coins += self.result[currentPatternIdx][1]
+                    self.lastPaidPattern = currentPatternIdx
 
             #Tegner kasser om hvert symbol i et givent pattern
             #X bruger reelOriginX som base så kasserne sidder præcis over symbolerne

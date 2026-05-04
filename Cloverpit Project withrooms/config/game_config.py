@@ -98,6 +98,10 @@ tempLuck = 0
 #Shop variabler
 freeRestocks = 0
 
+#Money variabler
+coins = 0
+tickets = 0
+
 #Item variabler
 cigaretteCost = 1 #skal resettes ved slutningen af hver deadline
 cardboardInit = True #bestemmer om cardboard house kan dukke op i shoppen

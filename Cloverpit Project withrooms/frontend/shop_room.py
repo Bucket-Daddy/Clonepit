@@ -17,6 +17,7 @@ class ShopRoom:
         self.titleFont = pygame.font.Font(None, size = 32 * overallScale)
 
     def draw(self, screen):
+        global tickets, coins, shelfRoom, shelfItems
         # danner baggrunden
         self.shop_room = pygame.Surface((1200, 750), pygame.SRCALPHA)
         background = pygame.image.load('assets/Background.png')
@@ -38,8 +39,9 @@ class ShopRoom:
         glass = pygame.transform.scale(glass, (glass.get_width(), glass.get_height()))
 
         for item in shopItems:
-            item.sprite = pygame.transform.scale(item.sprite, (glass.get_width(), glass.get_height()))
-            item.sprite.set_colorkey((51,46,46))
+            if item != 0:
+                item.sprite = pygame.transform.scale(item.sprite, (glass.get_width(), glass.get_height()))
+                item.sprite.set_colorkey((51,46,46))
 
         # butikkens skilt
         self.shop_room.blit(storeSign, (self.shop_room.get_width() // 2 - storeSign.get_width() // 2, self.shop_room.get_height() // 30 - storePedestal.get_height() // 230))
@@ -77,10 +79,10 @@ class ShopRoom:
                     self.shop_room.blit(tooltip, (self.shop_room.get_width() // 4, 0))
                     if pygame.mouse.get_just_pressed()[0] and tickets >= shopItems[i].cost and shelfRoom >= shopItems[i].space:
                         tickets -= shopItems[i].cost
-                        shelfRoom -= shopItems.space
-                        passiveTrigger(shopItems[i])
+                        shelfRoom -= shopItems[i].space
                         shelfItems.append(shopItems[i])
                         shopItems[i] = 0
+                        passiveTrigger(shelfItems[-1])
     
 
         # glas oven på holderne

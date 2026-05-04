@@ -1086,4 +1086,165 @@ def itemInit():
     unlockedItems.append(consolationPrize)
     itemWeights.append(consolationPrize.weight)
 
+    class lemonPicture(button):
+        name = 'Lemon Picture'
+        description = 'Lemons manifest more often (+2) for the rest of the deadline'
+        sprite = pygame.image.load('assets/Lemon_Picture.png')
+        weight = 10
+        cost = 2
+        charges = 4
+        space = 1
+        type = 'button'
+        
+        def trigger(self):
+            global symbolWeights, tempSymbolWeights
+            symbolWeights[0] += 2
+            tempSymbolWeights[0] += 2
+        
+        def sold(self):
+            global symbolWeights, tempSymbolWeights
+            symbolWeights[0] -= 2
+            tempSymbolWeights[0] -= 2
+
+    unlockedItems.append(lemonPicture)
+    itemWeights.append(lemonPicture.weight)
+
+    class cherryPicture(button):
+        name = 'Cherry Picture'
+        description = 'Cherries manifest more often (+2) for the rest of the deadline'
+        sprite = pygame.image.load('assets/Cherry_Picture.png')
+        weight = 10
+        cost = 2
+        charges = 4
+        space = 1
+        type = 'button'
+        
+        def trigger(self):
+            global symbolWeights, tempSymbolWeights
+            symbolWeights[1] += 2
+            tempSymbolWeights[1] += 2
+        
+        def sold(self):
+            global symbolWeights, tempSymbolWeights
+            symbolWeights[1] -= 2
+            tempSymbolWeights[1] -= 2
+
+    unlockedItems.append(cherryPicture)
+    itemWeights.append(cherryPicture.weight)
+
+    class cloverPicture(button):
+        name = 'Clover Picture'
+        description = 'Clovers manifest more often (+2) for the rest of the deadline'
+        sprite = pygame.image.load('assets/Clover_Picture.png')
+        weight = 9
+        cost = 3
+        charges = 4
+        space = 1
+        type = 'button'
+        
+        def trigger(self):
+            global symbolWeights, tempSymbolWeights
+            symbolWeights[2] += 2
+            tempSymbolWeights[2] += 2
+        
+        def sold(self):
+            global symbolWeights, tempSymbolWeights
+            symbolWeights[2] -= 2
+            tempSymbolWeights[2] -= 2
+
+    unlockedItems.append(cloverPicture)
+    itemWeights.append(cloverPicture.weight)
+
+    class bellPicture(button):
+        name = 'Bell Picture'
+        description = 'Bells manifest more often (+2) for the rest of the deadline'
+        sprite = pygame.image.load('assets/Bell_Picture.png')
+        weight = 9
+        cost = 3
+        charges = 4
+        space = 1
+        type = 'button'
+        
+        def trigger(self):
+            global symbolWeights, tempSymbolWeights
+            symbolWeights[3] += 2
+            tempSymbolWeights[3] += 2
+        
+        def sold(self):
+            global symbolWeights, tempSymbolWeights
+            symbolWeights[3] -= 2
+            tempSymbolWeights[3] -= 2
+
+    unlockedItems.append(bellPicture)
+    itemWeights.append(bellPicture.weight)
+
+    class diamondPicture(button):
+        name = 'Diamond Picture'
+        description = 'Diamonds manifest more often (+2) for the rest of the deadline'
+        sprite = pygame.image.load('assets/Diamond_Picture.png')
+        weight = 8
+        cost = 4
+        charges = 4
+        space = 1
+        type = 'button'
+        
+        def trigger(self):
+            global symbolWeights, tempSymbolWeights
+            symbolWeights[4] += 2
+            tempSymbolWeights[4] += 2
+        
+        def sold(self):
+            global symbolWeights, tempSymbolWeights
+            symbolWeights[4] -= 2
+            tempSymbolWeights[4] -= 2
+
+    unlockedItems.append(diamondPicture)
+    itemWeights.append(diamondPicture.weight)
+
+    class treasurePicture(button):
+        name = 'Treasure Picture'
+        description = 'Treasures manifest more often (+2) for the rest of the deadline'
+        sprite = pygame.image.load('assets/Treasure_Picture.png')
+        weight = 8
+        cost = 4
+        charges = 4
+        space = 1
+        type = 'button'
+        
+        def trigger(self):
+            global symbolWeights, tempSymbolWeights
+            symbolWeights[5] += 2
+            tempSymbolWeights[5] += 2
+        
+        def sold(self):
+            global symbolWeights, tempSymbolWeights
+            symbolWeights[5] -= 2
+            tempSymbolWeights[5] -= 2
+
+    unlockedItems.append(treasurePicture)
+    itemWeights.append(treasurePicture.weight)
+
+    class sevenPicture(button):
+        name = 'Seven Picture'
+        description = 'Sevens manifest more often (+2) for the rest of the deadline'
+        sprite = pygame.image.load('assets/Seven_Picture.png')
+        weight = 6.5
+        cost = 4
+        charges = 4
+        space = 1
+        type = 'button'
+        
+        def trigger(self):
+            global symbolWeights, tempSymbolWeights
+            symbolWeights[6] += 2
+            tempSymbolWeights[6] += 2
+        
+        def sold(self):
+            global symbolWeights, tempSymbolWeights
+            symbolWeights[6] -= 2
+            tempSymbolWeights[6] -= 2
+
+    unlockedItems.append(sevenPicture)
+    itemWeights.append(sevenPicture.weight)    
+
     return unlockedItems, itemWeights

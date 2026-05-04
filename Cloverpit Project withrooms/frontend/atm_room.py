@@ -1,6 +1,7 @@
 #ATM script
 import math
 import pygame
+import subprocess
 from backend.ATM_backend import newDeadline
 from frontend.mouseCheck import isSelected
 import config.game_config as game_config
@@ -44,7 +45,9 @@ class ATMRoom:
         self.atmRoundBonusCollectionBox = pygame.image.load('assets/collectionBlackBox.png')
         self.atmRoundBonusCollectionBox = pygame.transform.scale(self.atmRoundBonusCollectionBox, (self.atmRoundBonusCollectionBox.get_width() * 0.60 * overallScale, self.atmRoundBonusCollectionBox.get_height() * 0.60 * overallScale))
         self.atmRoundBonusCollectionBox.set_colorkey((163, 73, 164))
-        
+        self.littleGuy = pygame.image.load('assets/little_guy.png')
+        self.littleGuy.set_colorkey((0, 0, 0))
+                
         # Opretter atm surface og danner baggrunden
         self.atm = pygame.Surface((1200, 750), pygame.SRCALPHA)
         self.background = pygame.image.load('assets/Background.png')
@@ -143,7 +146,10 @@ class ATMRoom:
         self.atm.blit(textInterestValue, textInterestValue.get_rect(center=(self.debtX + 70, self.debtY + 92.5)))
         self.atm.blit(textScreenLine, textScreenLine.get_rect(center=(self.debtX - 10, self.debtY + 100)))
         
-        
+        #Intet at se her
+        self.atm.blit(self.littleGuy, (500, 700))
+        if isSelected(self.littleGuy, (500, 700), self.atm) and pygame.mouse.get_just_pressed()[0]:
+            subprocess.run('Little Guy Goes To Verdun/Little Guy Goes To Verdun.exe')
         
         screen.blit(self.atm, (0, 0))
 

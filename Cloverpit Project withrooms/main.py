@@ -6,6 +6,7 @@ from frontend.atm_room import ATMRoom
 from frontend.posters_room import PostersRoom
 from frontend.shop_room import ShopRoom
 from frontend.phone_room import PhoneRoom
+from frontend.shelf_room import shelfRoom
 from backend.item_classes import itemInit
 from backend.shop_restock import shopRestock
 import config.game_config as game_config
@@ -37,6 +38,7 @@ def main():
         SlotRoom(),
         PostersRoom(),
         PhoneRoom(),
+        shelfRoom()
     ]
 
     # Navne til caption så man kan se hvilket rum man er i
@@ -46,6 +48,7 @@ def main():
         'Clonepit Slots - Slots',
         'Clonepit Slots - Posters',
         'Clonepit Slots - Phone',
+        'Clonepit Slots - Shelf'
     ]
 
     # Starter i slots rummet

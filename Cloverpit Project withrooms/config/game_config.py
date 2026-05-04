@@ -47,6 +47,15 @@ patternOrder = {
     'zig': 30, 'zag': 31, 'above': 32, 'below': 33, 'eye': 34, 'jackpot': 35,
 }
 
+patterns = {'hor1.1':(0, 1, 2), 'hor1.2':(1, 2, 3), 'hor1.3':(2, 3, 4), 'hor2.1':(5, 6, 7), 'hor2.2':(6, 7, 8), 'hor2.3':(7, 8, 9),
+    'hor3.1':(10, 11, 12), 'hor3.2':(11, 12, 13), 'hor3.3':(12, 13, 14), 'vert1':(0, 5, 10), 'vert2':(1, 6, 11), 'vert3':(2, 7, 12),
+    'vert4':(3, 8, 13), 'vert5':(4, 9, 14), 'bckDiag1':(0, 6, 12), 'bckDiag2':(1, 7, 13), 'bckDiag3':(2, 8, 14),
+    'fwdDiag1':(2, 6, 10), 'fwdDiag2':(3, 7, 11), 'fwdDiag3':(4, 8, 12), 'horL1.1':(0, 1, 2, 3), 'horL1.2':(1, 2, 3, 4),
+    'horL2.1':(5, 6, 7, 8), 'horL2.2':(6, 7, 8, 9), 'horL3.1':(10, 11, 12, 13), 'horL3.2':(11, 12, 13, 14),
+    'horXL1':(0, 1, 2, 3, 4), 'horXL2':(5, 6, 7, 8, 9), 'horXL3':(10, 11, 12, 13, 14), 'zig':(2, 6, 8, 10, 14),
+    'zag':(0, 4, 6, 8, 12), 'above':(2, 6, 8, 10, 11, 12, 13, 14), 'below':(0, 1, 2, 3, 4, 6, 8, 12),
+    'eye':(1, 2, 3, 5, 6, 8, 9, 11, 12, 13), 'jackpot':(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14)}
+
 eyeShape = (1, 2, 3, 5, 6, 8, 9, 11, 12, 13)
 aboveShape = (2, 6, 8, 10, 11, 12, 13, 14)
 belowShape = (0, 1, 2, 3, 4, 6, 8, 12)
@@ -58,6 +67,8 @@ patternMult = 1
 buttonPressed = False
 chance666 = 1.5
 is666 = False
+
+bonusSpins = 0
 
 #Backend default chances for modifiers (all zero for now)
 
@@ -106,13 +117,13 @@ tempLuck = 0
 freeRestocks = 0
 
 #Shelf variabler
-ShelfSpace = 7
-shelfRoom = 7
+ShelfSpace = 6
+shelfRoom = 6
 shelfItems = []
 
 #Money variabler
 coins = 0
-tickets = 0
+tickets = 10
 
 #Item variabler
 cigaretteCost = 1 #skal resettes ved slutningen af hver deadline

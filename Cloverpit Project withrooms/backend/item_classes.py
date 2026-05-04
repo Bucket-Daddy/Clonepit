@@ -983,13 +983,13 @@ def itemInit():
         description = '\033[93mDoesn\'t take space\033[0m. Increase all Symbols by their base value, permanently. Then immediately restock the store together with this charm. The price of this charm increases by 1 ticket every time until Deadline end.'
         sprite = pygame.image.load('assets/Cigarettes.png')
         weight = 10
-        cost = cigaretteCost
+        cost = 1
         space = 0
         type = 'passive'
 
         def trigger(self):
-            global cigaretteCost
-            cigaretteCost += 1
+            global unlockedItems
+            unlockedItems[44].cost += 1
             for i in range(7):
                 global symbolValues
                 symbolValues[i] += baseSymbolValues[i]

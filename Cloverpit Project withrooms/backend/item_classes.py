@@ -1,10 +1,12 @@
 #item classes
 import math
 import pygame
+from config.game_config import *
+from backend.shop_restock import shopRestock
+
 unlockedItems = []
 itemWeights = []
 
-from config.game_config import (cigaretteCost)
 
 def itemInit():    
 
@@ -103,7 +105,7 @@ def itemInit():
         space = 1
         type = 'postRoll'
 
-        def trigger(self):
+        def trigger(self, result, pityCounter):
             if pityCounter >= 3:
                 for i in range(7):
                     global symbolValues
@@ -125,9 +127,11 @@ def itemInit():
         type = 'passive'
 
         def trigger(self):
+            global randomTriggerMult
             randomTriggerMult *= 2
 
         def sold(self):
+            global randomTriggerMult
             randomTriggerMult *= 0.5
 
     unlockedItems.append(horseshoe)
@@ -142,7 +146,7 @@ def itemInit():
         space = 1
         type = 'postRoll'
 
-        def trigger(self):
+        def trigger(self, result, pityCounter):
             if len(result) > 2:
                 global coins
                 coins += (interest - 1) * depositedAmount
@@ -255,7 +259,7 @@ def itemInit():
         space = 1
         type = 'random'
 
-        def trigger(self):
+        def trigger(self, result, pityCounter):
             global fakeCoinSpins
             fakeCoinSpins += 1
     
@@ -298,7 +302,7 @@ def itemInit():
             self.init = False
             self.extraLuck = 0
 
-        def trigger(self):
+        def trigger(self, result, pityCounter):
             if pityCounter >= 2:
                 if self.init:
                     global luck
@@ -747,7 +751,7 @@ def itemInit():
         space = 1
         type = 'postRoll'
 
-        def trigger(self):
+        def trigger(self, result, pityCounter):
             if len(result) >= 3:
                 global symbolValues
                 symbolValues[0] += baseSymbolValues[0]
@@ -768,9 +772,9 @@ def itemInit():
         space = 1
         type = 'postRoll'
 
-        def trigger(self):
+        def trigger(self, result, pityCounter):
             for i in result:
-                if len[patterns[i[0]]]:
+                if len(patterns[result[i][0]]) > 3:
                     global symbolValues
                     symbolValues[4] += baseSymbolValues[4]
                     symbolValues[5] += baseSymbolValues[5]
@@ -868,7 +872,7 @@ def itemInit():
         space = 1
         type = 'postRoll'
 
-        def trigger(self):
+        def trigger(self, result, pityCounter):
             if is666:
                 global freeRestocks
                 freeRestocks += 3
@@ -916,7 +920,7 @@ def itemInit():
         def __init__(self):
             self.activations = 0
 
-        def trigger(self):
+        def trigger(self, result, pityCounter):
             global tempLuck
             tempLuck += 5
             self.activations += 1
@@ -989,7 +993,7 @@ def itemInit():
             for i in range(7):
                 global symbolValues
                 symbolValues[i] += baseSymbolValues[i]
-                #call the shop restock function
+                shopRestock(unlockedItems, itemWeights)
                 #something to kill itself
 
         def sold(self): #this should never be triggered
@@ -1070,7 +1074,7 @@ def itemInit():
         space = 1
         type = 'random'
 
-        def trigger(self):
+        def trigger(self, result, pityCounter):
             if pityCounter > 0:
                 for i in range(7):
                     global symbolValues

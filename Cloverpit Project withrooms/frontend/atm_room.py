@@ -85,6 +85,7 @@ class ATMRoom:
                 deadlineEndTrigger()
                 for i in range(7):
                     game_config.symbolWeights[i] -= game_config.tempSymbolWeights[i]
+                    game_config.tempSymbolWeights[i] = 0
             pass
 
         # blit interest payout og få den til at knappe

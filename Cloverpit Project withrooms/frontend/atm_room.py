@@ -75,42 +75,79 @@ class ATMRoom:
         self.atm.blit(self.atmButton, (self.debtX + 167, self.debtY + 59))
 
         if isSelected(self.atmButton, (self.debtX + 167, self.debtY + 59), self.atm) and pygame.mouse.get_just_pressed()[0]:
-            if config.depositedAmount + config.coins // 2 > config.debtAmount or config.coins >= config.debtAmount * 3:
-                config.depositedAmount += config.debtAmount - config.depositedAmount
-                config.coins -= config.debtAmount - config.depositedAmount
-            elif config.coins <= config.debtAmount * 0.1:
-                config.depositedAmount += 1
-                config.coins -= 1
-            else:
-                config.depositedAmount += config.coins // 3
-                config.coins -= config.coins // 3
+            if config.coins > 0:
+                # Find ud af hvad den store spin-pakke koster på dette deadline
+                d = config.debtNum
+                if d == 1:   spinBudget = 7
+                elif d == 2: spinBudget = 14
+                elif d == 3: spinBudget = 28
+                elif d == 4: spinBudget = 42
+                else:        spinBudget = 56
+
+                # Driprate per klik når man er inden for spin budgettet
+                if d == 1:   dripRate = 1
+                elif d == 2: dripRate = 2
+                elif d == 3: dripRate = 4
+                elif d == 4: dripRate = 6
+                else:        dripRate = 8
+
+                remaining = max(0, config.debtAmount - config.depositedAmount)
+
+                # Fast 10% af TOTAL debt per klik så det ikke falder over tid
+                depositChunk = max(dripRate, int(config.debtAmount * 0.1))
+
+                # Beskyt spin-budgettet: lad ikke indbetalingen tage det ned under spinBudget
+                if config.coins - depositChunk < spinBudget:
+                    depositChunk = max(dripRate, config.coins - spinBudget)
+
+                depositChunk = max(1, depositChunk)
+                depositChunk = min(depositChunk, config.coins)
+                depositChunk = min(depositChunk, remaining)  # aldrig mere end hvad der mangler
+                config.depositedAmount += depositChunk
+                config.coins -= depositChunk
 
             if config.depositedAmount >= config.debtAmount:
+                # Deadline klaret: bonus: 6 coins per deadline nummer, 4 tickets per sprunget runde
+                # roundNum er 1-indekseret: maks 3 runder, skipped = 3 - roundNum
+                bonusCoins = 6 * config.debtNum
+                bonusTickets = 4 * max(0, 3 - config.roundNum)
+                config.coins += bonusCoins
+                config.tickets += bonusTickets
+                # Nulstil til næste deadline
                 config.debtAmount = newDeadline(config.debtNum, 1)
                 config.debtNum += 1
                 config.roundNum = 1
-                config.interestStorage = config.debtAmount * 0.08
-                config.tickets += 16 - 4 * config.roundNum
+                config.spinsLeft = 0
                 deadlineEndTrigger()
                 for i in range(7):
                     config.symbolWeights[i] -= config.tempSymbolWeights[i]
                     config.tempSymbolWeights[i] = 0
 
-        # blit interest payout og få den til at knappe
+        # Rente-udbetalings panel (atmPayout) vises når der er opsparet rente
+        # interestStorage opbygges af slot_room ved rundesslut og akkumulerer hvis ikke hentet
         if config.interestStorage > 0:
             self.atm.blit(self.atmPayout, (self.debtX - 155, self.debtY + 195))
-        
-            if isSelected(self.atmPayout, (self.debtX - 155, self.debtY + 195), self.atm) and pygame.mouse.get_just_pressed()[0]:
-                #config.coins += config.interestStorage
-                config.interestStorage = 0
-                print(config.interestStorage)
+            interestText = self.font2.render(str(round(config.interestStorage)) + ' coins', True, (246, 250, 10))
+            self.atm.blit(interestText, interestText.get_rect(center=(self.debtX - 120, self.debtY + 245)))
 
-        # Blit runde bonusen på overfladen
+            if isSelected(self.atmPayout, (self.debtX - 155, self.debtY + 195), self.atm) and pygame.mouse.get_just_pressed()[0]:
+                config.coins += round(config.interestStorage)
+                config.interestStorage = 0
+
+        # Deadline bonus panel viser hvad der gives ved deadline slutning
+        # Coins: 6 * deadline-nummer, Tickets: 4 per sprunget runde (maks 3 runder)
+        roundBonusCoins = 6 * config.debtNum
+        roundBonusTickets = 4 * max(0, 3 - config.roundNum)
+
         self.atm.blit(self.atmRoundBonus, (self.debtX + 320, self.debtY - 75))
         pygame.draw.rect(self.atm, (0, 0, 0), (self.debtX + 352.5, self.debtY + 25, self.atmRoundBonus.get_width() // 1.325, self.atmRoundBonus.get_height() // 2.55), width = 0)
         self.atm.blit(self.atmCoinAndTicket, (self.debtX + 440, self.debtY + 40))
-        roundBonusCoinText = self.font2.render(str(round(config.debtAmount * 0.08)), True, (246, 250, 10))
-        roundBonusTicketText = self.font2.render(str(16 - 4 * config.roundNum), True, (246, 250, 10))
+
+        # Dynamiske tal ved siden af mønt- og ticket-symbolerne
+        roundBonusCoinText = self.font2.render(str(roundBonusCoins), True, (246, 250, 10))
+        roundBonusTicketText = self.font2.render(str(roundBonusTickets), True, (246, 250, 10))
+        self.atm.blit(roundBonusCoinText, (self.debtX + 415, self.debtY + 44))
+        self.atm.blit(roundBonusTicketText, (self.debtX + 415, self.debtY + 62))
 
         # Blit teksten og mønterne på ATM-overfladen
         self.atm.blit(textScreenLine, textScreenLine.get_rect(center=(self.debtX - 10, self.debtY - 20)))
@@ -139,15 +176,18 @@ class ATMRoom:
         self.atm.blit(textDeposited, textDeposited.get_rect(center=(self.debtX - 75, self.debtY + 55)))
         self.atm.blit(self.coin, (self.debtX + 68, self.debtY + 55))
 
-        if math.log10(config.depositedAmount) >= 6 and math.log10(config.depositedAmount) < 100:
+        if config.depositedAmount <= 0:
+            textDepositedAmount = self.font2.render('0', True, (246, 250, 10))
+            self.atm.blit(textDepositedAmount, textDepositedAmount.get_rect(center=(self.debtX + 50, self.debtY + 70)))
+        elif math.log10(config.depositedAmount) >= 6 and math.log10(config.depositedAmount) < 100:
             deposit = round(config.depositedAmount * 10**(-1 * (len(str(config.depositedAmount)) - 1)), 2)
             textDepositedAmount = self.font2.render(str(deposit) + 'E+' + str(len(str(config.depositedAmount)) - 1), True, (246, 250, 10))
             self.atm.blit(textDepositedAmount, textDepositedAmount.get_rect(center=(self.debtX + 30, self.debtY + 70)))
-        if math.log10(config.depositedAmount) >= 100:
+        elif math.log10(config.depositedAmount) >= 100:
             deposit = round(config.depositedAmount * 10**(-1 * (len(str(config.depositedAmount)) - 1)), 2)
             textDepositedAmount = self.font2.render(str(deposit) + 'E+' + str(len(str(config.depositedAmount)) - 1), True, (246, 250, 10))
             self.atm.blit(textDepositedAmount, textDepositedAmount.get_rect(center=(self.debtX + 25, self.debtY + 70)))
-        if math.log10(config.depositedAmount) < 6:
+        else:
             textDepositedAmount = self.font2.render(str(config.depositedAmount), True, (246, 250, 10))
             self.atm.blit(textDepositedAmount, textDepositedAmount.get_rect(center=(self.debtX + 50 - math.log10(config.depositedAmount)**(1.50 - 0.012 * math.log10(config.depositedAmount)), self.debtY + 70)))
 
@@ -162,4 +202,3 @@ class ATMRoom:
             subprocess.run('Little Guy Goes To Verdun/Little Guy Goes To Verdun.exe')
         
         screen.blit(self.atm, (0, 0))
-

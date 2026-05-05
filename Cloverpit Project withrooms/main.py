@@ -11,9 +11,13 @@ from backend.item_classes import itemInit
 from backend.shop_restock import shopRestock
 import config.game_config as config
 
+
 def main():
     pygame.init()
     pygame.mixer.init()
+
+    pygame.mixer.music.load('assets/mondamusic-retro-arcade-game-music-512837.mp3')
+    pygame.mixer.music.play(loops = -1)
 
     screen = pygame.display.set_mode((1200, 750))
     pygame.display.set_caption('Clonepit Slots')

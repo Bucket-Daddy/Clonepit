@@ -3,8 +3,9 @@ import pygame
 import random
 import math
 import config.game_config as game_config
-
 from backend.spin_engine import GameState, spin
+from frontend.mouseCheck import isSelected
+from backend.shelf_backend import buttonTrigger
 
 
 class SlotRoom:
@@ -51,6 +52,10 @@ class SlotRoom:
         battery = pygame.image.load('assets/ModifierBattery.webp')
         chain = pygame.image.load('assets/ModifierChain.webp')
 
+        self.machine = pygame.image.load('assets/SlotMachine.png')
+        self.button = pygame.image.load('assets/Button.png')
+        self.crancker = pygame.image.load('assets/Handle.png')
+
         #Loader lydeffekter
         self.scoreSFX = pygame.mixer.Sound('assets/1-18. Slot Machine Scored.mp3')
         self.jackpotSFX = pygame.mixer.Sound('assets/1-17. Slot Machine Jackpot.mp3')
@@ -73,6 +78,13 @@ class SlotRoom:
         battery = pygame.transform.scale(battery, (9 * self.symbolScale, 9 * self.symbolScale))
         chain = pygame.transform.scale(chain, (9 * self.symbolScale, 9 * self.symbolScale))
 
+        self.Button = pygame.transform.scale(self.button, (self.button.get_width(), self.button.get_height()))
+        self.Crancker = pygame.transform.scale(self.crancker, (self.crancker.get_width() * 0.5, self.crancker.get_height() * 0.5))
+        self.machineX = self.slotMachine.get_width() // 2.6 - self.machine.get_width() // 2
+        self.machineY = self.slotMachine.get_height() // 2 - self.machine.get_height() // 7.2
+        self.buttonX = self.slotMachine.get_width() // 1.17 - self.Button.get_width() // 2
+        self.buttonY = self.slotMachine.get_height() // 1.17 - self.Button.get_height() // 2
+        
         #Tuples og dictionaries til fortolkning af resultat
         self.symbolsTuple = (lemon, cherry, clover, bell, diamond, treasure, seven, six)
         self.symbolsTuple2 = (lemon, cherry, clover, bell, diamond, treasure, seven)
@@ -207,8 +219,16 @@ class SlotRoom:
         self.slotMachine.blit(btn7Label, btn7Label.get_rect(center=self.btn7Rect.center + pygame.math.Vector2(0, -18)))
         self.slotMachine.blit(btn7Cost, btn7Cost.get_rect(center=self.btn7Rect.center + pygame.math.Vector2(0, 18)))
 
+        #Tegner slot machine surface på skærmen
+        self.slotMachine.blit(self.machine, (self.machineX, self.machineY))
+        self.slotMachine.blit(self.Button, (self.buttonX, self.buttonY))
+
     def draw(self, screen):
         self.slotMachine.fill((0, 0, 0))
+
+        #Tegner slot machine surface på skærmen
+        self.slotMachine.blit(self.machine, (self.machineX, self.machineY))
+        self.slotMachine.blit(self.Button, (self.buttonX, self.buttonY))
 
         #Buyschreen vises kun når spins er 0, animation er færdig, og forsinkelsen er talt ned
         patternsDone = self.patternTimer >= len(self.result) * self.frameRate * 1.25 * self.patternDuration
@@ -247,7 +267,7 @@ class SlotRoom:
 
         #Tegner linjer mellem reels
         for i in range(4):
-            pygame.draw.rect(self.slotMachine, (120, 95, 26), pygame.Rect(self.reelOriginX + (i + 1) * self.symbolSpaceHor - self.symbolScale * 9 - 0.5 * self.dividerLineWidth, self.reelOriginY, self.dividerLineWidth, (18 * self.symbolScale + self.symbolSpaceVer) * 3 + self.symbolSpaceVer))
+            pygame.draw.rect(self.slotMachine, (120, 95, 26), pygame.Rect(self.reelOriginX + (i + 1) * self.symbolSpaceHor - self.symbolScale * 9 - 0.5 * self.dividerLineWidth, self.reelOriginY, self.dividerLineWidth, (18 * self.symbolScale + self.symbolSpaceVer) * 2.8 + self.symbolSpaceVer))
 
         #Når reelsene har nået bunden af skærmen vises hvert pattern i {patternDuration} sekunder
         if self.reelsY.count(self.reelOriginY + self.symbolSpaceVer) == 5 and self.patternTimer < len(self.result) * self.frameRate * 1.25 * self.patternDuration and not self.is666:
@@ -282,5 +302,15 @@ class SlotRoom:
                 self.slotMachine.blit(text, text.get_rect(center=(self.screenW / 2, self.screenH / 2)))
 
             self.patternTimer += 1
+        
+        # Tegner slot machine surface på skærmen
+        #self.slotMachine.blit(self.Crancker, (self.machineX, self.machineY))
+        self.slotMachine.blit(self.machine, (self.machineX, self.machineY))
+        self.slotMachine.blit(self.Button, (self.buttonX, self.buttonY))
+
+        # Får knappen til at knappe
+        if isSelected(self.Button, (self.buttonX, self.buttonY), self.slotMachine) and pygame.mouse.get_just_pressed()[0]:
+            buttonTrigger()
+        pass
 
         screen.blit(self.slotMachine, (0, 0))

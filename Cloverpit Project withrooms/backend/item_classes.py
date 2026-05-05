@@ -849,7 +849,7 @@ def itemInit():
         def trigger(self, result, pityCounter):
             game_config.tempLuck += 5
             self.activations += 1
-            if self.activation == 12:
+            if self.activations == 12:
                 game_config.shelfItems.pop(-1)
 
         def sold(self):

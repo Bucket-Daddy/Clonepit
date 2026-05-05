@@ -36,6 +36,20 @@ patternValues = {
     'jackpot': 10,
 }
 
+basePatternValues = {
+    'hor': 1,
+    'vert': 1,
+    'diag': 1,
+    'horL': 2,
+    'horXL': 3,
+    'zig': 4,
+    'zag': 4,
+    'above': 7,
+    'below': 7,
+    'eye': 8,
+    'jackpot': 10,
+}
+
 patternOrder = {
     'hor1.1': 1, 'hor1.2': 2, 'hor1.3': 3,
     'hor2.1': 4, 'hor2.2': 5, 'hor2.3': 6,

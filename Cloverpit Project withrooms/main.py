@@ -81,6 +81,11 @@ def main():
                 if event.key == pygame.K_SPACE and currentRoom == 1:
                     shopRestock(unlockedItems, itemWeights)
 
+            #Museklik sendes til slots rummet (køb-knapper)
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                if currentRoom == 2:
+                    rooms[2].on_click(event.pos)
+
 
         screen.fill((0, 0, 0))
         rooms[currentRoom].draw(screen)

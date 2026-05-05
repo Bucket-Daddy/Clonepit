@@ -536,7 +536,4 @@ def spin(state: GameState):
     state.spinNum = spinNum + 1
     state.OLSSpin = OLSSpin
 
-    print(result)
-    print(config.lemonGoldChance)
-
     return res, modifiers, result

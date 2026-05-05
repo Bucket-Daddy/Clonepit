@@ -123,8 +123,11 @@ shelfRoom = 6
 shelfItems = []
 
 #Money variabler
-coins = 0
+coins = 100
 tickets = 10
+
+#Spin variabler
+spinsLeft = 0     # 0 = viser buyschreen
 
 #Item variabler
 cigaretteCost = 1 #skal resettes ved slutningen af hver deadline

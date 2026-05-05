@@ -44,6 +44,7 @@ class shelfRoom:
                     if pygame.mouse.get_just_pressed()[0]:
                         game_config.tickets += game_config.shelfItems[i].cost
                         game_config.shelfRoom -= game_config.shelfItems[i].space
+                        game_config.shelfItems[i].sold()
                         game_config.shelfItems[i] = 0
 
         self.shelf_room.blit(self.font.render(str(len(game_config.shelfItems) - game_config.shelfItems.count(0)) + '/' + str(game_config.shelfSpace), True, (240, 170, 41)), ((600, 700)))

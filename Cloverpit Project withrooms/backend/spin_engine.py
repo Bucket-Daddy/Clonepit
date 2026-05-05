@@ -165,6 +165,8 @@ def spin(state: GameState):
             for _ in range(1 + retrigger + modTrigs.count(4)):
                 for gold in range(modTrigs.count(1)):
                     config.symbolValues[eyeList[0]] += config.baseSymbolValues[eyeList[0]]
+                for chain in range(modTrigs.count(6)):
+                    config.patternValues['eye'] += config.basePatternValues['eye']
                 result.append(('eye', payout, modTrigs))
             eye = True
         else:
@@ -177,6 +179,8 @@ def spin(state: GameState):
                     for _ in range(1 + retrigger + modTrigs.count(4)):
                         for gold in range(modTrigs.count(1)):
                             config.symbolValues[vertList[0]] += config.baseSymbolValues[vertList[0]]
+                        for chain in range(modTrigs.count(6)):
+                            config.patternValues['vert'] += config.basePatternValues['vert']
                         result.append(('vert' + str((i + 1) * 2), payout, modTrigs))
 
         for i in range(3):
@@ -188,6 +192,8 @@ def spin(state: GameState):
                 for _ in range(1 + retrigger + modTrigs.count(4)):
                     for gold in range(modTrigs.count(1)):
                         config.symbolValues[vertList[0]] += config.baseSymbolValues[vertList[0]]
+                    for chain in range(modTrigs.count(6)):
+                        config.patternValues['vert'] += config.basePatternValues['vert']
                     result.append(('vert' + str(1 + i * 2), payout, modTrigs))
 
         aboveList = []
@@ -200,6 +206,8 @@ def spin(state: GameState):
             for _ in range(1 + retrigger + modTrigs.count(4)):
                 for gold in range(modTrigs.count(1)):
                     config.symbolValues[aboveList[0]] += config.baseSymbolValues[aboveList[0]]
+                for chain in range(modTrigs.count(6)):
+                    config.patternValues['above'] += config.basePatternValues['above']
                 result.append(('above', payout, modTrigs))
         else:
             for i in range(5):
@@ -210,6 +218,8 @@ def spin(state: GameState):
                 for _ in range(1 + retrigger + modTrigs.count(4)):
                     for gold in range(modTrigs.count(1)):
                         config.symbolValues[horXLList[0]] += config.baseSymbolValues[horXLList[0]]
+                    for chain in range(modTrigs.count(6)):
+                        config.patternValues['horXL'] += config.basePatternValues['horXL']
                     result.append(('horXL1', payout, modTrigs))
             else:
                 for i in range(4):
@@ -220,6 +230,8 @@ def spin(state: GameState):
                     for _ in range(1 + retrigger + modTrigs.count(4)):
                         for gold in range(modTrigs.count(1)):
                             config.symbolValues[horLList[0]] += config.baseSymbolValues[horLList[0]]
+                        for chain in range(modTrigs.count(6)):
+                            config.patternValues['horL'] += config.basePatternValues['horL']
                         result.append(('horL1.1', payout, modTrigs))
                 else:
                     for i in range(4):
@@ -230,6 +242,8 @@ def spin(state: GameState):
                         for _ in range(1 + retrigger + modTrigs.count(4)):
                             for gold in range(modTrigs.count(1)):
                                 config.symbolValues[horLList[0]] += config.baseSymbolValues[horLList[0]]
+                            for chain in range(modTrigs.count(6)):
+                                config.patternValues['horL'] += config.basePatternValues['horL']
                             result.append(('horL1.2', payout, modTrigs))
                     else:
                         for i in range(2):
@@ -241,6 +255,8 @@ def spin(state: GameState):
                                 for _ in range(1 + retrigger + modTrigs.count(4)):
                                     for gold in range(modTrigs.count(1)):
                                         config.symbolValues[horList[0]] += config.baseSymbolValues[horList[0]]
+                                    for chain in range(modTrigs.count(6)):
+                                        config.patternValues['hor'] += config.basePatternValues['hor']
                                     result.append(('hor1.' + str(1 + 2 * i), payout))
                                 break
 
@@ -252,6 +268,8 @@ def spin(state: GameState):
                             for _ in range(1 + retrigger + modTrigs.count(4)):
                                 for gold in range(modTrigs.count(1)):
                                     config.symbolValues[horList[0]] += config.baseSymbolValues[horList[0]]
+                                for chain in range(modTrigs.count(6)):
+                                    config.patternValues['hor'] += config.basePatternValues['hor']
                                 result.append(('hor1.2', payout, modTrigs))
 
             zigList = []
@@ -263,6 +281,8 @@ def spin(state: GameState):
                 for _ in range(1 + retrigger + modTrigs.count(4)):
                     for gold in range(modTrigs.count(1)):
                         config.symbolValues[zigList[0]] += config.baseSymbolValues[zigList[0]]
+                    for chain in range(modTrigs.count(6)):
+                        config.patternValues['zig'] += config.basePatternValues['zig']
                     result.append(('zig', payout, modTrigs))
             else:
                 diagShape = [2, 6, 10]
@@ -273,6 +293,10 @@ def spin(state: GameState):
                     payout = config.symbolValues[diagList[0]] * config.symbolMult * config.patternValues['diag'] * config.patternMult
                     modTrigs = tuple(modifiers[slot] for slot in diagShape if modifiers[slot] != 0)
                     for _ in range(1 + retrigger + modTrigs.count(4)):
+                        for gold in range(modTrigs.count(1)):
+                            config.symbolValues[diagList[0]] += config.baseSymbolValues[diagList[0]]
+                        for chain in range(modTrigs.count(6)):
+                            config.patternValues['diag'] += config.basePatternValues['diag']  
                         result.append(('fwdDiag1', payout, modTrigs))
                 else:
                     diagShape = [2, 8, 14]
@@ -285,6 +309,8 @@ def spin(state: GameState):
                         for _ in range(1 + retrigger + modTrigs.count(4)):
                             for gold in range(modTrigs.count(1)):
                                 config.symbolValues[diagList[0]] += config.baseSymbolValues[diagList[0]]
+                            for chain in range(modTrigs.count(6)):
+                                config.patternValues['diag'] += config.basePatternValues['diag']
                             result.append(('bckDiag3', payout, modTrigs))
 
         belowList = []
@@ -297,6 +323,8 @@ def spin(state: GameState):
             for _ in range(1 + retrigger + modTrigs.count(4)):
                 for gold in range(modTrigs.count(1)):
                     config.symbolValues[belowList[0]] += config.baseSymbolValues[belowList[0]]
+                for chain in range(modTrigs.count(6)):
+                    config.patternValues['below'] += config.basePatternValues['below']
                 result.append(('below', payout, modTrigs))
         else:
             for i in range(5):
@@ -307,6 +335,8 @@ def spin(state: GameState):
                 for _ in range(1 + retrigger + modTrigs.count(4)):
                     for gold in range(modTrigs.count(1)):
                         config.symbolValues[horXLList[0]] += config.baseSymbolValues[horXLList[0]]
+                    for chain in range(modTrigs.count(6)):
+                        config.patternValues['horXL'] += config.basePatternValues['horXL']
                     result.append(('horXL3', payout, modTrigs))
             else:
                 for i in range(4):
@@ -317,6 +347,8 @@ def spin(state: GameState):
                     for _ in range(1 + retrigger + modTrigs.count(4)):
                         for gold in range(modTrigs.count(1)):
                             config.symbolValues[horLList[0]] += config.baseSymbolValues[horLList[0]]
+                        for chain in range(modTrigs.count(6)):
+                            config.patternValues['horL'] += config.basePatternValues['horL']
                         result.append(('horL3.1', payout, modTrigs))
                 else:
                     for i in range(4):
@@ -327,6 +359,8 @@ def spin(state: GameState):
                         for _ in range(1 + retrigger + modTrigs.count(4)):
                             for gold in range(modTrigs.count(1)):
                                 config.symbolValues[horLList[0]] += config.baseSymbolValues[horLList[0]]
+                            for chain in range(modTrigs.count(6)):
+                                config.patternValues['horL'] += config.basePatternValues['horL']
                             result.append(('horL3.2', payout, modTrigs))
                     else:
                         for i in range(2):
@@ -338,6 +372,8 @@ def spin(state: GameState):
                                 for _ in range(1 + retrigger + modTrigs.count(4)):
                                     for gold in range(modTrigs.count(1)):
                                         config.symbolValues[horList[0]] += config.baseSymbolValues[horList[0]]
+                                    for chain in range(modTrigs.count(6)):
+                                        config.patternValues['hor'] += config.basePatternValues['hor']
                                     result.append(('hor3.' + str(1 + 2 * i), payout, modTrigs))
                                 break
 
@@ -349,6 +385,8 @@ def spin(state: GameState):
                             for _ in range(1 + retrigger + modTrigs.count(4)):
                                 for gold in range(modTrigs.count(1)):
                                     config.symbolValues[horList[0]] += config.baseSymbolValues[horList[0]]
+                                for chain in range(modTrigs.count(6)):
+                                    config.patternValues['hor'] += config.basePatternValues['hor']
                                 result.append(('hor3.2', payout, modTrigs))
 
             zagList = []
@@ -360,6 +398,8 @@ def spin(state: GameState):
                 for _ in range(1 + retrigger + modTrigs.count(4)):
                     for gold in range(modTrigs.count(1)):
                         config.symbolValues[zagList[0]] += config.baseSymbolValues[zagList[0]]
+                    for chain in range(modTrigs.count(6)):
+                        config.patternValues['zag'] += config.basePatternValues['zag']
                     result.append(('zag', payout, modTrigs))
             else:
                 diagShape = [0, 6, 12]
@@ -372,6 +412,8 @@ def spin(state: GameState):
                     for _ in range(1 + retrigger + modTrigs.count(4)):
                         for gold in range(modTrigs.count(1)):
                             config.symbolValues[diagList[0]] += config.baseSymbolValues[diagList[0]]
+                        for chain in range(modTrigs.count(6)):
+                            config.patternValues['diag'] += config.basePatternValues['diag']
                         result.append(('bckDiag1', payout))
                 else:
                     diagShape = [4, 8, 12]
@@ -384,6 +426,8 @@ def spin(state: GameState):
                         for _ in range(1 + retrigger + modTrigs.count(4)):
                             for gold in range(modTrigs.count(1)):
                                 config.symbolValues[diagList[0]] += config.baseSymbolValues[diagList[0]]
+                            for chain in range(modTrigs.count(6)):
+                                config.patternValues['diag'] += config.basePatternValues['diag']
                             result.append(('fwdDiag3', payout, modTrigs))
 
         for i in range(5):
@@ -394,6 +438,8 @@ def spin(state: GameState):
             for _ in range(1 + retrigger + modTrigs.count(4)):
                 for gold in range(modTrigs.count(1)):
                     config.symbolValues[horXLList[0]] += config.baseSymbolValues[horXLList[0]]
+                for chain in range(modTrigs.count(6)):
+                    config.patternValues['horXL'] += config.basePatternValues['horXL']
                 result.append(('horXL2', payout, modTrigs))
         else:
             for i in range(4):
@@ -404,6 +450,8 @@ def spin(state: GameState):
                 for _ in range(1 + retrigger + modTrigs.count(4)):
                     for gold in range(modTrigs.count(1)):
                         config.symbolValues[horLList[0]] += config.baseSymbolValues[horLList[0]]
+                    for chain in range(modTrigs.count(6)):
+                        config.patternValues['horL'] += config.basePatternValues['horL']
                     result.append(('horL2.1', payout, modTrigs))
             else:
                 for i in range(4):
@@ -414,6 +462,8 @@ def spin(state: GameState):
                     for _ in range(1 + retrigger + modTrigs.count(4)):
                         for gold in range(modTrigs.count(1)):
                             config.symbolValues[horLList[0]] += config.baseSymbolValues[horLList[0]]
+                        for chain in range(modTrigs.count(6)):
+                            config.patternValues['horL'] += config.basePatternValues['horL']
                         result.append(('horL2.2', payout, modTrigs))
                 else:
                     for i in range(3):
@@ -425,6 +475,8 @@ def spin(state: GameState):
                             for _ in range(1 + retrigger + modTrigs.count(4)):
                                 for gold in range(modTrigs.count(1)):
                                     config.symbolValues[horList[0]] += config.baseSymbolValues[horList[0]]
+                                for chain in range(modTrigs.count(6)):
+                                    config.patternValues['hor'] += config.basePatternValues['hor']
                                 result.append(('hor2.' + str(1 + i), payout, modTrigs))
                             break
 
@@ -438,6 +490,8 @@ def spin(state: GameState):
             for _ in range(1 + retrigger + modTrigs.count(4)):
                 for gold in range(modTrigs.count(1)):
                     config.symbolValues[diagList[0]] += config.baseSymbolValues[diagList[0]]
+                for chain in range(modTrigs.count(6)):
+                    config.patternValues['diag'] += config.basePatternValues['diag']
                 result.append(('fwdDiag2', payout, modTrigs))
 
         diagShape = [1, 7, 13]
@@ -450,6 +504,8 @@ def spin(state: GameState):
             for _ in range(1 + retrigger + modTrigs.count(4)):
                 for gold in range(modTrigs.count(1)):
                     config.symbolValues[diagList[0]] += config.baseSymbolValues[diagList[0]]
+                for chain in range(modTrigs.count(6)):
+                    config.patternValues['diag'] += config.basePatternValues['diag']
                 result.append(('bckDiag2', payout, modTrigs))
 
         if res.count(res[0]) == 15:
@@ -458,6 +514,8 @@ def spin(state: GameState):
             for _ in range(1 + retrigger + modTrigs.count(4)):
                 for gold in range(modTrigs.count(1)):
                     config.symbolValues[res[0]] += config.baseSymbolValues[res[0]]
+                for chain in range(modTrigs.count(6)):
+                    config.patternValues['jackpot'] += config.basePatternValues['jackpot']
                 result.append(('jackpot', payout, modTrigs))
 
     if result == []:

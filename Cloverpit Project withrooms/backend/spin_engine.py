@@ -6,69 +6,14 @@ import config.game_config as config
 
 from backend.shelf_backend import (preRollTrigger, postRollTrigger, randomTrigger, buttonTrigger, interventionTrigger)
 
-from config.game_config import (
-    symbols,
-    symbolWeights,
-    patternValues,
-    patternOrder,
-    eyeShape,
-    aboveShape,
-    belowShape,
-    zigShape,
-    zagShape,
-    symbolMult,
-    patternMult,
-    buttonPressed,
-    chance666,
-    is666,
-    
-    lemonGoldChance,
-    cherryGoldChance,
-    cloverGoldChance,
-    bellGoldChance,
-    diamondGoldChance,
-    treasureGoldChance,
-    sevenGoldChance,
-
-    lemonTokenChance,
-    cherryTokenChance,
-    cloverTokenChance,
-    bellTokenChance,
-    diamondTokenChance,
-    treasureTokenChance,
-    sevenTokenChance,
-
-    lemonTicketChance,
-    cherryTicketChance,
-    cloverTicketChance,
-    bellTicketChance,
-    diamondTicketChance,
-    treasureTicketChance,
-    sevenTicketChance,
-    
-    repChance,
-    affRepChance,
-    battChance,
-    affBattChance,
-    chainChance,
-    affChainChance,
-    BASE_LUCK_DEFAULT,
-    DEBT_NUM_DEFAULT,
-    SPIN_NUM_START,
-    PITY_COUNTER_START,
-    OLS_SPIN_START,
-    random_ils_offset,
-)
-
-
 class GameState:
     def __init__(self):
 
-        self.debtNum = DEBT_NUM_DEFAULT
-        self.spinNum = SPIN_NUM_START
-        self.OLSSpin = OLS_SPIN_START
-        self.pityCounter = PITY_COUNTER_START
-        self.ILSOffset = random_ils_offset()
+        self.debtNum = config.DEBT_NUM_DEFAULT
+        self.spinNum = config.SPIN_NUM_START
+        self.OLSSpin = config.OLS_SPIN_START
+        self.pityCounter = config.PITY_COUNTER_START
+        self.ILSOffset = config.random_ils_offset()
 
 
 def spin(state: GameState):
@@ -114,82 +59,82 @@ def spin(state: GameState):
         if random.randint(0, 6) == 6:
             luck += 1
 
-    luckSymbol = random.choices(symbols, weights=symbolWeights)
+    luckSymbol = random.choices(config.symbols, weights = config.symbolWeights)
     for _ in range(luck):
         res += luckSymbol
 
     if len(res) < 15:
         for _ in range(15 - len(res)):
-            res += random.choices(symbols, weights=symbolWeights)
+            res += random.choices(config.symbols, weights = config.symbolWeights)
 
     random.shuffle(res)
 
     for slot in res:
         r = 100 * random.random()
 
-        if slot == 0 and r <= lemonGoldChance:
+        if slot == 0 and r <= config.lemonGoldChance:
             modifiers.append(1)
-        elif slot == 1 and r <= cherryGoldChance:
+        elif slot == 1 and r <= config.cherryGoldChance:
             modifiers.append(1)
-        elif slot == 2 and r <= cloverGoldChance:
+        elif slot == 2 and r <= config.cloverGoldChance:
             modifiers.append(1)
-        elif slot == 3 and r <= bellGoldChance:
+        elif slot == 3 and r <= config.bellGoldChance:
             modifiers.append(1)
-        elif slot == 4 and r <= diamondGoldChance:
+        elif slot == 4 and r <= config.diamondGoldChance:
             modifiers.append(1)
-        elif slot == 5 and r <= treasureGoldChance:
+        elif slot == 5 and r <= config.treasureGoldChance:
             modifiers.append(1)
-        elif slot == 6 and r <= sevenGoldChance:
+        elif slot == 6 and r <= config.sevenGoldChance:
             modifiers.append(1)
 
-        elif slot == 0 and r <= lemonTokenChance:
+        elif slot == 0 and r <= config.lemonTokenChance:
             modifiers.append(2)
-        elif slot == 1 and r <= cherryTokenChance:
+        elif slot == 1 and r <= config.cherryTokenChance:
             modifiers.append(2)
-        elif slot == 2 and r <= cloverTokenChance:
+        elif slot == 2 and r <= config.cloverTokenChance:
             modifiers.append(2)
-        elif slot == 3 and r <= bellTokenChance:
+        elif slot == 3 and r <= config.bellTokenChance:
             modifiers.append(2)
-        elif slot == 4 and r <= diamondTokenChance:
+        elif slot == 4 and r <= config.diamondTokenChance:
             modifiers.append(2)
-        elif slot == 5 and r <= treasureTokenChance:
+        elif slot == 5 and r <= config.treasureTokenChance:
             modifiers.append(2)
-        elif slot == 6 and r <= sevenTokenChance:
+        elif slot == 6 and r <= config.sevenTokenChance:
             modifiers.append(2)
 
 
-        elif slot == 0 and r <= lemonTicketChance:
+        elif slot == 0 and r <= config.lemonTicketChance:
             modifiers.append(3)
-        elif slot == 1 and r <= cherryTicketChance:
+        elif slot == 1 and r <= config.cherryTicketChance:
             modifiers.append(3)
-        elif slot == 2 and r <= cloverTicketChance:
+        elif slot == 2 and r <= config.cloverTicketChance:
             modifiers.append(3)
-        elif slot == 3 and r <= bellTicketChance:
+        elif slot == 3 and r <= config.bellTicketChance:
             modifiers.append(3)
-        elif slot == 4 and r <= diamondTicketChance:
+        elif slot == 4 and r <= config.diamondTicketChance:
             modifiers.append(3)
-        elif slot == 5 and r <= treasureTicketChance:
+        elif slot == 5 and r <= config.treasureTicketChance:
             modifiers.append(3)
-        elif slot == 6 and r <= sevenTicketChance:
+        elif slot == 6 and r <= config.sevenTicketChance:
             modifiers.append(3)
 
 
-        elif r <= repChance:
+        elif r <= config.repChance:
             modifiers.append(4)
-        elif slot > 3 and r <= affRepChance:
+        elif slot > 3 and r <= config.affRepChance:
             modifiers.append(4)
-        elif r <= battChance:
+        elif r <= config.battChance:
             modifiers.append(5)
-        elif (slot == 2 or slot == 3) and r <= affBattChance:
+        elif (slot == 2 or slot == 3) and r <= config.affBattChance:
             modifiers.append(5)
-        elif r <= chainChance:
+        elif r <= config.chainChance:
             modifiers.append(6)
-        elif slot > 3 and r <= affChainChance:
+        elif slot > 3 and r <= config.affChainChance:
             modifiers.append(6)
         else:
             modifiers.append(0)
 
-    if 100 * random.random() <= chance666:
+    if 100 * random.random() <= config.chance666:
         res[6] = 7
         res[7] = 7
         res[8] = 7
@@ -211,12 +156,12 @@ def spin(state: GameState):
         modTrigs = []
 
         eyeList = []
-        for i in eyeShape:
+        for i in config.eyeShape:
             eyeList.append(res[i])
 
         if eyeList.count(eyeList[0]) == 10:
-            payout = config.symbolValues[eyeList[0]] * symbolMult * patternValues['eye'] * patternMult
-            modTrigs = tuple(modifiers[slot] for slot in eyeShape if modifiers[slot] != 0)
+            payout = config.symbolValues[eyeList[0]] * config.symbolMult * config.patternValues['eye'] * config.patternMult
+            modTrigs = tuple(modifiers[slot] for slot in config.eyeShape if modifiers[slot] != 0)
             for _ in range(1 + retrigger + modTrigs.count(4)):
                 for gold in range(modTrigs.count(1)):
                     config.symbolValues[eyeList[0]] += config.baseSymbolValues[eyeList[0]]
@@ -227,7 +172,7 @@ def spin(state: GameState):
                 for j in range(3):
                     vertList[j] = res[1 + 5 * j + 2 * i]
                 if vertList.count(vertList[0]) == 3:
-                    payout = config.symbolValues[vertList[0]] * symbolMult * patternValues['vert'] * patternMult
+                    payout = config.symbolValues[vertList[0]] * config.symbolMult * config.patternValues['vert'] * config.patternMult
                     modTrigs = tuple([modifiers[slot] for slot in (1 + 2 * i, 6 + 2 * i, 11 + 2 * i) if modifiers[slot] != 0])
                     for _ in range(1 + retrigger + modTrigs.count(4)):
                         for gold in range(modTrigs.count(1)):
@@ -238,7 +183,7 @@ def spin(state: GameState):
             for j in range(3):
                 vertList[j] = res[5 * j + 2 * i]
             if vertList.count(vertList[0]) == 3:
-                payout = config.symbolValues[vertList[0]] * symbolMult * patternValues['vert'] * patternMult
+                payout = config.symbolValues[vertList[0]] * config.symbolMult * config.patternValues['vert'] * config.patternMult
                 modTrigs = tuple(modifiers[slot] for slot in (2 * i, 5 + 2 * i, 10 + 2 * i) if modifiers[slot] != 0)
                 for _ in range(1 + retrigger + modTrigs.count(4)):
                     for gold in range(modTrigs.count(1)):
@@ -246,12 +191,12 @@ def spin(state: GameState):
                     result.append(('vert' + str(1 + i * 2), payout, modTrigs))
 
         aboveList = []
-        for i in aboveShape:
+        for i in config.aboveShape:
             aboveList.append(res[i])
 
         if aboveList.count(aboveList[0]) == 8:
-            payout = config.symbolValues[aboveList[0]] * symbolMult * patternValues['above'] * patternMult
-            modTrigs = tuple(modifiers[slot] for slot in aboveShape if modifiers[slot] != 0)
+            payout = config.symbolValues[aboveList[0]] * config.symbolMult * config.patternValues['above'] * config.patternMult
+            modTrigs = tuple(modifiers[slot] for slot in config.aboveShape if modifiers[slot] != 0)
             for _ in range(1 + retrigger + modTrigs.count(4)):
                 for gold in range(modTrigs.count(1)):
                     config.symbolValues[aboveList[0]] += config.baseSymbolValues[aboveList[0]]
@@ -260,7 +205,7 @@ def spin(state: GameState):
             for i in range(5):
                 horXLList[i] = res[i]
             if horXLList.count(horXLList[0]) == 5:
-                payout = config.symbolValues[horXLList[0]] * symbolMult * patternValues['horXL'] * patternMult
+                payout = config.symbolValues[horXLList[0]] * config.symbolMult * config.patternValues['horXL'] * config.patternMult
                 modTrigs = tuple(modifiers[slot] for slot in range(5) if modifiers[slot] != 0)
                 for _ in range(1 + retrigger + modTrigs.count(4)):
                     for gold in range(modTrigs.count(1)):
@@ -270,7 +215,7 @@ def spin(state: GameState):
                 for i in range(4):
                     horLList[i] = res[i]
                 if horLList.count(horLList[0]) == 4:
-                    payout = config.symbolValues[horLList[0]] * symbolMult * patternValues['horL'] * patternMult
+                    payout = config.symbolValues[horLList[0]] * config.symbolMult * config.patternValues['horL'] * config.patternMult
                     modTrigs = tuple(modifiers[slot] for slot in range(4) if modifiers[slot] != 0)
                     for _ in range(1 + retrigger + modTrigs.count(4)):
                         for gold in range(modTrigs.count(1)):
@@ -280,7 +225,7 @@ def spin(state: GameState):
                     for i in range(4):
                         horLList[i] = res[i + 1]
                     if horLList.count(horLList[0]) == 4:
-                        payout = config.symbolValues[horLList[0]] * symbolMult * patternValues['horL'] * patternMult
+                        payout = config.symbolValues[horLList[0]] * config.symbolMult * config.patternValues['horL'] * config.patternMult
                         modTrigs = tuple(modifiers[slot] for slot in (1, 2, 3, 4) if modifiers[slot] != 0)
                         for _ in range(1 + retrigger + modTrigs.count(4)):
                             for gold in range(modTrigs.count(1)):
@@ -291,7 +236,7 @@ def spin(state: GameState):
                             for j in range(3):
                                 horList[j] = res[2 * i + j]
                             if horList.count(horList[0]) == 3:
-                                payout = config.symbolValues[horList[0]] * symbolMult * patternValues['hor'] * patternMult
+                                payout = config.symbolValues[horList[0]] * config.symbolMult * config.patternValues['hor'] * config.patternMult
                                 modTrigs = tuple(modifiers[slot] for slot in (2 * i, 2 * i + 1, 2 * i + 2) if modifiers[slot] != 0)
                                 for _ in range(1 + retrigger + modTrigs.count(4)):
                                     for gold in range(modTrigs.count(1)):
@@ -302,7 +247,7 @@ def spin(state: GameState):
                         for i in range(3):
                             horList[i] = res[i + 1]
                         if horList.count(horList[0]) == 3 and not eye:
-                            payout = config.symbolValues[horList[0]] * symbolMult * patternValues['hor'] * patternMult
+                            payout = config.symbolValues[horList[0]] * config.symbolMult * config.patternValues['hor'] * config.patternMult
                             modTrigs = tuple(modifiers[slot] for slot in (1, 2, 3) if modifiers[slot] != 0)
                             for _ in range(1 + retrigger + modTrigs.count(4)):
                                 for gold in range(modTrigs.count(1)):
@@ -310,11 +255,11 @@ def spin(state: GameState):
                                 result.append(('hor1.2', payout, modTrigs))
 
             zigList = []
-            for i in zigShape:
+            for i in config.zigShape:
                 zigList.append(i)
             if zigList.count(zigList[0]) == 5:
-                payout = config.symbolValues[zigList[0]] * symbolMult * patternValues['zig'] * patternMult
-                modTrigs = tuple(modifiers[slot] for slot in zigShape if modifiers[slot] != 0)
+                payout = config.symbolValues[zigList[0]] * config.symbolMult * config.patternValues['zig'] * config.patternMult
+                modTrigs = tuple(modifiers[slot] for slot in config.zigShape if modifiers[slot] != 0)
                 for _ in range(1 + retrigger + modTrigs.count(4)):
                     for gold in range(modTrigs.count(1)):
                         config.symbolValues[zigList[0]] += config.baseSymbolValues[zigList[0]]
@@ -325,7 +270,7 @@ def spin(state: GameState):
                 for i in diagShape:
                     diagList.append(res[i])
                 if diagList.count(diagList[0]) == 3:
-                    payout = config.symbolValues[diagList[0]] * symbolMult * patternValues['diag'] * patternMult
+                    payout = config.symbolValues[diagList[0]] * config.symbolMult * config.patternValues['diag'] * config.patternMult
                     modTrigs = tuple(modifiers[slot] for slot in diagShape if modifiers[slot] != 0)
                     for _ in range(1 + retrigger + modTrigs.count(4)):
                         result.append(('fwdDiag1', payout, modTrigs))
@@ -335,7 +280,7 @@ def spin(state: GameState):
                     for i in diagShape:
                         diagList.append(res[i])
                     if diagList.count(diagList[0]) == 3:
-                        payout = config.symbolValues[diagList[0]] * symbolMult * patternValues['diag'] * patternMult
+                        payout = config.symbolValues[diagList[0]] * config.symbolMult * config.patternValues['diag'] * config.patternMult
                         modTrigs = tuple(modifiers[slot] for slot in diagShape if modifiers[slot] != 0)
                         for _ in range(1 + retrigger + modTrigs.count(4)):
                             for gold in range(modTrigs.count(1)):
@@ -343,12 +288,12 @@ def spin(state: GameState):
                             result.append(('bckDiag3', payout, modTrigs))
 
         belowList = []
-        for i in belowShape:
+        for i in config.belowShape:
             belowList.append(res[i])
 
         if belowList.count(belowList[0]) == 8:
-            payout = config.symbolValues[belowList[0]] * symbolMult * patternValues['below'] * patternMult
-            modTrigs = tuple(modifiers[slot] for slot in belowShape if modifiers[slot] != 0)
+            payout = config.symbolValues[belowList[0]] * config.symbolMult * config.patternValues['below'] * config.patternMult
+            modTrigs = tuple(modifiers[slot] for slot in config.belowShape if modifiers[slot] != 0)
             for _ in range(1 + retrigger + modTrigs.count(4)):
                 for gold in range(modTrigs.count(1)):
                     config.symbolValues[belowList[0]] += config.baseSymbolValues[belowList[0]]
@@ -357,7 +302,7 @@ def spin(state: GameState):
             for i in range(5):
                 horXLList[i] = res[i + 10]
             if horXLList.count(horXLList[0]) == 5:
-                payout = config.symbolValues[horXLList[0]] * symbolMult * patternValues['horXL'] * patternMult
+                payout = config.symbolValues[horXLList[0]] * config.symbolMult * config.patternValues['horXL'] * config.patternMult
                 modTrigs = tuple(modifiers[slot] for slot in (10, 11, 12, 13, 14) if modifiers[slot] != 0)
                 for _ in range(1 + retrigger + modTrigs.count(4)):
                     for gold in range(modTrigs.count(1)):
@@ -367,7 +312,7 @@ def spin(state: GameState):
                 for i in range(4):
                     horLList[i] = res[i + 10]
                 if horLList.count(horLList[0]) == 4:
-                    payout = config.symbolValues[horLList[0]] * symbolMult * patternValues['horL'] * patternMult
+                    payout = config.symbolValues[horLList[0]] * config.symbolMult * config.patternValues['horL'] * config.patternMult
                     modTrigs = tuple(modifiers[slot] for slot in (10, 11, 12, 13) if modifiers[slot] != 0)
                     for _ in range(1 + retrigger + modTrigs.count(4)):
                         for gold in range(modTrigs.count(1)):
@@ -377,7 +322,7 @@ def spin(state: GameState):
                     for i in range(4):
                         horLList[i] = res[i + 11]
                     if horLList.count(horLList[0]) == 4:
-                        payout = config.symbolValues[horLList[0]] * symbolMult * patternValues['horL'] * patternMult
+                        payout = config.symbolValues[horLList[0]] * config.symbolMult * config.patternValues['horL'] * config.patternMult
                         modTrigs = tuple(modifiers[slot] for slot in (11, 12, 13, 14) if modifiers[slot] != 0)
                         for _ in range(1 + retrigger + modTrigs.count(4)):
                             for gold in range(modTrigs.count(1)):
@@ -388,7 +333,7 @@ def spin(state: GameState):
                             for j in range(3):
                                 horList[j] = res[2 * i + j + 10]
                             if horList.count(horList[0]) == 3:
-                                payout = config.symbolValues[horList[0]] * symbolMult * patternValues['hor'] * patternMult
+                                payout = config.symbolValues[horList[0]] * config.symbolMult * config.patternValues['hor'] * config.patternMult
                                 modTrigs = tuple(modifiers[slot] for slot in (2 * i + 10, 2 * i + 11, 2 * i + 12) if modifiers[slot] != 0)
                                 for _ in range(1 + retrigger + modTrigs.count(4)):
                                     for gold in range(modTrigs.count(1)):
@@ -399,7 +344,7 @@ def spin(state: GameState):
                         for i in range(3):
                             horList[i] = res[i + 11]
                         if horList.count(horList[0]) == 3 and not eye:
-                            payout = config.symbolValues[horList[0]] * symbolMult * patternValues['hor'] * patternMult
+                            payout = config.symbolValues[horList[0]] * config.symbolMult * config.patternValues['hor'] * config.patternMult
                             modTrigs = tuple(modifiers[slot] for slot in (11, 12, 13) if modifiers[slot] != 0)
                             for _ in range(1 + retrigger + modTrigs.count(4)):
                                 for gold in range(modTrigs.count(1)):
@@ -407,11 +352,11 @@ def spin(state: GameState):
                                 result.append(('hor3.2', payout, modTrigs))
 
             zagList = []
-            for i in zagShape:
+            for i in config.zagShape:
                 zagList.append(i)
             if zagList.count(zagList[0]) == 5:
-                payout = config.symbolValues[zagList[0]] * symbolMult * patternValues['zag'] * patternMult
-                modTrigs = tuple(modifiers[slot] for slot in zagShape if modifiers[slot] != 0)
+                payout = config.symbolValues[zagList[0]] * config.symbolMult * config.patternValues['zag'] * config.patternMult
+                modTrigs = tuple(modifiers[slot] for slot in config.zagShape if modifiers[slot] != 0)
                 for _ in range(1 + retrigger + modTrigs.count(4)):
                     for gold in range(modTrigs.count(1)):
                         config.symbolValues[zagList[0]] += config.baseSymbolValues[zagList[0]]
@@ -422,7 +367,7 @@ def spin(state: GameState):
                 for i in diagShape:
                     diagList.append(res[i])
                 if diagList.count(diagList[0]) == 3:
-                    payout = config.symbolValues[diagList[0]] * symbolMult * patternValues['diag'] * patternMult
+                    payout = config.symbolValues[diagList[0]] * config.symbolMult * config.patternValues['diag'] * config.patternMult
                     modTrigs = tuple(modifiers[slot] for slot in diagShape if modifiers[slot] != 0)
                     for _ in range(1 + retrigger + modTrigs.count(4)):
                         for gold in range(modTrigs.count(1)):
@@ -434,7 +379,7 @@ def spin(state: GameState):
                     for i in diagShape:
                         diagList.append(res[i])
                     if diagList.count(diagList[0]) == 3:
-                        payout = config.symbolValues[diagList[0]] * symbolMult * patternValues['diag'] * patternMult
+                        payout = config.symbolValues[diagList[0]] * config.symbolMult * config.patternValues['diag'] * config.patternMult
                         modTrigs = tuple(modifiers[slot] for slot in diagShape if modifiers[slot] != 0)
                         for _ in range(1 + retrigger + modTrigs.count(4)):
                             for gold in range(modTrigs.count(1)):
@@ -444,7 +389,7 @@ def spin(state: GameState):
         for i in range(5):
             horXLList[i] = res[i + 5]
         if horXLList.count(horXLList[0]) == 5:
-            payout = config.symbolValues[horXLList[0]] * symbolMult * patternValues['horXL'] * patternMult
+            payout = config.symbolValues[horXLList[0]] * config.symbolMult * config.patternValues['horXL'] * config.patternMult
             modTrigs = tuple(modifiers[slot] for slot in (5, 6, 7, 8, 9) if modifiers[slot] != 0)
             for _ in range(1 + retrigger + modTrigs.count(4)):
                 for gold in range(modTrigs.count(1)):
@@ -454,7 +399,7 @@ def spin(state: GameState):
             for i in range(4):
                 horLList[i] = res[i + 5]
             if horLList.count(horLList[0]) == 4:
-                payout = config.symbolValues[horLList[0]] * symbolMult * patternValues['horL'] * patternMult
+                payout = config.symbolValues[horLList[0]] * config.symbolMult * config.patternValues['horL'] * config.patternMult
                 modTrigs = tuple(modifiers[slot] for slot in (5, 6, 7, 8) if modifiers[slot] != 0)
                 for _ in range(1 + retrigger + modTrigs.count(4)):
                     for gold in range(modTrigs.count(1)):
@@ -464,7 +409,7 @@ def spin(state: GameState):
                 for i in range(4):
                     horLList[i] = res[i + 6]
                 if horLList.count(horLList[0]) == 4:
-                    payout = config.symbolValues[horLList[0]] * symbolMult * patternValues['horL'] * patternMult
+                    payout = config.symbolValues[horLList[0]] * config.symbolMult * config.patternValues['horL'] * config.patternMult
                     modTrigs = tuple(modifiers[slot] for slot in (6, 7, 8, 9) if modifiers[slot] != 0)
                     for _ in range(1 + retrigger + modTrigs.count(4)):
                         for gold in range(modTrigs.count(1)):
@@ -475,7 +420,7 @@ def spin(state: GameState):
                         for j in range(3):
                             horList[j] = res[i + j + 5]
                         if horList.count(horList[0]) == 3:
-                            payout = config.symbolValues[horList[0]] * symbolMult * patternValues['hor'] * patternMult
+                            payout = config.symbolValues[horList[0]] * config.symbolMult * config.patternValues['hor'] * config.patternMult
                             modTrigs = tuple(modifiers[slot] for slot in (i + 5, i + 6, i + 7) if modifiers[slot] != 0)
                             for _ in range(1 + retrigger + modTrigs.count(4)):
                                 for gold in range(modTrigs.count(1)):
@@ -488,7 +433,7 @@ def spin(state: GameState):
         for i in diagShape:
             diagList.append(res[i])
         if diagList.count(diagList[0]) == 3:
-            payout = config.symbolValues[diagList[0]] * symbolMult * patternValues['diag'] * patternMult
+            payout = config.symbolValues[diagList[0]] * config.symbolMult * config.patternValues['diag'] * config.patternMult
             modTrigs = tuple(modifiers[slot] for slot in diagShape if modifiers[slot] != 0)
             for _ in range(1 + retrigger + modTrigs.count(4)):
                 for gold in range(modTrigs.count(1)):
@@ -500,7 +445,7 @@ def spin(state: GameState):
         for i in diagShape:
             diagList.append(res[i])
         if diagList.count(diagList[0]) == 3:
-            payout = config.symbolValues[diagList[0]] * symbolMult * patternValues['diag'] * patternMult
+            payout = config.symbolValues[diagList[0]] * config.symbolMult * config.patternValues['diag'] * config.patternMult
             modTrigs = tuple(modifiers[slot] for slot in diagShape if modifiers[slot] != 0)
             for _ in range(1 + retrigger + modTrigs.count(4)):
                 for gold in range(modTrigs.count(1)):
@@ -508,7 +453,7 @@ def spin(state: GameState):
                 result.append(('bckDiag2', payout, modTrigs))
 
         if res.count(res[0]) == 15:
-            payout = config.symbolValues[res[0]] * symbolMult * patternValues['jackpot'] * patternMult
+            payout = config.symbolValues[res[0]] * config.symbolMult * config.patternValues['jackpot'] * config.patternMult
             modTrigs = tuple(modifiers[slot] for slot in range(15) if modifiers[slot] != 0)
             for _ in range(1 + retrigger + modTrigs.count(4)):
                 for gold in range(modTrigs.count(1)):
@@ -524,7 +469,7 @@ def spin(state: GameState):
     randomTrigger(result, pityCounter)
 
     def patternOrdering(e):
-        return patternOrder[e[0]]
+        return config.patternOrder[e[0]]
 
     result.sort(key=patternOrdering)
 
@@ -532,5 +477,8 @@ def spin(state: GameState):
     state.pityCounter = pityCounter
     state.spinNum = spinNum + 1
     state.OLSSpin = OLSSpin
+
+    print(result)
+    print(config.lemonGoldChance)
 
     return res, modifiers, result

@@ -257,7 +257,7 @@ def spin(state: GameState):
                                         config.symbolValues[horList[0]] += config.baseSymbolValues[horList[0]]
                                     for chain in range(modTrigs.count(6)):
                                         config.patternValues['hor'] += config.basePatternValues['hor']
-                                    result.append(('hor1.' + str(1 + 2 * i), payout))
+                                    result.append(('hor1.' + str(1 + 2 * i), payout, modTrigs))
                                 break
 
                         for i in range(3):
@@ -414,7 +414,7 @@ def spin(state: GameState):
                             config.symbolValues[diagList[0]] += config.baseSymbolValues[diagList[0]]
                         for chain in range(modTrigs.count(6)):
                             config.patternValues['diag'] += config.basePatternValues['diag']
-                        result.append(('bckDiag1', payout))
+                        result.append(('bckDiag1', payout, modTrigs))
                 else:
                     diagShape = [4, 8, 12]
                     diagList.clear()

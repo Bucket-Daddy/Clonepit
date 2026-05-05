@@ -91,6 +91,17 @@ class SlotRoom:
         self.patternDuration = 1
         self.lastPaidPattern = -1
 
+        #Forsinkelse efter sidste spin før køb-skærmen vises (i frames)
+        self.roundEndDelay = 0
+        self.roundEndDelayFrames = 90  # 1.5 sekunder ved 60fps
+
+        #Coin ikon til køb-skærmen
+        self.coinImg = pygame.transform.scale(pygame.image.load('assets/Coin.webp'), (36, 36))
+
+        #Knap rektangler for buyschreen beregnes en gang her
+        self.btn3Rect = pygame.Rect(self.screenW // 2 - 300, self.screenH // 2 + 50, 280, 100)
+        self.btn7Rect = pygame.Rect(self.screenW // 2 + 20, self.screenH // 2 + 50, 280, 100)
+
     def _build_reels(self):
         #Danner reels ud fra det nuværende resultat
         self.reels = []
@@ -100,7 +111,7 @@ class SlotRoom:
             if self.is666:
                 reel.blit(random.choice(self.symbolsTuple), (0, 0))
                 if i < 4 and i > 0:
-                    reel.blit(self.six, (0, 18 * self.symbolScale + self.symbolSpaceVer))
+                    reel.blit(self.symbolsTuple[7], (0, 18 * self.symbolScale + self.symbolSpaceVer))
                 else:
                     reel.blit(random.choice(self.symbolsTuple2), (0, 18 * self.symbolScale + self.symbolSpaceVer))
                 reel.blit(random.choice(self.symbolsTuple2), (0, 36 * self.symbolScale + 2 * self.symbolSpaceVer))
@@ -116,18 +127,23 @@ class SlotRoom:
             self.reels.append(reel)
 
     def on_space(self):
-        #Spinner kun hvis reelsene er landet (ikke midt i en animation)
-        if self.spinning:
+        #Spinner kun hvis reelsene er landet, pattern animationen er færdig, og der er spins tilbage
+        patternsDone = self.patternTimer >= len(self.result) * self.frameRate * 1.25 * self.patternDuration
+        if self.spinning or not patternsDone or game_config.spinsLeft <= 0:
             return
 
         #Henter nyt resultat fra spin engine
         self.res, self.modifiers, self.result = spin(self.gameState)
         self.is666 = game_config.is666
 
-        #Nulstiller reel animation og pattern timer
+        #Trækker et spin fra
+        game_config.spinsLeft -= 1
+
+        #Nulstiller reel animation, pattern timer og runde-slut forsinkelse
         self.reelsY = [-(18 * self.symbolScale + self.symbolSpaceVer) * 30] * 5
         self.patternTimer = 0
         self.lastPaidPattern = -1
+        self.roundEndDelay = 0
         self.spinning = True
         self.hasSpun = True
 
@@ -135,10 +151,79 @@ class SlotRoom:
         self._build_reels()
         self.rollingSFX.play()
 
+    def on_click(self, mousePos):
+        #Håndterer klik på køb knapper når buyschreen vises
+        if game_config.spinsLeft > 0:
+            return
+        if self.btn3Rect.collidepoint(mousePos) and game_config.coins >= 3:
+            game_config.coins -= 3
+            game_config.spinsLeft += 3 + game_config.bonusSpins
+            game_config.tickets += 2
+            self.roundEndDelay = 0
+        elif self.btn7Rect.collidepoint(mousePos) and game_config.coins >= 7:
+            game_config.coins -= 7
+            game_config.spinsLeft += 7 + game_config.bonusSpins
+            game_config.tickets += 1
+            self.roundEndDelay = 0
+
+    def _draw_buy_screen(self):
+        #Tegner buyschreen når spilleren ikke har flere spins (sort baggrund)
+        self.slotMachine.fill((0, 0, 0))
+
+        #Rundenummer øverst i midten
+        buyFont = pygame.font.Font(None, size = 40)
+        roundText = buyFont.render('ROUND ' + str(game_config.roundNum), True, (246, 250, 10))
+        self.slotMachine.blit(roundText, roundText.get_rect(center=(self.screenW // 2, 80)))
+
+        mousePos = pygame.mouse.get_pos()
+        canAfford3 = game_config.coins >= 3
+        canAfford7 = game_config.coins >= 7
+
+        #Knap 3 spins
+        btn3BgColor = (40, 40, 40) if canAfford3 else (20, 20, 20)
+        btn3BorderColor = (120, 95, 26) if canAfford3 else (60, 50, 20)
+        btn3TextColor = (246, 250, 10) if canAfford3 else (100, 100, 100)
+        btn3SubColor = (200, 200, 200) if canAfford3 else (80, 80, 80)
+        pygame.draw.rect(self.slotMachine, btn3BgColor, self.btn3Rect, border_radius=8)
+        pygame.draw.rect(self.slotMachine, btn3BorderColor, self.btn3Rect, 3, border_radius=8)
+        if self.btn3Rect.collidepoint(mousePos) and canAfford3:
+            pygame.draw.rect(self.slotMachine, (246, 250, 10), self.btn3Rect, 3, border_radius=8)
+        btn3Label = buyFont.render('3 SPINS', True, btn3TextColor)
+        btn3Cost = pygame.font.Font(None, size=30).render('3 coins  +2 tickets', True, btn3SubColor)
+        self.slotMachine.blit(btn3Label, btn3Label.get_rect(center=self.btn3Rect.center + pygame.math.Vector2(0, -18)))
+        self.slotMachine.blit(btn3Cost, btn3Cost.get_rect(center=self.btn3Rect.center + pygame.math.Vector2(0, 18)))
+
+        #Knap 7 spins
+        btn7BgColor = (40, 40, 40) if canAfford7 else (20, 20, 20)
+        btn7BorderColor = (120, 95, 26) if canAfford7 else (60, 50, 20)
+        btn7TextColor = (246, 250, 10) if canAfford7 else (100, 100, 100)
+        btn7SubColor = (200, 200, 200) if canAfford7 else (80, 80, 80)
+        pygame.draw.rect(self.slotMachine, btn7BgColor, self.btn7Rect, border_radius=8)
+        pygame.draw.rect(self.slotMachine, btn7BorderColor, self.btn7Rect, 3, border_radius=8)
+        if self.btn7Rect.collidepoint(mousePos) and canAfford7:
+            pygame.draw.rect(self.slotMachine, (246, 250, 10), self.btn7Rect, 3, border_radius=8)
+        btn7Label = buyFont.render('7 SPINS', True, btn7TextColor)
+        btn7Cost = pygame.font.Font(None, size=30).render('7 coins  +1 ticket', True, btn7SubColor)
+        self.slotMachine.blit(btn7Label, btn7Label.get_rect(center=self.btn7Rect.center + pygame.math.Vector2(0, -18)))
+        self.slotMachine.blit(btn7Cost, btn7Cost.get_rect(center=self.btn7Rect.center + pygame.math.Vector2(0, 18)))
+
     def draw(self, screen):
         self.slotMachine.fill((0, 0, 0))
 
-        #Viser ingenting før første spin
+        #Buyschreen vises kun når spins er 0, animation er færdig, og forsinkelsen er talt ned
+        patternsDone = self.patternTimer >= len(self.result) * self.frameRate * 1.25 * self.patternDuration
+        roundOver = game_config.spinsLeft <= 0 and not self.spinning and patternsDone
+
+        if roundOver:
+            if self.roundEndDelay < self.roundEndDelayFrames:
+                #Tæller forsinkelsen op viser stadig reelsene i mellemtiden
+                self.roundEndDelay += 1
+            else:
+                self._draw_buy_screen()
+                screen.blit(self.slotMachine, (0, 0))
+                return
+
+        #Viser tomt felt hvis der ikke er spinnet endnu i denne runde
         if not self.hasSpun:
             screen.blit(self.slotMachine, (0, 0))
             return
@@ -156,7 +241,7 @@ class SlotRoom:
         if allLanded:
             self.spinning = False
 
-        #Loader reels til slot machine surface - centreret horisontalt og vertikalt
+        #Loader reels til slot machine surface centreret horisontalt og vertikalt
         for reel in range(5):
             self.slotMachine.blit(self.reels[reel], (self.reelOriginX + reel * self.symbolSpaceHor, self.reelsY[reel]))
 

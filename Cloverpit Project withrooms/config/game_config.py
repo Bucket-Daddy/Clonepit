@@ -7,6 +7,7 @@ import random
 symbols = (0, 1, 2, 3, 4, 5, 6)  # lemon, cherry, clover, bell, diamond, treasure, seven
 SYMBOL_NAMES = ['lemon', 'cherry', 'clover', 'bell', 'diamond', 'treasure', 'seven']
 symbolWeights = [1.3, 1.3, 1, 1, 0.8, 0.8, 0.5]
+tempSymbolWeights = [0, 0, 0, 0, 0, 0, 0]
 symbolValues = [2, 2, 3, 3, 5, 5, 7]
 baseSymbolValues = [2, 2, 3, 3, 5, 5, 7]
 
@@ -70,6 +71,7 @@ chance666 = 1.5
 is666 = False
 
 bonusSpins = 0
+fakeCoinSpins = 0
 
 #Backend default chances for modifiers (all zero for now)
 
@@ -113,6 +115,7 @@ SPIN_NUM_START = 1
 PITY_COUNTER_START = 0
 OLS_SPIN_START = 0
 tempLuck = 0
+luck = 0
 
 #Shop variabler
 freeRestocks = 0
@@ -121,6 +124,9 @@ freeRestocks = 0
 shelfSpace = 6
 shelfRoom = 6
 shelfItems = []
+
+#Phone variabler
+phonecallRep = 0
 
 #Money variabler
 coins = 100

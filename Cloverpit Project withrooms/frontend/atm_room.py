@@ -83,6 +83,8 @@ class ATMRoom:
                 # game_config.interestStorage = game_config.debtAmount * 0.08
                 # game_config.tickets += 16 - 4 * game_config.roundNum
                 deadlineEndTrigger()
+                for i in range(7):
+                    game_config.symbolWeights[i] -= game_config.tempSymbolWeights[i]
             pass
 
         # blit interest payout og få den til at knappe

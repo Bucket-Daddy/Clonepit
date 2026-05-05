@@ -2,7 +2,7 @@
 import pygame
 import random
 import math
-import config.game_config as game_config
+import config.game_config as config
 from backend.spin_engine import GameState, spin
 from frontend.mouseCheck import isSelected
 from backend.shelf_backend import buttonTrigger
@@ -141,15 +141,15 @@ class SlotRoom:
     def on_space(self):
         #Spinner kun hvis reelsene er landet, pattern animationen er færdig, og der er spins tilbage
         patternsDone = self.patternTimer >= len(self.result) * self.frameRate * 1.25 * self.patternDuration
-        if self.spinning or not patternsDone or game_config.spinsLeft <= 0:
+        if self.spinning or not patternsDone or config.spinsLeft <= 0:
             return
 
         #Henter nyt resultat fra spin engine
         self.res, self.modifiers, self.result = spin(self.gameState)
-        self.is666 = game_config.is666
+        self.is666 = config.is666
 
         #Trækker et spin fra
-        game_config.spinsLeft -= 1
+        config.spinsLeft -= 1
 
         #Nulstiller reel animation, pattern timer og runde-slut forsinkelse
         self.reelsY = [-(18 * self.symbolScale + self.symbolSpaceVer) * 30] * 5
@@ -165,17 +165,17 @@ class SlotRoom:
 
     def on_click(self, mousePos):
         #Håndterer klik på køb knapper når buyschreen vises
-        if game_config.spinsLeft > 0:
+        if config.spinsLeft > 0:
             return
-        if self.btn3Rect.collidepoint(mousePos) and game_config.coins >= 3:
-            game_config.coins -= 3
-            game_config.spinsLeft += 3 + game_config.bonusSpins
-            game_config.tickets += 2
+        if self.btn3Rect.collidepoint(mousePos) and config.coins >= 3:
+            config.coins -= 3
+            config.spinsLeft += 3 + config.bonusSpins
+            config.tickets += 2
             self.roundEndDelay = 0
-        elif self.btn7Rect.collidepoint(mousePos) and game_config.coins >= 7:
-            game_config.coins -= 7
-            game_config.spinsLeft += 7 + game_config.bonusSpins
-            game_config.tickets += 1
+        elif self.btn7Rect.collidepoint(mousePos) and config.coins >= 7:
+            config.coins -= 7
+            config.spinsLeft += 7 + config.bonusSpins
+            config.tickets += 1
             self.roundEndDelay = 0
 
     def _draw_buy_screen(self):
@@ -184,12 +184,12 @@ class SlotRoom:
 
         #Rundenummer øverst i midten
         buyFont = pygame.font.Font(None, size = 40)
-        roundText = buyFont.render('ROUND ' + str(game_config.roundNum), True, (246, 250, 10))
+        roundText = buyFont.render('ROUND ' + str(config.roundNum), True, (246, 250, 10))
         self.slotMachine.blit(roundText, roundText.get_rect(center=(self.screenW // 2, 80)))
 
         mousePos = pygame.mouse.get_pos()
-        canAfford3 = game_config.coins >= 3
-        canAfford7 = game_config.coins >= 7
+        canAfford3 = config.coins >= 3
+        canAfford7 = config.coins >= 7
 
         #Knap 3 spins
         btn3BgColor = (40, 40, 40) if canAfford3 else (20, 20, 20)
@@ -232,7 +232,7 @@ class SlotRoom:
 
         #Buyschreen vises kun når spins er 0, animation er færdig, og forsinkelsen er talt ned
         patternsDone = self.patternTimer >= len(self.result) * self.frameRate * 1.25 * self.patternDuration
-        roundOver = game_config.spinsLeft <= 0 and not self.spinning and patternsDone
+        roundOver = config.spinsLeft <= 0 and not self.spinning and patternsDone
 
         if roundOver:
             if self.roundEndDelay < self.roundEndDelayFrames:
@@ -281,13 +281,25 @@ class SlotRoom:
                     self.scoreSFX.play()
                 #Giver coins for pattern når animationen starter
                 if currentPatternIdx != self.lastPaidPattern:
-                    game_config.coins += self.result[currentPatternIdx][1]
+                    config.coins += self.result[currentPatternIdx][1]
+                    #Giver tickets for ticket modifiers når animationen starter
+                    config.tickets += self.result[math.floor(self.patternTimer / (self.frameRate * 1.25 * self.patternDuration))][2].count(3)
+                    #Giver coins for token modifiers når animationen starter
+                    config.coins += round(self.result[math.floor(self.patternTimer / (self.frameRate * 1.25 * self.patternDuration))][2].count(2) * config.interest * config.depositedAmount * 0.5)
+                    #Giver item charges for battery modifiers når animationen starter
+                    for i in range(self.result[math.floor(self.patternTimer / (self.frameRate * 1.25 * self.patternDuration))][2].count(5)):
+                        battItems = []
+                        for item in config.shelfItems:
+                            if item.type == 'button' and item.charges < item.chargeSlots:
+                                battItems.append(item)
+                        if len(battItems) != 0:
+                            config.shelfItems[config.shelfItems.index(random.choice(battItems))].charges += 1
                     self.lastPaidPattern = currentPatternIdx
 
             #Tegner kasser om hvert symbol i et givent pattern
             #X bruger reelOriginX som base så kasserne sidder præcis over symbolerne
             if self.patternTimer <= self.frameRate * self.patternDuration * math.floor(self.patternTimer / (self.frameRate * 1.25 * self.patternDuration) + 1) + self.frameRate * self.patternDuration * 0.25 * math.floor(self.patternTimer / (self.frameRate * 1.25 * self.patternDuration)):
-                for slot in game_config.patterns[self.result[math.floor(self.patternTimer / (self.frameRate * 1.25 * self.patternDuration))][0]]:
+                for slot in config.patterns[self.result[math.floor(self.patternTimer / (self.frameRate * 1.25 * self.patternDuration))][0]]:
                     boxX = self.reelOriginX + slot % 5 * self.symbolSpaceHor - self.squareDist
                     boxY = self.reelOriginY + self.symbolSpaceVer - self.squareDist + math.floor(slot / 5) * (18 * self.symbolScale + self.symbolSpaceVer)
                     pygame.draw.rect(self.slotMachine, (36, 252, 3), pygame.Rect(boxX, boxY, 18 * self.symbolScale + 2 * self.squareDist, 18 * self.symbolScale + 2 * self.squareDist), 2, 3)
@@ -311,6 +323,5 @@ class SlotRoom:
         # Får knappen til at knappe
         if isSelected(self.Button, (self.buttonX, self.buttonY), self.slotMachine) and pygame.mouse.get_just_pressed()[0]:
             buttonTrigger()
-        pass
 
         screen.blit(self.slotMachine, (0, 0))

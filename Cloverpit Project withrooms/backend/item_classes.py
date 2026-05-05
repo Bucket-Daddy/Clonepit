@@ -70,7 +70,7 @@ def itemInit():
         def trigger(self):
             game_config.luck += 6
     
-        def solds(self):
+        def sold(self):
             pass
 
     game_config.unlockedItems.append(rotatedHamsa)

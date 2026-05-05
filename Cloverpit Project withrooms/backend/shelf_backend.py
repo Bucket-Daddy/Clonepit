@@ -28,9 +28,10 @@ def randomTrigger(pityCounter, result):
 
 def buttonTrigger():
     for item in config.shelfItems:
-        if item.type == 'button' and item.charges > 0:
+        if item.type == 'button' and item.charges == item.chargeSlots:
             item.trigger()
-            item.charges -= 1
+            item.charges = 0
+
 
 def roundEndTrigger():
     for item in config.shelfItems:

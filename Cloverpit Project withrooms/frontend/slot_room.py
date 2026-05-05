@@ -109,7 +109,7 @@ class SlotRoom:
             reel = pygame.Surface((18 * self.symbolScale, (18 * self.symbolScale + self.symbolSpaceVer) * 30), pygame.SRCALPHA)
 
             if self.is666:
-                reel.blit(random.choice(self.symbolsTuple), (0, 0))
+                reel.blit(random.choice(self.symbolsTuple2), (0, 0))
                 if i < 4 and i > 0:
                     reel.blit(self.symbolsTuple[7], (0, 18 * self.symbolScale + self.symbolSpaceVer))
                 else:

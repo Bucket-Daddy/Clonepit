@@ -2,7 +2,7 @@
 
 import random
 import math
-import config.game_config
+import config.game_config as config
 
 from backend.shelf_backend import (preRollTrigger, postRollTrigger, randomTrigger, buttonTrigger, interventionTrigger)
 
@@ -64,9 +64,6 @@ from config.game_config import (
 
 class GameState:
     def __init__(self):
-        self.prerollItems = []
-        self.interventions = []
-        self.postrollItems = []
 
         self.debtNum = DEBT_NUM_DEFAULT
         self.spinNum = SPIN_NUM_START
@@ -74,14 +71,8 @@ class GameState:
         self.pityCounter = PITY_COUNTER_START
         self.ILSOffset = random_ils_offset()
 
-        self.baseLuck = BASE_LUCK_DEFAULT
-        self.luck = self.baseLuck
-
 
 def spin(state: GameState):
-    prerollItems = state.prerollItems
-    interventions = state.interventions
-    postrollItems = state.postrollItems
 
     res = []
     modifiers = []
@@ -89,9 +80,8 @@ def spin(state: GameState):
 
     eye = False
     retrigger = 0
-
-    baseLuck = state.baseLuck
-    luck = state.luck
+    baseLuck = config.luck
+    luck = config.luck + config.tempLuck
     debtNum = state.debtNum
     spinNum = state.spinNum
     OLSSpin = state.OLSSpin
@@ -204,7 +194,7 @@ def spin(state: GameState):
         res[6] = 7
         res[7] = 7
         res[8] = 7
-        config.game_config.is666 = True
+        config.is666 = True
     else:
         if 100 * random.random() <= 6:
             res[6] = 7
@@ -505,7 +495,7 @@ def spin(state: GameState):
     if result == []:
         pityCounter += 1
 
-    luck = baseLuck
+    config.tempLuck = 0
 
     postRollTrigger(result, pityCounter)
     randomTrigger(result, pityCounter)

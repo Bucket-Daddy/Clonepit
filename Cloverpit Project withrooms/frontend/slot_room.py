@@ -5,7 +5,7 @@ import math
 import config.game_config as config
 from backend.spin_engine import GameState, spin
 from frontend.mouseCheck import isSelected
-from backend.shelf_backend import buttonTrigger
+from backend.shelf_backend import buttonTrigger, lastSpinTrigger, roundEndTrigger
 
 
 class SlotRoom:
@@ -23,7 +23,7 @@ class SlotRoom:
         self.font = pygame.font.Font(None, size = 30 * self.overallScale)
         self.dividerLineWidth = 8 * self.overallScale
 
-        #Skærmstørrelse - slot machine surface dækker hele skærmen
+        #temp skærmstørrelse slot machine surface dækker hele skærmen
         self.screenW = 1200
         self.screenH = 750
         self.slotMachine = pygame.Surface((self.screenW, self.screenH), pygame.SRCALPHA)
@@ -144,6 +144,10 @@ class SlotRoom:
         if self.spinning or not patternsDone or config.spinsLeft <= 0:
             return
 
+        #Fyrer lastSpinTrigger hvis dette er det sidste spin i runden
+        if config.spinsLeft == 1:
+            lastSpinTrigger()
+
         #Henter nyt resultat fra spin engine
         self.res, self.modifiers, self.result = spin(self.gameState)
         self.is666 = config.is666
@@ -151,7 +155,7 @@ class SlotRoom:
         #Trækker et spin fra
         config.spinsLeft -= 1
 
-        #Nulstiller reel animation, pattern timer og runde-slut forsinkelse
+        #Nulstiller reel animation, pattern timer og runde slut forsinkelse
         self.reelsY = [-(18 * self.symbolScale + self.symbolSpaceVer) * 30] * 5
         self.patternTimer = 0
         self.lastPaidPattern = -1
@@ -163,61 +167,185 @@ class SlotRoom:
         self._build_reels()
         self.rollingSFX.play()
 
+    def _get_spin_options(self):
+        # Beregner hvilke spin-pakker der er tilgængelige baseret på debtNum og coins.
+        # Returnerer (big_spins, big_cost, big_tickets, small_spins, small_cost, small_tickets)
+        # big = venstre knap, small = højre knap. None = knap vises ikke.
+        # Baseret på originale Cloverpit-priser.
+        d = config.debtNum
+        c = config.coins
+
+        # Tabeller per deadline: (min_coins, big_spins, big_cost, small_spins, small_cost)
+        # small_spins = None betyder kun én knap vises
+        # big_spins = 0 og big_cost = 0 betyder gratis spin
+        if d == 1:
+            tiers = [
+                (7,  7, 7,  3, 3),
+                (6,  6, 6,  3, 3),
+                (5,  5, 5,  2, 2),
+                (4,  4, 4,  2, 2),
+                (3,  3, 3,  1, 1),
+                (2,  2, 2,  1, 1),
+                (1,  1, 1,  None, None),
+                (0,  1, 0,  None, None),   # gratis spin
+            ]
+        elif d == 2:
+            tiers = [
+                (14, 7, 14, 3, 6),
+                (12, 6, 12, 3, 6),
+                (10, 5, 10, 2, 4),
+                (8,  4, 8,  2, 4),
+                (6,  3, 6,  1, 2),
+                (4,  2, 4,  1, 2),
+                (2,  1, 2,  None, None),
+                (0,  1, 0,  None, None),   # gratis spin
+            ]
+        elif d == 3:
+            tiers = [
+                (28, 7, 28, 3, 12),
+                (24, 6, 24, 3, 12),
+                (20, 5, 20, 2, 8),
+                (16, 4, 16, 2, 8),
+                (12, 3, 12, 1, 4),
+                (8,  2, 8,  1, 4),
+                (4,  1, 4,  None, None),
+                (0,  1, 0,  None, None),
+            ]
+        elif d == 4:
+            tiers = [
+                (42, 7, 42, 3, 18),
+                (36, 6, 36, 3, 18),
+                (30, 5, 30, 2, 12),
+                (24, 4, 24, 2, 12),
+                (18, 3, 18, 1, 6),
+                (12, 2, 12, 1, 6),
+                (6,  1, 6,  None, None),
+                (0,  1, 0,  None, None),
+            ]
+        else:
+            tiers = [
+                (56, 7, 56, 3, 24),
+                (48, 6, 48, 3, 24),
+                (40, 5, 40, 2, 16),
+                (32, 4, 32, 2, 16),
+                (24, 3, 24, 1, 8),
+                (16, 2, 16, 1, 8),
+                (8,  1, 8,  None, None),
+                (0,  1, 0,  None, None),
+            ]
+
+        for min_c, bs, bc, ss, sc in tiers:
+            if c >= min_c:
+                return (bs, bc, 1, ss, sc, 2 if ss is not None else None)
+
+        # Fallback gratis spin
+        return (1, 0, 1, None, None, None)
+
     def on_click(self, mousePos):
         #Håndterer klik på køb knapper når buyschreen vises
         if config.spinsLeft > 0:
             return
-        if self.btn3Rect.collidepoint(mousePos) and config.coins >= 3:
-            config.coins -= 3
-            config.spinsLeft += 3 + config.bonusSpins
-            config.tickets += 2
+        # Bloker køb hvis runde 3 er brugt spilleren skal til ATM
+        if config.roundNum > 3:
+            return
+
+        big, big_cost, big_tick, small, small_cost, small_tick = self._get_spin_options()
+
+        if self.btn7Rect.collidepoint(mousePos) and big is not None and (big_cost == 0 or config.coins >= big_cost):
+            config.coins = max(0, config.coins - big_cost)
+            config.spinsLeft += big + config.bonusSpins
+            config.tickets += big_tick
+            config.roundNum += 1
+            # Akkumuler rente, uindsamelet rente fra forrige runder lægges ovenpå
+            config.interestStorage += round(config.depositedAmount * (config.interest / 100))
+            roundEndTrigger()
             self.roundEndDelay = 0
-        elif self.btn7Rect.collidepoint(mousePos) and config.coins >= 7:
-            config.coins -= 7
-            config.spinsLeft += 7 + config.bonusSpins
-            config.tickets += 1
+            self.hasSpun = False
+        elif self.btn3Rect.collidepoint(mousePos) and small is not None and config.coins >= small_cost:
+            config.coins -= small_cost
+            config.spinsLeft += small + config.bonusSpins
+            config.tickets += small_tick
+            config.roundNum += 1
+            # Akkumuler rente, uindsamelet rente fra forrige runder lægges ovenpå
+            config.interestStorage += round(config.depositedAmount * (config.interest / 100))
+            roundEndTrigger()
             self.roundEndDelay = 0
+            self.hasSpun = False
 
     def _draw_buy_screen(self):
         #Tegner buyschreen når spilleren ikke har flere spins (sort baggrund)
         self.slotMachine.fill((0, 0, 0))
 
-        #Rundenummer øverst i midten
-        buyFont = pygame.font.Font(None, size = 40)
-        roundText = buyFont.render('ROUND ' + str(config.roundNum), True, (246, 250, 10))
+        buyFont = pygame.font.Font(None, size=40)
+        subFont = pygame.font.Font(None, size=30)
+        mousePos = pygame.mouse.get_pos()
+
+        #Tjek for tab eller tvunget ATM-besøg efter runde 3
+        isLastRound = config.roundNum > 3
+        totalAvailable = config.coins + round(config.interestStorage)
+        canPayDebt = config.depositedAmount + totalAvailable >= config.debtAmount
+        if isLastRound and canPayDebt:
+            # Har råd til debt vis besked om at gå til ATM, ingen køb-knapper
+            msgFont = pygame.font.Font(None, size=50)
+            msg = msgFont.render("Go to the ATM to pay your debt!", True, (246, 250, 10))
+            self.slotMachine.blit(msg, msg.get_rect(center=(self.screenW // 2, self.screenH // 2)))
+            self.slotMachine.blit(self.machine, (self.machineX, self.machineY))
+            self.slotMachine.blit(self.Button, (self.buttonX, self.buttonY))
+            return
+        if isLastRound and not canPayDebt:
+            # Vis deathschreen
+            loseFont = pygame.font.Font(None, size=80)
+            loseSubFont = pygame.font.Font(None, size=36)
+            loseText = loseFont.render('GAME OVER', True, (200, 40, 40))
+            loseSubText = loseSubFont.render('You could not pay the debt on deadline #' + str(config.debtNum), True, (200, 200, 200))
+            loseSubText2 = loseSubFont.render('Reached deadline ' + str(config.debtNum) + ' round ' + str(config.roundNum), True, (160, 160, 160))
+            self.slotMachine.blit(loseText, loseText.get_rect(center=(self.screenW // 2, self.screenH // 2 - 80)))
+            self.slotMachine.blit(loseSubText, loseSubText.get_rect(center=(self.screenW // 2, self.screenH // 2)))
+            self.slotMachine.blit(loseSubText2, loseSubText2.get_rect(center=(self.screenW // 2, self.screenH // 2 + 50)))
+            self.slotMachine.blit(self.machine, (self.machineX, self.machineY))
+            self.slotMachine.blit(self.Button, (self.buttonX, self.buttonY))
+            return
+
+        #Rundenummer og deadline øverst i midten
+        roundText = buyFont.render('ROUND ' + str(config.roundNum) + '  |  DEADLINE #' + str(config.debtNum), True, (246, 250, 10))
         self.slotMachine.blit(roundText, roundText.get_rect(center=(self.screenW // 2, 80)))
 
-        mousePos = pygame.mouse.get_pos()
-        canAfford3 = config.coins >= 3
-        canAfford7 = config.coins >= 7
+        big, big_cost, big_tick, small, small_cost, small_tick = self._get_spin_options()
 
-        #Knap 3 spins
-        btn3BgColor = (40, 40, 40) if canAfford3 else (20, 20, 20)
-        btn3BorderColor = (120, 95, 26) if canAfford3 else (60, 50, 20)
-        btn3TextColor = (246, 250, 10) if canAfford3 else (100, 100, 100)
-        btn3SubColor = (200, 200, 200) if canAfford3 else (80, 80, 80)
-        pygame.draw.rect(self.slotMachine, btn3BgColor, self.btn3Rect, border_radius=8)
-        pygame.draw.rect(self.slotMachine, btn3BorderColor, self.btn3Rect, 3, border_radius=8)
-        if self.btn3Rect.collidepoint(mousePos) and canAfford3:
-            pygame.draw.rect(self.slotMachine, (246, 250, 10), self.btn3Rect, 3, border_radius=8)
-        btn3Label = buyFont.render('3 SPINS', True, btn3TextColor)
-        btn3Cost = pygame.font.Font(None, size=30).render('3 coins  +2 tickets', True, btn3SubColor)
-        self.slotMachine.blit(btn3Label, btn3Label.get_rect(center=self.btn3Rect.center + pygame.math.Vector2(0, -18)))
-        self.slotMachine.blit(btn3Cost, btn3Cost.get_rect(center=self.btn3Rect.center + pygame.math.Vector2(0, 18)))
+        def draw_btn(rect, spins, cost, tickets, active):
+            # Farver baseret på om knappen er aktiv og om musen er over den
+            if not active:
+                bg, border, tc, sc = (15,15,15), (40,35,15), (60,60,60), (50,50,50)
+            elif rect.collidepoint(mousePos):
+                bg, border, tc, sc = (60,60,20), (246,250,10), (246,250,10), (220,220,220)
+            else:
+                bg, border, tc, sc = (40,40,40), (120,95,26), (246,250,10), (200,200,200)
+            pygame.draw.rect(self.slotMachine, bg, rect, border_radius=8)
+            pygame.draw.rect(self.slotMachine, border, rect, 3, border_radius=8)
+            if spins == 0:
+                label = buyFont.render('FREE SPIN', True, tc)
+                sub   = subFont.render('+' + str(tickets) + ' ticket', True, sc)
+            else:
+                label = buyFont.render(str(spins) + ' SPINS', True, tc)
+                costStr = (str(cost) + ' coins') if cost > 0 else 'FREE'
+                tickStr = '+' + str(tickets) + ' ticket' + ('s' if tickets > 1 else '')
+                sub = subFont.render(costStr + '  ' + tickStr, True, sc)
+            self.slotMachine.blit(label, label.get_rect(center=rect.center + pygame.math.Vector2(0, -18)))
+            self.slotMachine.blit(sub,   sub.get_rect(center=rect.center + pygame.math.Vector2(0, 18)))
 
-        #Knap 7 spins
-        btn7BgColor = (40, 40, 40) if canAfford7 else (20, 20, 20)
-        btn7BorderColor = (120, 95, 26) if canAfford7 else (60, 50, 20)
-        btn7TextColor = (246, 250, 10) if canAfford7 else (100, 100, 100)
-        btn7SubColor = (200, 200, 200) if canAfford7 else (80, 80, 80)
-        pygame.draw.rect(self.slotMachine, btn7BgColor, self.btn7Rect, border_radius=8)
-        pygame.draw.rect(self.slotMachine, btn7BorderColor, self.btn7Rect, 3, border_radius=8)
-        if self.btn7Rect.collidepoint(mousePos) and canAfford7:
-            pygame.draw.rect(self.slotMachine, (246, 250, 10), self.btn7Rect, 3, border_radius=8)
-        btn7Label = buyFont.render('7 SPINS', True, btn7TextColor)
-        btn7Cost = pygame.font.Font(None, size=30).render('7 coins  +1 ticket', True, btn7SubColor)
-        self.slotMachine.blit(btn7Label, btn7Label.get_rect(center=self.btn7Rect.center + pygame.math.Vector2(0, -18)))
-        self.slotMachine.blit(btn7Cost, btn7Cost.get_rect(center=self.btn7Rect.center + pygame.math.Vector2(0, 18)))
+        # Venstre knap (stor pakke) altid vist
+        draw_btn(self.btn7Rect, big if big is not None else 0,
+                 big_cost if big_cost is not None else 0,
+                 big_tick if big_tick is not None else 0,
+                 big is not None)
+
+        # Højre knap (lille pakke) kun vist når small ikke er None
+        if small is not None:
+            draw_btn(self.btn3Rect, small, small_cost, small_tick, True)
+        else:
+            # Tegner grå tom knap når der kun er en mulighed
+            pygame.draw.rect(self.slotMachine, (15,15,15), self.btn3Rect, border_radius=8)
+            pygame.draw.rect(self.slotMachine, (40,35,15), self.btn3Rect, 3, border_radius=8)
 
         #Tegner slot machine surface på skærmen
         self.slotMachine.blit(self.machine, (self.machineX, self.machineY))
@@ -242,6 +370,11 @@ class SlotRoom:
                 self._draw_buy_screen()
                 screen.blit(self.slotMachine, (0, 0))
                 return
+
+        #Viser spin-tæller øverst i midten under normal spil
+        spinCountFont = pygame.font.Font(None, size=50)
+        spinCountText = spinCountFont.render('SPINS: ' + str(config.spinsLeft), True, (246, 250, 10))
+        self.slotMachine.blit(spinCountText, spinCountText.get_rect(center=(self.screenW // 2 - 30, 70)))
 
         #Viser tomt felt hvis der ikke er spinnet endnu i denne runde
         if not self.hasSpun:

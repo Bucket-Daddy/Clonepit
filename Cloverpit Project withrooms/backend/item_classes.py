@@ -913,7 +913,7 @@ def itemInit():
             for i in range(7):
                 game_config.symbolValues[i] += game_config.baseSymbolValues[i]
                 shopRestock(game_config.unlockedItems, itemWeights)
-                game_config.shelfItems.pop(-1)
+            game_config.shelfItems.pop(-1)
 
         def sold(self): #this should never be triggered
             pass

@@ -39,6 +39,8 @@ class shelfRoom:
                     tooltip.blit(name, name.get_rect(center=(tooltip.get_width() / 2, 40)))
                     renderText(config.shelfItems[i].description, self.font, tooltip, (8, 70), tooltip.get_width() - 8)
                     self.shelf_room.blit(tooltip, (self.shelf_room.get_width() // 4, 0))
+                    if config.shelfItems[i].type == 'button':
+                        self.shelf_room.blit(self.font.render('Charges: ' + str(config.shelfItems[i].charges) + '/' + str(config.shelfItems[i].chargeSlots), True, (250, 246, 15)), (200 + i * 100, 168))
                     if pygame.mouse.get_just_pressed()[0]:
                         config.tickets += config.shelfItems[i].cost
                         config.shelfRoom -= config.shelfItems[i].space

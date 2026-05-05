@@ -78,7 +78,7 @@ class ShopRoom:
                     renderText(shopItems[i].description, self.font, tooltip, (8, 70), tooltip.get_width() - 8)
                     #Køber item hvis spilleren clicker på den, spilleren har råd til den og spilleren har plads til den
                     self.shop_room.blit(tooltip, (self.shop_room.get_width() // 4, 0))
-                    if pygame.mouse.get_just_pressed()[0] and config.tickets >= shopItems[i].cost and config.shelfspace - len(config.shelfItems) >= shopItems[i].space:
+                    if pygame.mouse.get_just_pressed()[0] and config.tickets >= shopItems[i].cost and config.shelfSpace - len(config.shelfItems) >= shopItems[i].space:
                         config.tickets -= shopItems[i].cost
                         config.shelfRoom -= shopItems[i].space
                         config.shelfItems.append(shopItems[i])

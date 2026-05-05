@@ -5,7 +5,7 @@ from backend.shop_restock import shopItems
 from frontend.mouseCheck import isSelected
 from frontend.text_rendering import renderText
 from backend.shelf_backend import passiveTrigger
-import config.game_config as game_config
+import config.game_config as config
 
 class ShopRoom:
 
@@ -78,12 +78,12 @@ class ShopRoom:
                     renderText(shopItems[i].description, self.font, tooltip, (8, 70), tooltip.get_width() - 8)
                     #Køber item hvis spilleren clicker på den, spilleren har råd til den og spilleren har plads til den
                     self.shop_room.blit(tooltip, (self.shop_room.get_width() // 4, 0))
-                    if pygame.mouse.get_just_pressed()[0] and game_config.tickets >= shopItems[i].cost and game_config.shelfRoom >= shopItems[i].space:
-                        game_config.tickets -= shopItems[i].cost
-                        game_config.shelfRoom -= shopItems[i].space
-                        game_config.shelfItems.append(shopItems[i])
+                    if pygame.mouse.get_just_pressed()[0] and config.tickets >= shopItems[i].cost and config.shelfspace - len(config.shelfItems) >= shopItems[i].space:
+                        config.tickets -= shopItems[i].cost
+                        config.shelfRoom -= shopItems[i].space
+                        config.shelfItems.append(shopItems[i])
                         shopItems[i] = 0
-                        passiveTrigger(game_config.shelfItems[-1])
+                        passiveTrigger(config.shelfItems[-1])
 
         # glas oven på holderne
         self.shop_room.blit(glass, (self.shop_room.get_width() // 2 - storePedestal.get_width() // 2, self.shop_room.get_height() // 1.7 - storePedestal.get_height() // 2 + 2.8))

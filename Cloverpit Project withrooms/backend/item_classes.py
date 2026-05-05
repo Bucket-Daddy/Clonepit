@@ -205,11 +205,11 @@ def itemInit():
 
         def trigger(self):
             game_config.phonecallRep += 1
-            game_config.itemSpace -= 1
+            game_config.shelfSpace -= 1
     
         def sold(self):
             game_config.phonecallRep -= 1
-            game_config.itemSpace += 1
+            game_config.shelfSpace += 1
 
     game_config.unlockedItems.append(megaphone)
     itemWeights.append(megaphone.weight)

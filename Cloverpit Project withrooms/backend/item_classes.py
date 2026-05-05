@@ -1006,6 +1006,7 @@ def itemInit():
         weight = 100
         cost = 2
         charges = 4
+        chargeSlots = 4
         space = 1
         type = 'button'
         
@@ -1027,6 +1028,7 @@ def itemInit():
         weight = 100
         cost = 2
         charges = 4
+        chargeSlots = 4
         space = 1
         type = 'button'
         
@@ -1048,6 +1050,7 @@ def itemInit():
         weight = 90
         cost = 3
         charges = 4
+        chargeSlots = 4
         space = 1
         type = 'button'
         
@@ -1069,6 +1072,7 @@ def itemInit():
         weight = 90
         cost = 3
         charges = 4
+        chargeSlots = 4
         space = 1
         type = 'button'
         
@@ -1090,6 +1094,7 @@ def itemInit():
         weight = 80
         cost = 4
         charges = 4
+        chargeSlots = 4
         space = 1
         type = 'button'
         
@@ -1111,6 +1116,7 @@ def itemInit():
         weight = 80
         cost = 4
         charges = 4
+        chargeSlots = 4
         space = 1
         type = 'button'
         
@@ -1132,6 +1138,7 @@ def itemInit():
         weight = 65
         cost = 4
         charges = 4
+        chargeSlots = 4
         space = 1
         type = 'button'
         

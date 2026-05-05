@@ -55,7 +55,7 @@ class ATMRoom:
         self.background = pygame.transform.scale(self.background, (1200, 750))
 
     def draw(self, screen):
-                # blitter baggrunden på overfladen
+        # blitter baggrunden på overfladen
         self.atm.blit(self.background, (-3, -3))
 
         # Blit atm på overfladen
@@ -75,19 +75,26 @@ class ATMRoom:
         self.atm.blit(self.atmButton, (self.debtX + 167, self.debtY + 59))
 
         if isSelected(self.atmButton, (self.debtX + 167, self.debtY + 59), self.atm) and pygame.mouse.get_just_pressed()[0]:
-            config.depositedAmount += round(config.depositedAmount ** 1.01)
+            if config.depositedAmount + config.coins // 2 > config.debtAmount:
+                config.depositedAmount += config.debtAmount - config.depositedAmount
+                config.coins -= config.debtAmount - config.depositedAmount
+            elif config.coins <= config.debtAmount * 0.1:
+                config.depositedAmount += 1
+                config.coins -= 1
+            else:
+                config.depositedAmount += config.coins // 3
+                config.coins -= config.coins // 3
 
             if config.depositedAmount >= config.debtAmount:
                 config.debtAmount = newDeadline(config.debtNum, 1)
                 config.debtNum += 1
                 config.roundNum = 1
-                # config.interestStorage = config.debtAmount * 0.08
-                # config.tickets += 16 - 4 * config.roundNum
+                config.interestStorage = config.debtAmount * 0.08
+                config.tickets += 16 - 4 * config.roundNum
                 deadlineEndTrigger()
                 for i in range(7):
                     config.symbolWeights[i] -= config.tempSymbolWeights[i]
                     config.tempSymbolWeights[i] = 0
-            pass
 
         # blit interest payout og få den til at knappe
         if config.interestStorage > 0:
@@ -97,7 +104,6 @@ class ATMRoom:
                 #config.coins += config.interestStorage
                 config.interestStorage = 0
                 print(config.interestStorage)
-                pass
 
         # Blit runde bonusen på overfladen
         self.atm.blit(self.atmRoundBonus, (self.debtX + 320, self.debtY - 75))

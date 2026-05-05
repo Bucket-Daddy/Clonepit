@@ -4,8 +4,9 @@ import pygame
 import subprocess
 from backend.ATM_backend import newDeadline
 from frontend.mouseCheck import isSelected
-import config.game_config as game_config
+import config.game_config as config
 from backend.shelf_backend import deadlineEndTrigger
+
 
 class ATMRoom:
 
@@ -61,49 +62,49 @@ class ATMRoom:
         self.atm.blit(self.atmBackground, (self.deadlineX - 275, self.deadlineY - 50))
 
         # Texten på maskinen
-        textDeadline = self.font.render('DEADLINE: ' + '#' + str(game_config.debtNum), True, (246, 250, 10))
+        textDeadline = self.font.render('DEADLINE: ' + '#' + str(config.debtNum), True, (246, 250, 10))
         self.atm.blit(textDeadline, textDeadline.get_rect(center=(self.deadlineX, self.deadlineY)))
-        textRoundsLeft = self.font2.render(str(4 - game_config.roundNum) + ' ROUNDS LEFT', True, (246, 250, 10))
+        textRoundsLeft = self.font2.render(str(4 - config.roundNum) + ' ROUNDS LEFT', True, (246, 250, 10))
         textDebt = self.font3.render('DEBT:', True, (246, 250, 10))
         textDeposited = self.font3.render('DEPOSITED:', True, (246, 250, 10))
         textInterest = self.font3.render('INTEREST:', True, (246, 250, 10))
-        textInterestValue = self.font3.render(str(game_config.interest) + '% ', True, (246, 250, 10))
+        textInterestValue = self.font3.render(str(config.interest) + '% ', True, (246, 250, 10))
         textScreenLine = self.font3.render('-------------------------------------------------', True, (246, 250, 10))
 
         # blit knappen og få den til at knappe
         self.atm.blit(self.atmButton, (self.debtX + 167, self.debtY + 59))
 
         if isSelected(self.atmButton, (self.debtX + 167, self.debtY + 59), self.atm) and pygame.mouse.get_just_pressed()[0]:
-            game_config.depositedAmount += round(game_config.depositedAmount ** 1.01)
+            config.depositedAmount += round(config.depositedAmount ** 1.01)
 
-            if game_config.depositedAmount >= game_config.debtAmount:
-                game_config.debtAmount = newDeadline(game_config.debtNum, 1)
-                game_config.debtNum += 1
-                game_config.roundNum = 1
-                # game_config.interestStorage = game_config.debtAmount * 0.08
-                # game_config.tickets += 16 - 4 * game_config.roundNum
+            if config.depositedAmount >= config.debtAmount:
+                config.debtAmount = newDeadline(config.debtNum, 1)
+                config.debtNum += 1
+                config.roundNum = 1
+                # config.interestStorage = config.debtAmount * 0.08
+                # config.tickets += 16 - 4 * config.roundNum
                 deadlineEndTrigger()
                 for i in range(7):
-                    game_config.symbolWeights[i] -= game_config.tempSymbolWeights[i]
-                    game_config.tempSymbolWeights[i] = 0
+                    config.symbolWeights[i] -= config.tempSymbolWeights[i]
+                    config.tempSymbolWeights[i] = 0
             pass
 
         # blit interest payout og få den til at knappe
-        if game_config.interestStorage > 0:
+        if config.interestStorage > 0:
             self.atm.blit(self.atmPayout, (self.debtX - 155, self.debtY + 195))
         
             if isSelected(self.atmPayout, (self.debtX - 155, self.debtY + 195), self.atm) and pygame.mouse.get_just_pressed()[0]:
-                #game_config.coins += game_config.interestStorage
-                game_config.interestStorage = 0
-                print(game_config.interestStorage)
+                #config.coins += config.interestStorage
+                config.interestStorage = 0
+                print(config.interestStorage)
                 pass
 
         # Blit runde bonusen på overfladen
         self.atm.blit(self.atmRoundBonus, (self.debtX + 320, self.debtY - 75))
         pygame.draw.rect(self.atm, (0, 0, 0), (self.debtX + 352.5, self.debtY + 25, self.atmRoundBonus.get_width() // 1.325, self.atmRoundBonus.get_height() // 2.55), width = 0)
         self.atm.blit(self.atmCoinAndTicket, (self.debtX + 440, self.debtY + 40))
-        roundBonusCoinText = self.font2.render(str(round(game_config.debtAmount * 0.08)), True, (246, 250, 10))
-        roundBonusTicketText = self.font2.render(str(16 - 4 * game_config.roundNum), True, (246, 250, 10))
+        roundBonusCoinText = self.font2.render(str(round(config.debtAmount * 0.08)), True, (246, 250, 10))
+        roundBonusTicketText = self.font2.render(str(16 - 4 * config.roundNum), True, (246, 250, 10))
 
         # Blit teksten og mønterne på ATM-overfladen
         self.atm.blit(textScreenLine, textScreenLine.get_rect(center=(self.debtX - 10, self.debtY - 20)))
@@ -116,33 +117,33 @@ class ATMRoom:
         self.atm.blit(textDebt, textDebt.get_rect(center=(self.debtX - 92, self.debtY + 16)))
         self.atm.blit(self.coin, (self.debtX + 68, self.debtY + 18))
 
-        if math.log10(game_config.debtAmount) >= 7 and math.log10(game_config.debtAmount) < 100:
-            deposit = round(game_config.debtAmount * 10**(-1 * (len(str(game_config.debtAmount)) - 1)), 2)
-            textDebtAmount = self.font2.render(str(deposit) + 'E+' + str(len(str(game_config.debtAmount)) - 1), True, (246, 250, 10))
+        if math.log10(config.debtAmount) >= 7 and math.log10(config.debtAmount) < 100:
+            deposit = round(config.debtAmount * 10**(-1 * (len(str(config.debtAmount)) - 1)), 2)
+            textDebtAmount = self.font2.render(str(deposit) + 'E+' + str(len(str(config.debtAmount)) - 1), True, (246, 250, 10))
             self.atm.blit(textDebtAmount, textDebtAmount.get_rect(center=(self.debtX + 30, self.debtY + 30)))
-        if math.log10(game_config.debtAmount) >= 100:
-            deposit = round(game_config.debtAmount * 10**(-1 * (len(str(game_config.debtAmount)) - 1)), 2)
-            textDebtAmount = self.font2.render(str(deposit) + 'E+' + str(len(str(game_config.debtAmount)) - 1), True, (246, 250, 10))
+        if math.log10(config.debtAmount) >= 100:
+            deposit = round(config.debtAmount * 10**(-1 * (len(str(config.debtAmount)) - 1)), 2)
+            textDebtAmount = self.font2.render(str(deposit) + 'E+' + str(len(str(config.debtAmount)) - 1), True, (246, 250, 10))
             self.atm.blit(textDebtAmount, textDebtAmount.get_rect(center=(self.debtX + 25, self.debtY + 30)))
-        if math.log10(game_config.debtAmount) < 7:
-            textDebtAmount = self.font2.render(str(game_config.debtAmount), True, (246, 250, 10))
-            self.atm.blit(textDebtAmount, textDebtAmount.get_rect(center=(self.debtX + 50 - math.log10(game_config.debtAmount)**(1.50 - 0.012 * math.log10(game_config.debtAmount)), self.debtY + 30)))
+        if math.log10(config.debtAmount) < 7:
+            textDebtAmount = self.font2.render(str(config.debtAmount), True, (246, 250, 10))
+            self.atm.blit(textDebtAmount, textDebtAmount.get_rect(center=(self.debtX + 50 - math.log10(config.debtAmount)**(1.50 - 0.012 * math.log10(config.debtAmount)), self.debtY + 30)))
 
         self.atm.blit(textScreenLine, textScreenLine.get_rect(center=(self.debtX - 10, self.debtY + 45)))
         self.atm.blit(textDeposited, textDeposited.get_rect(center=(self.debtX - 75, self.debtY + 55)))
         self.atm.blit(self.coin, (self.debtX + 68, self.debtY + 55))
 
-        if math.log10(game_config.depositedAmount) >= 6 and math.log10(game_config.depositedAmount) < 100:
-            deposit = round(game_config.depositedAmount * 10**(-1 * (len(str(game_config.depositedAmount)) - 1)), 2)
-            textDepositedAmount = self.font2.render(str(deposit) + 'E+' + str(len(str(game_config.depositedAmount)) - 1), True, (246, 250, 10))
+        if math.log10(config.depositedAmount) >= 6 and math.log10(config.depositedAmount) < 100:
+            deposit = round(config.depositedAmount * 10**(-1 * (len(str(config.depositedAmount)) - 1)), 2)
+            textDepositedAmount = self.font2.render(str(deposit) + 'E+' + str(len(str(config.depositedAmount)) - 1), True, (246, 250, 10))
             self.atm.blit(textDepositedAmount, textDepositedAmount.get_rect(center=(self.debtX + 30, self.debtY + 70)))
-        if math.log10(game_config.depositedAmount) >= 100:
-            deposit = round(game_config.depositedAmount * 10**(-1 * (len(str(game_config.depositedAmount)) - 1)), 2)
-            textDepositedAmount = self.font2.render(str(deposit) + 'E+' + str(len(str(game_config.depositedAmount)) - 1), True, (246, 250, 10))
+        if math.log10(config.depositedAmount) >= 100:
+            deposit = round(config.depositedAmount * 10**(-1 * (len(str(config.depositedAmount)) - 1)), 2)
+            textDepositedAmount = self.font2.render(str(deposit) + 'E+' + str(len(str(config.depositedAmount)) - 1), True, (246, 250, 10))
             self.atm.blit(textDepositedAmount, textDepositedAmount.get_rect(center=(self.debtX + 25, self.debtY + 70)))
-        if math.log10(game_config.depositedAmount) < 6:
-            textDepositedAmount = self.font2.render(str(game_config.depositedAmount), True, (246, 250, 10))
-            self.atm.blit(textDepositedAmount, textDepositedAmount.get_rect(center=(self.debtX + 50 - math.log10(game_config.depositedAmount)**(1.50 - 0.012 * math.log10(game_config.depositedAmount)), self.debtY + 70)))
+        if math.log10(config.depositedAmount) < 6:
+            textDepositedAmount = self.font2.render(str(config.depositedAmount), True, (246, 250, 10))
+            self.atm.blit(textDepositedAmount, textDepositedAmount.get_rect(center=(self.debtX + 50 - math.log10(config.depositedAmount)**(1.50 - 0.012 * math.log10(config.depositedAmount)), self.debtY + 70)))
 
         self.atm.blit(textScreenLine, textScreenLine.get_rect(center=(self.debtX - 10, self.debtY + 82.5)))
         self.atm.blit(textInterest, textInterest.get_rect(center=(self.debtX - 79, self.debtY + 92.5)))

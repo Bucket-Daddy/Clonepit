@@ -75,7 +75,7 @@ class ATMRoom:
         self.atm.blit(self.atmButton, (self.debtX + 167, self.debtY + 59))
 
         if isSelected(self.atmButton, (self.debtX + 167, self.debtY + 59), self.atm) and pygame.mouse.get_just_pressed()[0]:
-            if config.depositedAmount + config.coins // 2 > config.debtAmount:
+            if config.depositedAmount + config.coins // 2 > config.debtAmount or config.coins >= config.debtAmount * 3:
                 config.depositedAmount += config.debtAmount - config.depositedAmount
                 config.coins -= config.debtAmount - config.depositedAmount
             elif config.coins <= config.debtAmount * 0.1:

@@ -1,10 +1,10 @@
 #item classes
 import math
 import pygame
-import config.game_config as game_config
+import config.game_config as config
 from backend.shop_restock import shopRestock
 
-game_config.unlockedItems = []
+config.unlockedItems = []
 itemWeights = []
 
 
@@ -50,12 +50,12 @@ def itemInit():
         type = 'passive'
 
         def trigger(self):
-            game_config.affBattChance += 6
+            config.affBattChance += 6
     
         def sold(self):
-            game_config.affBattChance -= 6
+            config.affBattChance -= 6
 
-    game_config.unlockedItems.append(AABatteries)
+    config.unlockedItems.append(AABatteries)
     itemWeights.append(AABatteries.weight)
 
     class rotatedHamsa(lastSpin):
@@ -68,12 +68,12 @@ def itemInit():
         type = 'lastSpin'
 
         def trigger(self):
-            game_config.luck += 6
+            config.luck += 6
     
         def sold(self):
             pass
 
-    game_config.unlockedItems.append(rotatedHamsa)
+    config.unlockedItems.append(rotatedHamsa)
     itemWeights.append(rotatedHamsa.weight)
 
     #class painKillers(postRoll):
@@ -105,12 +105,12 @@ def itemInit():
         def trigger(self, result, pityCounter):
             if pityCounter >= 3:
                 for i in range(7):
-                    game_config.symbolValues[i] += game_config.baseSymbolValues[i]
+                    config.symbolValues[i] += config.baseSymbolValues[i]
     
         def sold(self):
             pass
 
-    game_config.unlockedItems.append(steamLocomotive)
+    config.unlockedItems.append(steamLocomotive)
     itemWeights.append(steamLocomotive.weight)
 
     class horseshoe(passive):
@@ -123,12 +123,12 @@ def itemInit():
         type = 'passive'
 
         def trigger(self):
-            game_config.randomTriggerMult *= 2
+            config.randomTriggerMult *= 2
 
         def sold(self):
-            game_config.randomTriggerMult *= 0.5
+            config.randomTriggerMult *= 0.5
 
-    game_config.unlockedItems.append(horseshoe)
+    config.unlockedItems.append(horseshoe)
     itemWeights.append(horseshoe.weight)
 
     class luckyCat(postRoll):
@@ -142,12 +142,12 @@ def itemInit():
 
         def trigger(self, result, pityCounter):
             if len(result) > 2:
-                game_config.coins += (game_config.interest - 1) * game_config.depositedAmount
+                config.coins += (config.interest - 1) * config.depositedAmount
     
         def sold(self):
             pass
 
-    game_config.unlockedItems.append(luckyCat)
+    config.unlockedItems.append(luckyCat)
     itemWeights.append(luckyCat.weight)
 
     class grandmasPurse(roundEnd):
@@ -160,20 +160,20 @@ def itemInit():
         type = 'roundEnd'
 
         def __init__(self):
-            self.startRound = game_config.roundNum
+            self.startRound = config.roundNum
 
         def trigger(self):
-            if game_config.roundNum - self.startRound < 5:
-                game_config.interest -= 0.15 - 0.03 * (game_config.roundNum - self.startRound - 1)
-                game_config.interest += 0.15 - 0.03 * (game_config.roundNum - self.startRound)
+            if config.roundNum - self.startRound < 5:
+                config.interest -= 0.15 - 0.03 * (config.roundNum - self.startRound - 1)
+                config.interest += 0.15 - 0.03 * (config.roundNum - self.startRound)
             else:
-                game_config.shelfItems.pop(-1)
+                config.shelfItems.pop(-1)
                 
 
         def sold(self):
-            game_config.interest -= 0.15 - 0.03 * (game_config.roundNum - self.startRound)
+            config.interest -= 0.15 - 0.03 * (config.roundNum - self.startRound)
 
-    game_config.unlockedItems.append(grandmasPurse)
+    config.unlockedItems.append(grandmasPurse)
     itemWeights.append(grandmasPurse.weight)
 
     class stonks(passive):
@@ -186,12 +186,12 @@ def itemInit():
         type = 'passive'
 
         def trigger(self):
-            game_config.interest += 0.05
+            config.interest += 0.05
     
         def sold(self):
-            game_config.interest -= 0.05
+            config.interest -= 0.05
 
-    game_config.unlockedItems.append(stonks)
+    config.unlockedItems.append(stonks)
     itemWeights.append(stonks.weight)
 
     class megaphone(passive):
@@ -204,14 +204,14 @@ def itemInit():
         type = 'passive'
 
         def trigger(self):
-            game_config.phonecallRep += 1
-            game_config.shelfSpace -= 1
+            config.phonecallRep += 1
+            config.shelfSpace -= 1
     
         def sold(self):
-            game_config.phonecallRep -= 1
-            game_config.shelfSpace += 1
+            config.phonecallRep -= 1
+            config.shelfSpace += 1
 
-    game_config.unlockedItems.append(megaphone)
+    config.unlockedItems.append(megaphone)
     itemWeights.append(megaphone.weight)
 
     class lostBriefcase(passive):
@@ -224,13 +224,13 @@ def itemInit():
         type = 'passive'
     
         def trigger(self):
-            game_config.coins += round(0.3 * game_config.debtAmount)
-            game_config.shelfItems.pop(-1)
+            config.coins += round(0.3 * config.debtAmount)
+            config.shelfItems.pop(-1)
     
         def sold(self): #this should never be triggered
             pass
 
-    game_config.unlockedItems.append(lostBriefcase)
+    config.unlockedItems.append(lostBriefcase)
     itemWeights.append(lostBriefcase.weight)
 
     class fakeCoin(random):
@@ -244,12 +244,12 @@ def itemInit():
         type = 'random'
 
         def trigger(self, result, pityCounter):
-            game_config.fakeCoinSpins += 1
+            config.fakeCoinSpins += 1
     
         def sold(self):
             pass
 
-    game_config.unlockedItems.append(fakeCoin)
+    config.unlockedItems.append(fakeCoin)
     itemWeights.append(fakeCoin.weight)
 
     class catFood(passive):
@@ -262,12 +262,12 @@ def itemInit():
         type = 'passive'
 
         def trigger(self):
-            game_config.bonusSpins += 2
+            config.bonusSpins += 2
     
         def sold(self):
-            game_config.bonusSpins -= 2
+            config.bonusSpins -= 2
 
-    game_config.unlockedItems.append(catFood)
+    config.unlockedItems.append(catFood)
     itemWeights.append(catFood.weight)
 
     class toyTrain(postRoll):
@@ -286,19 +286,19 @@ def itemInit():
         def trigger(self, result, pityCounter):
             if pityCounter >= 2:
                 if self.init:
-                    game_config.luck += 5
+                    config.luck += 5
                     self.extraLuck += 5
                 else:
-                    game_config.luck += 2
+                    config.luck += 2
                     self.extraLuck += 2
             else:
-                game_config.luck -= self.extraLuck
+                config.luck -= self.extraLuck
                 self.extraLuck = 0
                 
         def sold(self):
-            game_config.luck -= self.extraLuck
+            config.luck -= self.extraLuck
 
-    game_config.unlockedItems.append(toyTrain)
+    config.unlockedItems.append(toyTrain)
     itemWeights.append(toyTrain.weight)
 
     class goldenLemon(passive):
@@ -311,12 +311,12 @@ def itemInit():
         type = 'passive'
 
         def trigger(self):
-            game_config.lemonGoldChance += 20
+            config.lemonGoldChance += 20
 
         def sold(self):
-            game_config.lemonGoldChance -= 20
+            config.lemonGoldChance -= 20
 
-    game_config.unlockedItems.append(goldenLemon)
+    config.unlockedItems.append(goldenLemon)
     itemWeights.append(goldenLemon.weight)
 
     class goldenCherry(passive):
@@ -329,12 +329,12 @@ def itemInit():
         type = 'passive'
 
         def trigger(self):
-            game_config.cherryGoldChance += 20
+            config.cherryGoldChance += 20
 
         def sold(self):
-            game_config.cherryGoldChance -= 20
+            config.cherryGoldChance -= 20
 
-    game_config.unlockedItems.append(goldenCherry)
+    config.unlockedItems.append(goldenCherry)
     itemWeights.append(goldenCherry.weight)
 
     class goldenClover(passive):
@@ -347,12 +347,12 @@ def itemInit():
         type = 'passive'
 
         def trigger(self):
-            game_config.cloverGoldChance += 20
+            config.cloverGoldChance += 20
 
         def sold(self):
-            game_config.cloverGoldChance -= 20
+            config.cloverGoldChance -= 20
 
-    game_config.unlockedItems.append(goldenClover)
+    config.unlockedItems.append(goldenClover)
     itemWeights.append(goldenClover.weight)
 
     class goldenBell(passive):
@@ -365,12 +365,12 @@ def itemInit():
         type = 'passive'
 
         def trigger(self):
-            game_config.bellGoldChance += 20
+            config.bellGoldChance += 20
 
         def sold(self):
-            game_config.bellGoldChance -= 20
+            config.bellGoldChance -= 20
 
-    game_config.unlockedItems.append(goldenBell)
+    config.unlockedItems.append(goldenBell)
     itemWeights.append(goldenBell.weight)
 
     class goldenDiamond(passive):
@@ -383,12 +383,12 @@ def itemInit():
         type = 'passive'
 
         def trigger(self):
-            game_config.diamondGoldChance += 25
+            config.diamondGoldChance += 25
 
         def sold(self):
-            game_config.diamondGoldChance -= 25
+            config.diamondGoldChance -= 25
 
-    game_config.unlockedItems.append(goldenDiamond)
+    config.unlockedItems.append(goldenDiamond)
     itemWeights.append(goldenDiamond.weight)
 
     class goldenTreasure(passive):
@@ -401,12 +401,12 @@ def itemInit():
         type = 'passive'
 
         def trigger(self):
-            game_config.treasureGoldChance += 25
+            config.treasureGoldChance += 25
 
         def sold(self):
-            game_config.treasureGoldChance -= 25
+            config.treasureGoldChance -= 25
 
-    game_config.unlockedItems.append(goldenTreasure)
+    config.unlockedItems.append(goldenTreasure)
     itemWeights.append(goldenTreasure.weight)
 
     class goldenSeven(passive):
@@ -419,12 +419,12 @@ def itemInit():
         type = 'passive'
 
         def trigger(self):
-            game_config.sevenGoldChance += 30
+            config.sevenGoldChance += 30
 
         def sold(self):
-            game_config.sevenGoldChance -= 30
+            config.sevenGoldChance -= 30
 
-    game_config.unlockedItems.append(goldenSeven)
+    config.unlockedItems.append(goldenSeven)
     itemWeights.append(goldenSeven.weight)
 
     class bricks(passive):
@@ -437,12 +437,12 @@ def itemInit():
         type = 'passive'
 
         def trigger(self):
-            game_config.lemonTokenChance += 20
+            config.lemonTokenChance += 20
 
         def sold(self):
-            game_config.lemonTokenChance -= 20
+            config.lemonTokenChance -= 20
 
-    game_config.unlockedItems.append(bricks)
+    config.unlockedItems.append(bricks)
     itemWeights.append(bricks.weight)
 
     class wood(passive):
@@ -455,12 +455,12 @@ def itemInit():
         type = 'passive'
 
         def trigger(self):
-            game_config.cherryTokenChance += 20
+            config.cherryTokenChance += 20
 
         def sold(self):
-            game_config.cherryTokenChance -= 20
+            config.cherryTokenChance -= 20
 
-    game_config.unlockedItems.append(wood)
+    config.unlockedItems.append(wood)
     itemWeights.append(wood.weight)
 
     class sheep(passive):
@@ -473,12 +473,12 @@ def itemInit():
         type = 'passive'
 
         def trigger(self):
-            game_config.cloverTokenChance += 15
+            config.cloverTokenChance += 15
 
         def sold(self):
-            game_config.cloverTokenChance -= 15
+            config.cloverTokenChance -= 15
 
-    game_config.unlockedItems.append(sheep)
+    config.unlockedItems.append(sheep)
     itemWeights.append(sheep.weight)
 
     class wheat(passive):
@@ -491,12 +491,12 @@ def itemInit():
         type = 'passive'
 
         def trigger(self):
-            game_config.bellTokenChance += 15
+            config.bellTokenChance += 15
 
         def sold(self):
-            game_config.bellTokenChance -= 15
+            config.bellTokenChance -= 15
 
-    game_config.unlockedItems.append(wheat)
+    config.unlockedItems.append(wheat)
     itemWeights.append(wheat.weight)
 
     class stone(passive):
@@ -509,12 +509,12 @@ def itemInit():
         type = 'passive'
 
         def trigger(self):
-            game_config.diamondTokenChance += 10
+            config.diamondTokenChance += 10
 
         def sold(self):
-            game_config.diamondTokenChance -= 10
+            config.diamondTokenChance -= 10
 
-    game_config.unlockedItems.append(stone)
+    config.unlockedItems.append(stone)
     itemWeights.append(stone.weight)
 
     class harbor(passive):
@@ -527,12 +527,12 @@ def itemInit():
         type = 'passive'
 
         def trigger(self):
-            game_config.treasureTokenChance += 10
+            config.treasureTokenChance += 10
 
         def sold(self):
-            game_config.treasureTokenChance -= 10
+            config.treasureTokenChance -= 10
 
-    game_config.unlockedItems.append(harbor)
+    config.unlockedItems.append(harbor)
     itemWeights.append(harbor.weight)
 
     class thief(passive):
@@ -545,12 +545,12 @@ def itemInit():
         type = 'passive'
 
         def trigger(self):
-            game_config.sevenTokenChance += 10
+            config.sevenTokenChance += 10
 
         def sold(self):
-            game_config.sevenTokenChance -= 10
+            config.sevenTokenChance -= 10
 
-    game_config.unlockedItems.append(thief)
+    config.unlockedItems.append(thief)
     itemWeights.append(thief.weight)
 
     class wheelbarrow(passive):
@@ -563,12 +563,12 @@ def itemInit():
         type = 'passive'
 
         def trigger(self):
-            game_config.lemonTicketChance += 20
+            config.lemonTicketChance += 20
     
         def sold(self):
-            game_config.lemonTicketChance -= 20
+            config.lemonTicketChance -= 20
 
-    game_config.unlockedItems.append(wheelbarrow)
+    config.unlockedItems.append(wheelbarrow)
     itemWeights.append(wheelbarrow.weight)
 
     class shoe(passive):
@@ -581,12 +581,12 @@ def itemInit():
         type = 'passive'
 
         def trigger(self):
-            game_config.cherryTicketChance += 20
+            config.cherryTicketChance += 20
     
         def sold(self):
-            game_config.cherryTicketChance -= 20
+            config.cherryTicketChance -= 20
 
-    game_config.unlockedItems.append(shoe)
+    config.unlockedItems.append(shoe)
     itemWeights.append(shoe.weight)
 
     class thimble(passive):
@@ -599,12 +599,12 @@ def itemInit():
         type = 'passive'
 
         def trigger(self):
-            game_config.cloverTicketChance += 20
+            config.cloverTicketChance += 20
     
         def sold(self):
-            game_config.cloverTicketChance -= 20
+            config.cloverTicketChance -= 20
 
-    game_config.unlockedItems.append(thimble)
+    config.unlockedItems.append(thimble)
     itemWeights.append(thimble.weight)
 
     class iron(passive):
@@ -617,12 +617,12 @@ def itemInit():
         type = 'passive'
 
         def trigger(self):
-            game_config.bellTicketChance += 20
+            config.bellTicketChance += 20
     
         def sold(self):
-            game_config.bellTicketChance -= 20
+            config.bellTicketChance -= 20
 
-    game_config.unlockedItems.append(iron)
+    config.unlockedItems.append(iron)
     itemWeights.append(iron.weight)
 
     class car(passive):
@@ -635,12 +635,12 @@ def itemInit():
         type = 'passive'
 
         def trigger(self):
-            game_config.diamondTicketChance += 20
+            config.diamondTicketChance += 20
     
         def sold(self):
-            game_config.diamondTicketChance -= 20
+            config.diamondTicketChance -= 20
 
-    game_config.unlockedItems.append(car)
+    config.unlockedItems.append(car)
     itemWeights.append(car.weight)
 
     class ship(passive):
@@ -653,12 +653,12 @@ def itemInit():
         type = 'passive'
 
         def trigger(self):
-            game_config.treasureTicketChance += 20
+            config.treasureTicketChance += 20
     
         def sold(self):
-            game_config.treasureTicketChance -= 20
+            config.treasureTicketChance -= 20
 
-    game_config.unlockedItems.append(ship)
+    config.unlockedItems.append(ship)
     itemWeights.append(ship.weight)
 
     class tubaHat(passive):
@@ -671,12 +671,12 @@ def itemInit():
         type = 'passive'
 
         def trigger(self):
-            game_config.sevenTicketChance += 20
+            config.sevenTicketChance += 20
     
         def sold(self):
-            game_config.sevenTicketChance -= 20
+            config.sevenTicketChance -= 20
 
-    game_config.unlockedItems.append(tubaHat)
+    config.unlockedItems.append(tubaHat)
     itemWeights.append(tubaHat.weight)
 
     class aceOfHearts(postRoll):
@@ -690,13 +690,13 @@ def itemInit():
 
         def trigger(self, result, pityCounter):
             if len(result) >= 3:
-                game_config.symbolValues[0] += game_config.baseSymbolValues[0]
-                game_config.symbolValues[1] += game_config.baseSymbolValues[1]
+                config.symbolValues[0] += config.baseSymbolValues[0]
+                config.symbolValues[1] += config.baseSymbolValues[1]
     
         def sold(self):
             pass
 
-    game_config.unlockedItems.append(aceOfHearts)
+    config.unlockedItems.append(aceOfHearts)
     itemWeights.append(aceOfHearts.weight)
 
     class aceOfDiamonds(postRoll):
@@ -710,15 +710,15 @@ def itemInit():
 
         def trigger(self, result, pityCounter):
             for i in result:
-                if len(game_config.patterns[result[i][0]]) > 3:
-                    game_config.symbolValues[4] += game_config.baseSymbolValues[4]
-                    game_config.symbolValues[5] += game_config.baseSymbolValues[5]
+                if len(config.patterns[result[i][0]]) > 3:
+                    config.symbolValues[4] += config.baseSymbolValues[4]
+                    config.symbolValues[5] += config.baseSymbolValues[5]
                     break
     
         def sold(self):
             pass
 
-    game_config.unlockedItems.append(aceOfDiamonds)
+    config.unlockedItems.append(aceOfDiamonds)
     itemWeights.append(aceOfDiamonds.weight)
 
     class d6(roundEnd):
@@ -731,12 +731,12 @@ def itemInit():
         type = 'roundEnd'
 
         def trigger(self):
-            shopRestock(game_config.unlockedItems, itemWeights)
+            shopRestock(config.unlockedItems, itemWeights)
     
         def sold(self):
             pass
 
-    game_config.unlockedItems.append(d6)
+    config.unlockedItems.append(d6)
     itemWeights.append(d6.weight)
 
     class d20(roundEnd):
@@ -755,7 +755,7 @@ def itemInit():
         def sold(self):
             pass
 
-    game_config.unlockedItems.append(d20)
+    config.unlockedItems.append(d20)
     itemWeights.append(d20.weight)
 
     class crystalSphere(passive):
@@ -768,12 +768,12 @@ def itemInit():
         type = 'passive'
 
         def trigger(self):
-            game_config.affChainChance += 12
+            config.affChainChance += 12
     
         def sold(self):
-            game_config.affChainChance -= 12
+            config.affChainChance -= 12
 
-    game_config.unlockedItems.append(crystalSphere)
+    config.unlockedItems.append(crystalSphere)
     itemWeights.append(crystalSphere.weight)
 
     class clicker(passive):
@@ -786,12 +786,12 @@ def itemInit():
         type = 'passive'
 
         def trigger(self):
-            game_config.affRepChance += 15
+            config.affRepChance += 15
     
         def sold(self):
-            game_config.affRepChance -= 15
+            config.affRepChance -= 15
 
-    game_config.unlockedItems.append(clicker)
+    config.unlockedItems.append(clicker)
     itemWeights.append(clicker.weight)
 
     class ritualBell(postRoll):
@@ -804,13 +804,13 @@ def itemInit():
         type = 'postRoll'
 
         def trigger(self, result, pityCounter):
-            if game_config.is666:
-                game_config.freeRestocks += 3
+            if config.is666:
+                config.freeRestocks += 3
     
         def sold(self):
             pass
 
-    game_config.unlockedItems.append(ritualBell)
+    config.unlockedItems.append(ritualBell)
     itemWeights.append(ritualBell.weight)
 
     class necronomicon(passive):
@@ -823,14 +823,14 @@ def itemInit():
         type = 'passive'
 
         def trigger(self):
-            game_config.patternMult += 2
-            game_config.chance666 += 3
+            config.patternMult += 2
+            config.chance666 += 3
     
         def sold(self):
-            game_config.patternMult -= 2
-            game_config.chance666 -= 3
+            config.patternMult -= 2
+            config.chance666 -= 3
 
-    game_config.unlockedItems.append(necronomicon)
+    config.unlockedItems.append(necronomicon)
     itemWeights.append(necronomicon.weight)
 
     class redPepper(random):
@@ -847,15 +847,15 @@ def itemInit():
             self.activations = 0
 
         def trigger(self, result, pityCounter):
-            game_config.tempLuck += 5
+            config.tempLuck += 5
             self.activations += 1
             if self.activations == 12:
-                game_config.shelfItems.pop(-1)
+                config.shelfItems.pop(-1)
 
         def sold(self):
             pass
 
-    game_config.unlockedItems.append(redPepper)
+    config.unlockedItems.append(redPepper)
     itemWeights.append(redPepper.weight)
 
     class cloverPot(deadlineEnd):
@@ -868,12 +868,12 @@ def itemInit():
         type = 'deadlineEnd'
 
         def trigger(self):
-            game_config.tickets += math.floor(game_config.tickets/game_config.debtNum)
+            config.tickets += math.floor(config.tickets/config.debtNum)
     
         def sold(self):
             pass
 
-    game_config.unlockedItems.append(cloverPot)
+    config.unlockedItems.append(cloverPot)
     itemWeights.append(cloverPot.weight)
 
     class cloverPet(preRoll):
@@ -889,14 +889,14 @@ def itemInit():
             self.extraMult = 0
 
         def trigger(self):
-            game_config.symbolMult -= self.extraMult
-            self.extraMult = math.floor(game_config.tickets/5)
-            game_config.symbolMult += self.extraMult
+            config.symbolMult -= self.extraMult
+            self.extraMult = math.floor(config.tickets/5)
+            config.symbolMult += self.extraMult
     
         def sold(self):
-            game_config.symbolMult -= self.extraMult
+            config.symbolMult -= self.extraMult
 
-    game_config.unlockedItems.append(cloverPet)
+    config.unlockedItems.append(cloverPet)
     itemWeights.append(cloverPet.weight)        
 
     class cigarettes(passive):
@@ -909,16 +909,16 @@ def itemInit():
         type = 'passive'
 
         def trigger(self):
-            game_config.unlockedItems[44].cost += 1
+            config.unlockedItems[44].cost += 1
             for i in range(7):
-                game_config.symbolValues[i] += game_config.baseSymbolValues[i]
-                shopRestock(game_config.unlockedItems, itemWeights)
-            game_config.shelfItems.pop(-1)
+                config.symbolValues[i] += config.baseSymbolValues[i]
+                shopRestock(config.unlockedItems, itemWeights)
+            config.shelfItems.pop(-1)
 
         def sold(self): #this should never be triggered
             pass
 
-    game_config.unlockedItems.append(cigarettes)
+    config.unlockedItems.append(cigarettes)
     itemWeights.append(cigarettes.weight)
 
     class cardboardHouse(passive):
@@ -931,14 +931,14 @@ def itemInit():
         type = 'passive'
 
         def trigger(self):
-            game_config.cardboardInit = False
-            game_config.shelfSpace += 1
-            game_config.shelfItems.pop(-1)
+            config.cardboardInit = False
+            config.shelfSpace += 1
+            config.shelfItems.pop(-1)
     
         def sold(self): #this should never be triggered
             pass
 
-    game_config.unlockedItems.append(cardboardHouse)
+    config.unlockedItems.append(cardboardHouse)
     itemWeights.append(cardboardHouse.weight)
 
     class propertyCertificate(passive):
@@ -951,12 +951,12 @@ def itemInit():
         type = 'passive'
 
         def trigger(self):
-            game_config.shelfSpace += 2
+            config.shelfSpace += 2
     
         def sold(self):
-            game_config.shelfSpace -= 2
+            config.shelfSpace -= 2
 
-    game_config.unlockedItems.append(propertyCertificate)
+    config.unlockedItems.append(propertyCertificate)
     itemWeights.append(propertyCertificate.weight)
 
     class crowbar(passive):
@@ -969,13 +969,13 @@ def itemInit():
         type = 'passive'
 
         def trigger(self):
-            game_config.freeRestocks += 3
-            game_config.shelfItems.pop(-1)
+            config.freeRestocks += 3
+            config.shelfItems.pop(-1)
 
         def sold(self): #this should never be triggered
             pass
 
-    game_config.unlockedItems.append(crowbar)
+    config.unlockedItems.append(crowbar)
     itemWeights.append(crowbar.weight)
 
     class consolationPrize(random):
@@ -991,12 +991,12 @@ def itemInit():
         def trigger(self, result, pityCounter):
             if pityCounter > 0:
                 for i in range(7):
-                    game_config.symbolValues[i] += game_config.baseSymbolValues[i]
+                    config.symbolValues[i] += config.baseSymbolValues[i]
     
         def sold(self):
             pass
 
-    game_config.unlockedItems.append(consolationPrize)
+    config.unlockedItems.append(consolationPrize)
     itemWeights.append(consolationPrize.weight)
 
     class lemonPicture(button):
@@ -1011,14 +1011,14 @@ def itemInit():
         type = 'button'
         
         def trigger(self):
-            game_config.symbolWeights[0] += 2
-            game_config.tempSymbolWeights[0] += 2
+            config.symbolWeights[0] += 2
+            config.tempSymbolWeights[0] += 2
         
         def sold(self):
-            game_config.symbolWeights[0] -= 2
-            game_config.tempSymbolWeights[0] -= 2
+            config.symbolWeights[0] -= 2
+            config.tempSymbolWeights[0] -= 2
 
-    game_config.unlockedItems.append(lemonPicture)
+    config.unlockedItems.append(lemonPicture)
     itemWeights.append(lemonPicture.weight)
 
     class cherryPicture(button):
@@ -1033,14 +1033,14 @@ def itemInit():
         type = 'button'
         
         def trigger(self):
-            game_config.symbolWeights[1] += 2
-            game_config.tempSymbolWeights[1] += 2
+            config.symbolWeights[1] += 2
+            config.tempSymbolWeights[1] += 2
         
         def sold(self):
-            game_config.symbolWeights[1] -= 2
-            game_config.tempSymbolWeights[1] -= 2
+            config.symbolWeights[1] -= 2
+            config.tempSymbolWeights[1] -= 2
 
-    game_config.unlockedItems.append(cherryPicture)
+    config.unlockedItems.append(cherryPicture)
     itemWeights.append(cherryPicture.weight)
 
     class cloverPicture(button):
@@ -1055,14 +1055,14 @@ def itemInit():
         type = 'button'
         
         def trigger(self):
-            game_config.symbolWeights[2] += 2
-            game_config.tempSymbolWeights[2] += 2
+            config.symbolWeights[2] += 2
+            config.tempSymbolWeights[2] += 2
         
         def sold(self):
-            game_config.symbolWeights[2] -= 2
-            game_config.tempSymbolWeights[2] -= 2
+            config.symbolWeights[2] -= 2
+            config.tempSymbolWeights[2] -= 2
 
-    game_config.unlockedItems.append(cloverPicture)
+    config.unlockedItems.append(cloverPicture)
     itemWeights.append(cloverPicture.weight)
 
     class bellPicture(button):
@@ -1077,14 +1077,14 @@ def itemInit():
         type = 'button'
         
         def trigger(self):
-            game_config.symbolWeights[3] += 2
-            game_config.tempSymbolWeights[3] += 2
+            config.symbolWeights[3] += 2
+            config.tempSymbolWeights[3] += 2
         
         def sold(self):
-            game_config.symbolWeights[3] -= 2
-            game_config.tempSymbolWeights[3] -= 2
+            config.symbolWeights[3] -= 2
+            config.tempSymbolWeights[3] -= 2
 
-    game_config.unlockedItems.append(bellPicture)
+    config.unlockedItems.append(bellPicture)
     itemWeights.append(bellPicture.weight)
 
     class diamondPicture(button):
@@ -1099,14 +1099,14 @@ def itemInit():
         type = 'button'
         
         def trigger(self):
-            game_config.symbolWeights[4] += 2
-            game_config.tempSymbolWeights[4] += 2
+            config.symbolWeights[4] += 2
+            config.tempSymbolWeights[4] += 2
         
         def sold(self):
-            game_config.symbolWeights[4] -= 2
-            game_config.tempSymbolWeights[4] -= 2
+            config.symbolWeights[4] -= 2
+            config.tempSymbolWeights[4] -= 2
 
-    game_config.unlockedItems.append(diamondPicture)
+    config.unlockedItems.append(diamondPicture)
     itemWeights.append(diamondPicture.weight)
 
     class treasurePicture(button):
@@ -1121,14 +1121,14 @@ def itemInit():
         type = 'button'
         
         def trigger(self):
-            game_config.symbolWeights[5] += 2
-            game_config.tempSymbolWeights[5] += 2
+            config.symbolWeights[5] += 2
+            config.tempSymbolWeights[5] += 2
         
         def sold(self):
-            game_config.symbolWeights[5] -= 2
-            game_config.tempSymbolWeights[5] -= 2
+            config.symbolWeights[5] -= 2
+            config.tempSymbolWeights[5] -= 2
 
-    game_config.unlockedItems.append(treasurePicture)
+    config.unlockedItems.append(treasurePicture)
     itemWeights.append(treasurePicture.weight)
 
     class sevenPicture(button):
@@ -1143,14 +1143,14 @@ def itemInit():
         type = 'button'
         
         def trigger(self):
-            game_config.symbolWeights[6] += 2
-            game_config.tempSymbolWeights[6] += 2
+            config.symbolWeights[6] += 2
+            config.tempSymbolWeights[6] += 2
         
         def sold(self):
-            game_config.symbolWeights[6] -= 2
-            game_config.tempSymbolWeights[6] -= 2
+            config.symbolWeights[6] -= 2
+            config.tempSymbolWeights[6] -= 2
 
-    game_config.unlockedItems.append(sevenPicture)
+    config.unlockedItems.append(sevenPicture)
     itemWeights.append(sevenPicture.weight)    
 
-    return game_config.unlockedItems, itemWeights
+    return config.unlockedItems, itemWeights

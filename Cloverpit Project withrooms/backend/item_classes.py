@@ -1001,7 +1001,7 @@ def itemInit():
 
     class lemonPicture(button):
         name = 'Lemon Picture'
-        description = 'Lemons manifest more often (+2) for the rest of the deadline'
+        description = 'Triggered by the red button. Lemons manifest more often (+2) for the rest of the deadline'
         sprite = pygame.image.load('assets/Lemon_Picture.png')
         weight = 100
         cost = 2
@@ -1023,7 +1023,7 @@ def itemInit():
 
     class cherryPicture(button):
         name = 'Cherry Picture'
-        description = 'Cherries manifest more often (+2) for the rest of the deadline'
+        description = 'Triggered by the red button. Cherries manifest more often (+2) for the rest of the deadline'
         sprite = pygame.image.load('assets/Cherry_Picture.png')
         weight = 100
         cost = 2
@@ -1045,7 +1045,7 @@ def itemInit():
 
     class cloverPicture(button):
         name = 'Clover Picture'
-        description = 'Clovers manifest more often (+2) for the rest of the deadline'
+        description = 'Triggered by the red button. Clovers manifest more often (+2) for the rest of the deadline'
         sprite = pygame.image.load('assets/Clover_Picture.png')
         weight = 90
         cost = 3
@@ -1067,7 +1067,7 @@ def itemInit():
 
     class bellPicture(button):
         name = 'Bell Picture'
-        description = 'Bells manifest more often (+2) for the rest of the deadline'
+        description = 'Triggered by the red button. Bells manifest more often (+2) for the rest of the deadline'
         sprite = pygame.image.load('assets/Bell_Picture.png')
         weight = 90
         cost = 3
@@ -1089,7 +1089,7 @@ def itemInit():
 
     class diamondPicture(button):
         name = 'Diamond Picture'
-        description = 'Diamonds manifest more often (+2) for the rest of the deadline'
+        description = 'Triggered by the red button. Diamonds manifest more often (+2) for the rest of the deadline'
         sprite = pygame.image.load('assets/Diamond_Picture.png')
         weight = 80
         cost = 4
@@ -1111,7 +1111,7 @@ def itemInit():
 
     class treasurePicture(button):
         name = 'Treasure Picture'
-        description = 'Treasures manifest more often (+2) for the rest of the deadline'
+        description = 'Triggered by the red button. Treasures manifest more often (+2) for the rest of the deadline'
         sprite = pygame.image.load('assets/Treasure_Picture.png')
         weight = 80
         cost = 4
@@ -1133,7 +1133,7 @@ def itemInit():
 
     class sevenPicture(button):
         name = 'Seven Picture'
-        description = 'Sevens manifest more often (+2) for the rest of the deadline'
+        description = 'Triggered by the red button. Sevens manifest more often (+2) for the rest of the deadline'
         sprite = pygame.image.load('assets/Seven_Picture.png')
         weight = 65
         cost = 4

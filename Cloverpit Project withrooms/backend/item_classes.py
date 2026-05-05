@@ -1149,8 +1149,29 @@ def itemInit():
         def sold(self):
             config.symbolWeights[6] -= 2
             config.tempSymbolWeights[6] -= 2
-
+    
     config.unlockedItems.append(sevenPicture)
     itemWeights.append(sevenPicture.weight)    
+
+    class carBattery(passive):
+        name = 'Car Battery'
+        description = '\033[93mDoesn\'t take space\033[0m. Immediately restore all charges on all equipped lucky charms triggerable by the red button.'
+        sprite = pygame.image.load('assets/Car_Battery.png')
+        weight = 10
+        cost = 2
+        space = 0
+        type = 'passive'
+
+        def trigger(self):
+            for item in config.shelfItems:
+                if item.type == 'button' and item.charges < item.chargeSlots:
+                    item.charges = item.chargeSlots
+            config.shelfItems.pop(-1)
+            
+        def sold(self): #Burde aldrig blive aktiveret
+            pass   
+    
+    config.unlockedItems.append(carBattery)
+    itemWeights.append(sevenPicture.weight)
 
     return config.unlockedItems, itemWeights

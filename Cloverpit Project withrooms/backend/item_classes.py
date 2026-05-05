@@ -889,12 +889,12 @@ def itemInit():
             self.extraMult = 0
 
         def trigger(self):
-            game_config.symbolmult -= self.extraMult
+            game_config.symbolMult -= self.extraMult
             self.extraMult = math.floor(game_config.tickets/5)
             game_config.symbolMult += self.extraMult
     
         def sold(self):
-            game_config.symbolmult -= self.extraMult
+            game_config.symbolMult -= self.extraMult
 
     game_config.unlockedItems.append(cloverPet)
     itemWeights.append(cloverPet.weight)        

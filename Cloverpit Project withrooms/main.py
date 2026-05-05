@@ -9,7 +9,7 @@ from frontend.phone_room import PhoneRoom
 from frontend.shelf_room import shelfRoom
 from backend.item_classes import itemInit
 from backend.shop_restock import shopRestock
-import config.game_config as game_config
+import config.game_config as config
 
 def main():
     pygame.init()
@@ -77,7 +77,7 @@ def main():
                 # Space spinner kun i slots rummet
                 if event.key == pygame.K_SPACE and currentRoom == 2:
                     rooms[2].on_space()
-
+        
                 if event.key == pygame.K_SPACE and currentRoom == 1:
                     shopRestock(unlockedItems, itemWeights)
 
@@ -95,8 +95,8 @@ def main():
         textGap = 8
         rowGap = 6
 
-        coinText = hudFont.render(str(game_config.coins), True, (246, 214, 50))
-        ticketText = hudFont.render(str(game_config.tickets), True, (180, 230, 255))
+        coinText = hudFont.render(str(config.coins), True, (246, 214, 50))
+        ticketText = hudFont.render(str(config.tickets), True, (180, 230, 255))
 
         hudW = max(hudIconSize + textGap + coinText.get_width(),
                    hudIconSize + textGap + ticketText.get_width()) + hudPadding * 2

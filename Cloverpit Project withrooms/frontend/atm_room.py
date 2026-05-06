@@ -157,6 +157,10 @@ class ATMRoom:
                         config.tempSymbolWeights[i] = 0
                     config.phoneIsActive = True
                     self.phoneRing.play()
+                    if config.debtNum < 10:
+                        config.restockCost = config.restockCosts[config.debtNum]
+                    else:
+                        config.restockCost = config.debtAmount // 20
 
         # Rente-udbetalings panel (atmPayout) vises når der er opsparet rente
         # interestStorage opbygges af slot_room ved rundesslut og akkumulerer hvis ikke hentet

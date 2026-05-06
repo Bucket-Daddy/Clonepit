@@ -1,7 +1,7 @@
 # main.py
 import pygame
 from screeninfo import get_monitors
-resolution = (get_monitors()[0].width, get_monitors()[0].width)
+resolution = (get_monitors()[0].width, get_monitors()[0].height)
 print(resolution)
 
 xScaling = resolution[0] / 1200

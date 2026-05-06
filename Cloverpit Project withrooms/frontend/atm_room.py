@@ -144,7 +144,7 @@ class ATMRoom:
 
                 if config.depositedAmount >= config.debtAmount:
                     bonusCoins   = 6 * config.debtNum
-                    bonusTickets = 4 * max(0, 3 - config.roundNum)
+                    bonusTickets = 4 * max(0, 4 - config.roundNum)
                     config.coins   += bonusCoins
                     config.tickets += bonusTickets
                     config.debtAmount      = newDeadline(config.debtNum, 1)

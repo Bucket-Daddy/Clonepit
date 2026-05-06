@@ -1160,7 +1160,7 @@ def itemInit():
         name = 'Car Battery'
         description = '\033[93mDoesn\'t take space\033[0m. Immediately restore all charges on all equipped lucky charms triggerable by the red button.'
         sprite = pygame.image.load('assets/Car_Battery.png')
-        weight = 10
+        weight = 100
         cost = 2
         space = 0
         type = 'passive'

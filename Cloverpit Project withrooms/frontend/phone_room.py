@@ -89,7 +89,7 @@ class PhoneRoom:
             
             #Telefonens tekst
             textPhone = self.font.render('--- UNKNOWN NUMBER ---', True, (232, 132, 44))
-            textRandomMessage = self.font.render('randomized message here', True, (232, 132, 44))
+            textRandomMessage = self.font.render('Any news?', True, (232, 132, 44))
             self.phone_room.blit(textPhone, textPhone.get_rect(center=(self.phone_room.get_width() // 3.2 + self.phoneActive.get_width() // 1.75 + self.phone_room.get_width() // 5, self.phone_room.get_width() // 25)))
             self.phone_room.blit(textRandomMessage, textRandomMessage.get_rect(center=(self.phone_room.get_width() // 3.2 + self.phoneActive.get_width() // 1.75 + self.phone_room.get_width() // 5, self.phone_room.get_width() // 15)))
 

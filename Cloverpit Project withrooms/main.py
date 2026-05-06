@@ -17,6 +17,7 @@ from frontend.shop_room import ShopRoom
 from frontend.phone_room import PhoneRoom
 from frontend.shelf_room import shelfRoom
 from backend.item_classes import itemInit
+from backend.call_classes import callInit
 from backend.shop_restock import shopRestock
 import config.game_config as config
 
@@ -40,6 +41,9 @@ def main():
 
     #Definerer items og deres weights
     unlockedItems, itemWeights = itemInit()
+
+    #Initialserer telefonen
+    callInit
 
     #Fylder shoppen
     shopRestock(unlockedItems, itemWeights)

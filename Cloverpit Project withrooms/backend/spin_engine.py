@@ -138,6 +138,9 @@ def spin(state: GameState):
         res[6] = 7
         res[7] = 7
         res[8] = 7
+        modifiers[6] = 0
+        modifiers[7] = 0
+        modifiers[8] = 0
         config.is666 = True
     else:
         if 100 * random.random() <= 6:
@@ -274,7 +277,7 @@ def spin(state: GameState):
 
             zigList = []
             for i in config.zigShape:
-                zigList.append(i)
+                zigList.append(res[i])
             if zigList.count(zigList[0]) == 5:
                 payout = config.symbolValues[zigList[0]] * config.symbolMult * config.patternValues['zig'] * config.patternMult
                 modTrigs = tuple(modifiers[slot] for slot in config.zigShape if modifiers[slot] != 0)
@@ -391,7 +394,7 @@ def spin(state: GameState):
 
             zagList = []
             for i in config.zagShape:
-                zagList.append(i)
+                zagList.append(res[i])
             if zagList.count(zagList[0]) == 5:
                 payout = config.symbolValues[zagList[0]] * config.symbolMult * config.patternValues['zag'] * config.patternMult
                 modTrigs = tuple(modifiers[slot] for slot in config.zagShape if modifiers[slot] != 0)
@@ -523,8 +526,8 @@ def spin(state: GameState):
 
     config.tempLuck = 0
 
-    postRollTrigger(result, pityCounter)
-    randomTrigger(result, pityCounter)
+    postRollTrigger(pityCounter, result)
+    randomTrigger(pityCounter, result)
 
     def patternOrdering(e):
         return config.patternOrder[e[0]]

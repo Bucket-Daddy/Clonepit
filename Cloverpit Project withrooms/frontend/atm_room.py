@@ -18,8 +18,8 @@ class ATMRoom:
         self.font3 = pygame.font.Font(None, size = 8 * overallScale)        
 
         # texten med deadline placeres
-        self.deadlineX = 275
-        self.deadlineY = 50
+        self.deadlineX = 275 * xScaling
+        self.deadlineY = 50 * yScaling
 
         # Runder tilbage før man dør osv.
         self.debtX = self.deadlineX - 80
@@ -27,32 +27,29 @@ class ATMRoom:
 
         # importer billeder fra assets-mappen
         self.atmBackground = pygame.image.load('assets/Atm.png')
-        self.atmBackground = pygame.transform.scale(self.atmBackground, (self.atmBackground.get_width() * 0.67 * overallScale, self.atmBackground.get_height() * 0.67 * overallScale))
+        self.atmBackground = pygame.transform.scale(self.atmBackground, (self.atmBackground.get_width() * 0.67 * overallScale* xScaling, self.atmBackground.get_height() * 0.67 * overallScale * yScaling))
         self.atmBackground.set_colorkey((163, 73, 164))
         self.atmButton = pygame.image.load('assets/AtmButton.png')
-        self.atmButton = pygame.transform.scale(self.atmButton, (self.atmButton.get_width() * 0.42 * overallScale, self.atmButton.get_height() * 0.42 * overallScale))
+        self.atmButton = pygame.transform.scale(self.atmButton, (self.atmButton.get_width() * 0.42 * overallScale * xScaling, self.atmButton.get_height() * 0.42 * overallScale * yScaling))
         self.atmButton.set_colorkey((163, 73, 164))
         self.coin = pygame.image.load('assets/Coin.webp')
-        self.coin = pygame.transform.scale(self.coin, (self.coin.get_width() * 0.065 * overallScale, self.coin.get_height() * 0.065 * overallScale))
+        self.coin = pygame.transform.scale(self.coin, (self.coin.get_width() * 0.065 * overallScale * xScaling, self.coin.get_height() * 0.065 * overallScale * yScaling))
         self.cloverSkull = pygame.image.load('assets/cloverSkull.png')
-        self.cloverSkull = pygame.transform.scale(self.cloverSkull, (self.cloverSkull.get_width() * 0.22 * overallScale, self.cloverSkull.get_height() * 0.22 * overallScale))
+        self.cloverSkull = pygame.transform.scale(self.cloverSkull, (self.cloverSkull.get_width() * 0.22 * overallScale * xScaling, self.cloverSkull.get_height() * 0.22 * overallScale * yScaling))
         self.atmPayout = pygame.image.load('assets/AtmPayout.png')
-        self.atmPayout = pygame.transform.scale(self.atmPayout, (self.atmPayout.get_width() * 0.67 * overallScale, self.atmPayout.get_height() * 0.80 * overallScale))
+        self.atmPayout = pygame.transform.scale(self.atmPayout, (self.atmPayout.get_width() * 0.67 * overallScale * xScaling, self.atmPayout.get_height() * 0.80 * overallScale * yScaling))
         self.atmPayout.set_colorkey((163, 73, 164))
         self.atmRoundBonus = pygame.image.load('assets/ATMRoundBonus.png')
-        self.atmRoundBonus = pygame.transform.scale(self.atmRoundBonus, (self.atmRoundBonus.get_width() * 0.3 * overallScale, self.atmRoundBonus.get_height() * 0.3 * overallScale))
+        self.atmRoundBonus = pygame.transform.scale(self.atmRoundBonus, (self.atmRoundBonus.get_width() * 0.3 * overallScale * xScaling, self.atmRoundBonus.get_height() * 0.3 * overallScale * yScaling))
         self.atmCoinAndTicket = pygame.image.load('assets/ATMCoinAndTicket.png')
-        self.atmCoinAndTicket = pygame.transform.scale(self.atmCoinAndTicket, (self.atmCoinAndTicket.get_width() * 0.3 * overallScale, self.atmCoinAndTicket.get_height() * 0.3 * overallScale))
-        self.atmRoundBonusCollectionBox = pygame.image.load('assets/collectionBlackBox.png')
-        self.atmRoundBonusCollectionBox = pygame.transform.scale(self.atmRoundBonusCollectionBox, (self.atmRoundBonusCollectionBox.get_width() * 0.60 * overallScale, self.atmRoundBonusCollectionBox.get_height() * 0.60 * overallScale))
-        self.atmRoundBonusCollectionBox.set_colorkey((163, 73, 164))
+        self.atmCoinAndTicket = pygame.transform.scale(self.atmCoinAndTicket, (self.atmCoinAndTicket.get_width() * 0.3 * overallScale * xScaling, self.atmCoinAndTicket.get_height() * 0.3 * overallScale * yScaling))
         self.littleGuy = pygame.image.load('assets/little_guy.png')
         self.littleGuy.set_colorkey((0, 0, 0))
-                
+        
         # Opretter atm surface og danner baggrunden
         self.atm = pygame.Surface(resolution, pygame.SRCALPHA)
         self.background = pygame.image.load('assets/Background.png')
-        self.background = pygame.transform.scale(self.background, (1200, 750))
+        self.background = pygame.transform.scale(self.background, resolution)
 
         # Advarsel om spin-budget: WarnShown = advarsel synlig nu, WarnUsed = er allerede set dette deadline
         self.spinBudgetWarnShown = False
@@ -90,18 +87,18 @@ class ATMRoom:
 
         # Texten på maskinen
         textDeadline = self.font.render('DEADLINE: ' + '#' + str(config.debtNum), True, (246, 250, 10))
-        self.atm.blit(textDeadline, textDeadline.get_rect(center=(self.deadlineX, self.deadlineY)))
+        self.atm.blit(textDeadline, textDeadline.get_rect(center=((self.deadlineX - 40) * xScaling, (self.deadlineY - 5) * yScaling)))
         textRoundsLeft = self.font2.render(str(4 - config.roundNum) + ' ROUNDS LEFT', True, (246, 250, 10))
         textDebt = self.font3.render('DEBT:', True, (246, 250, 10))
         textDeposited = self.font3.render('DEPOSITED:', True, (246, 250, 10))
         textInterest = self.font3.render('INTEREST:', True, (246, 250, 10))
         textInterestValue = self.font3.render(str(config.interest) + '% ', True, (246, 250, 10))
-        textScreenLine = self.font3.render('-------------------------------------------------', True, (246, 250, 10))
+        textScreenLine = self.font3.render('-----------------------------------------------------------------------------', True, (246, 250, 10))
 
         # blit knappen og få den til at knappe
-        self.atm.blit(self.atmButton, (self.debtX + 167, self.debtY + 59))
+        self.atm.blit(self.atmButton, ((self.debtX + 106) * xScaling, (self.debtY + 53) * yScaling))
 
-        if isSelected(self.atmButton, (self.debtX + 167, self.debtY + 59), self.atm):
+        if isSelected(self.atmButton, ((self.debtX + 106) * xScaling, (self.debtY + 53) * yScaling), self.atm):
             previewChunk, wouldDip = self._calcDepositChunk()
 
             # Tooltip vis advarsel hvis warnflag er sat, ellers normal deposit preview
@@ -115,7 +112,7 @@ class ATMRoom:
                     line2 = self.font3.render("Don't forget to buy spins first!", True, (220, 160, 60))
                     tooltip.blit(line1, line1.get_rect(center=(130, 22)))
                     tooltip.blit(line2, line2.get_rect(center=(130, 46)))
-                    self.atm.blit(tooltip, (self.debtX + 140, self.debtY + 14))
+                    self.atm.blit(tooltip, ((self.debtX + 140) * xScaling, (self.debtY + 14) * yScaling))
                 else:
                     # Normal tooltip
                     tooltip = pygame.Surface((260, 44))
@@ -123,7 +120,7 @@ class ATMRoom:
                     pygame.draw.rect(tooltip, (120, 95, 26), tooltip.get_rect(), 2, border_radius=6)
                     tipText = self.font2.render('Deposit: ' + str(previewChunk) + ' coins', True, (246, 250, 10))
                     tooltip.blit(tipText, tipText.get_rect(center=(130, 22)))
-                    self.atm.blit(tooltip, (self.debtX + 140, self.debtY + 14))
+                    self.atm.blit(tooltip, ((self.debtX + 140) * xScaling, (self.debtY + 14) * yScaling))
 
             if pygame.mouse.get_just_pressed()[0]:
                 if self.spinBudgetWarnShown:
@@ -161,11 +158,11 @@ class ATMRoom:
         # Rente-udbetalings panel (atmPayout) vises når der er opsparet rente
         # interestStorage opbygges af slot_room ved rundesslut og akkumulerer hvis ikke hentet
         if config.interestStorage > 0:
-            self.atm.blit(self.atmPayout, (self.debtX - 155, self.debtY + 195))
+            self.atm.blit(self.atmPayout, ((self.debtX - 155) * xScaling, (self.debtY + 195) * yScaling))
             interestText = self.font2.render(str(round(config.interestStorage)) + ' coins', True, (246, 250, 10))
-            self.atm.blit(interestText, interestText.get_rect(center=(self.debtX - 120, self.debtY + 245)))
+            self.atm.blit(interestText, interestText.get_rect(center=((self.debtX - 120) * xScaling, (self.debtY + 245) * yScaling)))
 
-            if isSelected(self.atmPayout, (self.debtX - 155, self.debtY + 195), self.atm) and pygame.mouse.get_just_pressed()[0]:
+            if isSelected(self.atmPayout, ((self.debtX - 155) * xScaling, (self.debtY + 195) * yScaling), self.atm) and pygame.mouse.get_just_pressed()[0]:
                 config.coins += round(config.interestStorage)
                 config.interestStorage = 0
 
@@ -174,66 +171,66 @@ class ATMRoom:
         roundBonusCoins = 6 * config.debtNum
         roundBonusTickets = 4 * max(0, 3 - config.roundNum)
 
-        self.atm.blit(self.atmRoundBonus, (self.debtX + 320, self.debtY - 75))
-        pygame.draw.rect(self.atm, (0, 0, 0), (self.debtX + 352.5, self.debtY + 25, self.atmRoundBonus.get_width() // 1.325, self.atmRoundBonus.get_height() // 2.55), width = 0)
-        self.atm.blit(self.atmCoinAndTicket, (self.debtX + 440, self.debtY + 40))
+        self.atm.blit(self.atmRoundBonus, ((self.debtX + 320) * xScaling, (self.debtY - 70) * yScaling))
+        self.atm.blit(self.atmCoinAndTicket, ((self.debtX + 440) * xScaling, (self.debtY + 40) * yScaling))
 
         # Dynamiske tal ved siden af mønt- og ticket-symbolerne
         roundBonusCoinText = self.font2.render(str(roundBonusCoins), True, (246, 250, 10))
         roundBonusTicketText = self.font2.render(str(roundBonusTickets), True, (246, 250, 10))
-        self.atm.blit(roundBonusCoinText, (self.debtX + 415, self.debtY + 44))
-        self.atm.blit(roundBonusTicketText, (self.debtX + 415, self.debtY + 62))
+        self.atm.blit(roundBonusCoinText, ((self.debtX + 415) * xScaling, (self.debtY + 54) * yScaling))
+        self.atm.blit(roundBonusTicketText, ((self.debtX + 415) * xScaling, (self.debtY + 82) * yScaling))
 
+        # alt på den store skærm med info om deadline, gæld, indbetaling, rente osv.
         # Blit teksten og mønterne på ATM-overfladen
-        self.atm.blit(textScreenLine, textScreenLine.get_rect(center=(self.debtX - 10, self.debtY - 20)))
+        self.atm.blit(textScreenLine, textScreenLine.get_rect(center=((self.debtX - 75) * xScaling, (self.debtY - 20) * yScaling)))
 
-        self.atm.blit(self.cloverSkull, (self.debtX - 102, self.debtY - 18))
-        self.atm.blit(textRoundsLeft, textRoundsLeft.get_rect(center=(self.debtX - 10, self.debtY - 6)))
-        self.atm.blit(self.cloverSkull, (self.debtX + 60, self.debtY - 18))
+        self.atm.blit(self.cloverSkull, ((self.debtX - 150) * xScaling, (self.debtY - 20) * yScaling))
+        self.atm.blit(textRoundsLeft, textRoundsLeft.get_rect(center=((self.debtX - 80) * xScaling, (self.debtY - 6) * yScaling)))
+        self.atm.blit(self.cloverSkull, ((self.debtX - 20) * xScaling, (self.debtY - 20) * yScaling))
 
-        self.atm.blit(textScreenLine, textScreenLine.get_rect(center=(self.debtX - 10, self.debtY + 6)))
-        self.atm.blit(textDebt, textDebt.get_rect(center=(self.debtX - 92, self.debtY + 16)))
-        self.atm.blit(self.coin, (self.debtX + 68, self.debtY + 18))
+        self.atm.blit(textScreenLine, textScreenLine.get_rect(center=((self.debtX - 75) * xScaling, (self.debtY + 6) * yScaling)))
+        self.atm.blit(textDebt, textDebt.get_rect(center=((self.debtX - 158) * xScaling, (self.debtY + 16) * yScaling)))
+        self.atm.blit(self.coin, ((self.debtX + 8) * xScaling, (self.debtY + 13) * yScaling))
 
         if math.log10(config.debtAmount) >= 7 and math.log10(config.debtAmount) < 100:
             deposit = round(config.debtAmount * 10**(-1 * (len(str(config.debtAmount)) - 1)), 2)
             textDebtAmount = self.font2.render(str(deposit) + 'E+' + str(len(str(config.debtAmount)) - 1), True, (246, 250, 10))
-            self.atm.blit(textDebtAmount, textDebtAmount.get_rect(center=(self.debtX + 30, self.debtY + 30)))
+            self.atm.blit(textDebtAmount, textDebtAmount.get_rect(center=((self.debtX + 30) * xScaling, (self.debtY + 30) * yScaling)))
         if math.log10(config.debtAmount) >= 100:
             deposit = round(config.debtAmount * 10**(-1 * (len(str(config.debtAmount)) - 1)), 2)
             textDebtAmount = self.font2.render(str(deposit) + 'E+' + str(len(str(config.debtAmount)) - 1), True, (246, 250, 10))
-            self.atm.blit(textDebtAmount, textDebtAmount.get_rect(center=(self.debtX + 25, self.debtY + 30)))
+            self.atm.blit(textDebtAmount, textDebtAmount.get_rect(center=((self.debtX + 25) * xScaling, (self.debtY + 30) * yScaling)))
         if math.log10(config.debtAmount) < 7:
             textDebtAmount = self.font2.render(str(config.debtAmount), True, (246, 250, 10))
-            self.atm.blit(textDebtAmount, textDebtAmount.get_rect(center=(self.debtX + 50 - math.log10(config.debtAmount)**(1.50 - 0.012 * math.log10(config.debtAmount)), self.debtY + 30)))
+            self.atm.blit(textDebtAmount, textDebtAmount.get_rect(center=((self.debtX + 50 - math.log10(config.debtAmount)**(1.50 - 0.012 * math.log10(config.debtAmount))), (self.debtY + 30) * yScaling)))
 
-        self.atm.blit(textScreenLine, textScreenLine.get_rect(center=(self.debtX - 10, self.debtY + 45)))
-        self.atm.blit(textDeposited, textDeposited.get_rect(center=(self.debtX - 75, self.debtY + 55)))
-        self.atm.blit(self.coin, (self.debtX + 68, self.debtY + 55))
+        self.atm.blit(textScreenLine, textScreenLine.get_rect(center=((self.debtX - 75) * xScaling, (self.debtY + 45) * yScaling)))
+        self.atm.blit(textDeposited, textDeposited.get_rect(center=((self.debtX - 145) * xScaling, (self.debtY + 55) * yScaling)))
+        self.atm.blit(self.coin, ((self.debtX + 8) * xScaling, (self.debtY + 55) * yScaling))
 
         if config.depositedAmount <= 0:
             textDepositedAmount = self.font2.render('0', True, (246, 250, 10))
-            self.atm.blit(textDepositedAmount, textDepositedAmount.get_rect(center=(self.debtX + 50, self.debtY + 70)))
+            self.atm.blit(textDepositedAmount, textDepositedAmount.get_rect(center=((self.debtX + 50) * xScaling, (self.debtY + 70) * yScaling)))
         elif math.log10(config.depositedAmount) >= 6 and math.log10(config.depositedAmount) < 100:
             deposit = round(config.depositedAmount * 10**(-1 * (len(str(config.depositedAmount)) - 1)), 2)
             textDepositedAmount = self.font2.render(str(deposit) + 'E+' + str(len(str(config.depositedAmount)) - 1), True, (246, 250, 10))
-            self.atm.blit(textDepositedAmount, textDepositedAmount.get_rect(center=(self.debtX + 30, self.debtY + 70)))
+            self.atm.blit(textDepositedAmount, textDepositedAmount.get_rect(center=((self.debtX + 30) * xScaling, (self.debtY + 70) * yScaling)))
         elif math.log10(config.depositedAmount) >= 100:
             deposit = round(config.depositedAmount * 10**(-1 * (len(str(config.depositedAmount)) - 1)), 2)
             textDepositedAmount = self.font2.render(str(deposit) + 'E+' + str(len(str(config.depositedAmount)) - 1), True, (246, 250, 10))
-            self.atm.blit(textDepositedAmount, textDepositedAmount.get_rect(center=(self.debtX + 25, self.debtY + 70)))
+            self.atm.blit(textDepositedAmount, textDepositedAmount.get_rect(center=((self.debtX + 25) * xScaling, (self.debtY + 70) * yScaling)))
         else:
             textDepositedAmount = self.font2.render(str(config.depositedAmount), True, (246, 250, 10))
-            self.atm.blit(textDepositedAmount, textDepositedAmount.get_rect(center=(self.debtX + 50 - math.log10(config.depositedAmount)**(1.50 - 0.012 * math.log10(config.depositedAmount)), self.debtY + 70)))
+            self.atm.blit(textDepositedAmount, textDepositedAmount.get_rect(center=((self.debtX + 50 - math.log10(config.depositedAmount)**(1.50 - 0.012 * math.log10(config.depositedAmount))), (self.debtY + 70) * yScaling)))
 
-        self.atm.blit(textScreenLine, textScreenLine.get_rect(center=(self.debtX - 10, self.debtY + 82.5)))
-        self.atm.blit(textInterest, textInterest.get_rect(center=(self.debtX - 79, self.debtY + 92.5)))
-        self.atm.blit(textInterestValue, textInterestValue.get_rect(center=(self.debtX + 70, self.debtY + 92.5)))
-        self.atm.blit(textScreenLine, textScreenLine.get_rect(center=(self.debtX - 10, self.debtY + 100)))
-        
+        self.atm.blit(textScreenLine, textScreenLine.get_rect(center=((self.debtX - 75) * xScaling, (self.debtY + 82.5) * yScaling)))
+        self.atm.blit(textInterest, textInterest.get_rect(center=((self.debtX - 149) * xScaling, (self.debtY + 92.5) * yScaling)))
+        self.atm.blit(textInterestValue, textInterestValue.get_rect(center=(self.debtX * xScaling, (self.debtY + 92.5) * yScaling)))
+        self.atm.blit(textScreenLine, textScreenLine.get_rect(center=((self.debtX - 75) * xScaling, (self.debtY + 100) * yScaling)))
+
         #Intet at se her
-        self.atm.blit(self.littleGuy, (500, 700))
-        if isSelected(self.littleGuy, (500, 700), self.atm) and pygame.mouse.get_just_pressed()[0]:
+        self.atm.blit(self.littleGuy, (500 * xScaling, 700 * yScaling))
+        if isSelected(self.littleGuy, (500 * xScaling, 700 * yScaling), self.atm) and pygame.mouse.get_just_pressed()[0]:
             subprocess.run('Little Guy Goes To Verdun/Little Guy Goes To Verdun.exe')
         
         screen.blit(self.atm, (0, 0))

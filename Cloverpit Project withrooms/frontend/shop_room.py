@@ -18,23 +18,26 @@ class ShopRoom:
         self.background = pygame.image.load('assets/Background.png')
         self.background = pygame.transform.scale(self.background, resolution)
 
+        #Loader billeder
+        self.storePedestal = pygame.image.load('assets/StorePedestal.png')
+        self.priceTag = pygame.image.load('assets/PedestalPrice.png')
+        self.refresh = pygame.image.load('assets/RefreshPedestal.png')
+        self.storeSign = pygame.image.load('assets/StoreSign.png')
+        self.glass = pygame.image.load('assets/GlassPane.png')
+
+        self.pedestalX = self.shop_room.get_width() // 2
+        self.pedestalY = self.shop_room.get_height() // 1.7 - self.storePedestal.get_height() // 2
+
     def draw(self, screen, resolution, xScaling, yScaling):
                 # danner baggrunden
         self.shop_room.blit(self.background, (-3, -3))
 
-        #Loader billeder
-        storePedestal = pygame.image.load('assets/StorePedestal.png')
-        priceTag = pygame.image.load('assets/PedestalPrice.png')
-        refresh = pygame.image.load('assets/RefreshPedestal.png')
-        storeSign = pygame.image.load('assets/StoreSign.png')
-        glass = pygame.image.load('assets/GlassPane.png')
-
         #Skalerer billeder
-        storePedestal = pygame.transform.scale(storePedestal, (storePedestal.get_width(), storePedestal.get_height()))
-        priceTag = pygame.transform.scale(priceTag, (priceTag.get_width(), priceTag.get_height()))
-        refresh = pygame.transform.scale(refresh, (refresh.get_width(), refresh.get_height()))
-        storeSign = pygame.transform.scale(storeSign, (storeSign.get_width() * 0.5, storeSign.get_height() * 0.5))
-        glass = pygame.transform.scale(glass, (glass.get_width(), glass.get_height()))
+        storePedestal = pygame.transform.scale(self.storePedestal, (self.storePedestal.get_width(), self.storePedestal.get_height()))
+        priceTag = pygame.transform.scale(self.priceTag, (self.priceTag.get_width(), self.priceTag.get_height()))
+        refresh = pygame.transform.scale(self.refresh, (self.refresh.get_width(), self.refresh.get_height()))
+        storeSign = pygame.transform.scale(self.storeSign, (self.storeSign.get_width() * 0.5, self.storeSign.get_height() * 0.5))
+        glass = pygame.transform.scale(self.glass, (self.glass.get_width(), self.glass.get_height()))
 
         for item in shopItems:
             if item != 0:
@@ -45,31 +48,31 @@ class ShopRoom:
         self.shop_room.blit(storeSign, (self.shop_room.get_width() // 2 - storeSign.get_width() // 2, self.shop_room.get_height() // 30 - storePedestal.get_height() // 230))
 
         # butikkens 5 standere
-        self.shop_room.blit(storePedestal, (self.shop_room.get_width() // 2 - storePedestal.get_width() // 2, self.shop_room.get_height() // 1.7 - storePedestal.get_height() // 2))
-        self.shop_room.blit(priceTag, (self.shop_room.get_width() // 2 - storePedestal.get_width() // 2 + 2.8, self.shop_room.get_height() // 1.7 - storePedestal.get_height() // 8 - 2.8))
+        self.shop_room.blit(storePedestal, (self.pedestalX - storePedestal.get_width() // 2, self.shop_room.get_height() // 1.7 - storePedestal.get_height() // 2))
+        self.shop_room.blit(priceTag, (self.pedestalX - storePedestal.get_width() // 2 + 2.8, self.shop_room.get_height() // 1.7 - storePedestal.get_height() // 8 - 2.8))
 
-        self.shop_room.blit(storePedestal, (self.shop_room.get_width() // 2 + storePedestal.get_width() // 2, self.shop_room.get_height() // 1.7 - storePedestal.get_height() // 2))
-        self.shop_room.blit(priceTag, (self.shop_room.get_width() // 2 + storePedestal.get_width() // 2 + 2.8, self.shop_room.get_height() // 1.7 - storePedestal.get_height() // 8 - 2.8))
+        self.shop_room.blit(storePedestal, (self.pedestalX + storePedestal.get_width() // 2, self.pedestalY))
+        self.shop_room.blit(priceTag, (self.pedestalX + storePedestal.get_width() // 2 + 2.8, self.shop_room.get_height() // 1.7 - storePedestal.get_height() // 8 - 2.8))
         
-        self.shop_room.blit(storePedestal, (self.shop_room.get_width() // 2 - storePedestal.get_width() - storePedestal.get_width() // 2, self.shop_room.get_height() // 1.7 - storePedestal.get_height() // 2))
-        self.shop_room.blit(priceTag, (self.shop_room.get_width() // 2 - storePedestal.get_width() - storePedestal.get_width() // 2 + 2.8, self.shop_room.get_height() // 1.7 - storePedestal.get_height() // 8 - 2.8))
+        self.shop_room.blit(storePedestal, (self.pedestalX - storePedestal.get_width() - storePedestal.get_width() // 2, self.pedestalY))
+        self.shop_room.blit(priceTag, (self.pedestalX - storePedestal.get_width() - storePedestal.get_width() // 2 + 2.8, self.shop_room.get_height() // 1.7 - storePedestal.get_height() // 8 - 2.8))
         
-        self.shop_room.blit(storePedestal, (self.shop_room.get_width() // 2 - storePedestal.get_width() - storePedestal.get_width() - storePedestal.get_width() // 2, self.shop_room.get_height() // 1.7 - storePedestal.get_height() // 2))
-        self.shop_room.blit(priceTag, (self.shop_room.get_width() // 2 - storePedestal.get_width() - storePedestal.get_width() - storePedestal.get_width() // 2 + 2.8, self.shop_room.get_height() // 1.7 - storePedestal.get_height() // 8 - 2.8))
+        self.shop_room.blit(storePedestal, (self.pedestalX - storePedestal.get_width() - storePedestal.get_width() - storePedestal.get_width() // 2, self.pedestalY))
+        self.shop_room.blit(priceTag, (self.pedestalX - storePedestal.get_width() - storePedestal.get_width() - storePedestal.get_width() // 2 + 2.8, self.shop_room.get_height() // 1.7 - storePedestal.get_height() // 8 - 2.8))
 
         # refresh standeren
-        self.shop_room.blit(refresh, (self.shop_room.get_width() // 2 + storePedestal.get_width() + storePedestal.get_width() // 2, self.shop_room.get_height() // 1.7 - storePedestal.get_height() // 2))
-        self.shop_room.blit(priceTag, (self.shop_room.get_width() // 2 + storePedestal.get_width() + storePedestal.get_width() // 2 + 2.8, self.shop_room.get_height() // 1.7 - storePedestal.get_height() // 8 - 2.8))
+        self.shop_room.blit(refresh, (self.pedestalX + storePedestal.get_width() + storePedestal.get_width() // 2, self.pedestalY))
+        self.shop_room.blit(priceTag, (self.pedestalX + storePedestal.get_width() + storePedestal.get_width() // 2 + 2.8, self.shop_room.get_height() // 1.7 - storePedestal.get_height() // 8 - 2.8))
 
         #Selve items i shop
         for i in range(4):
             if shopItems[i] != 0:
-                self.shop_room.blit(shopItems[i].sprite, (200 + i * 100, 200))
-                self.shop_room.blit(self.font.render(str(shopItems[i].cost), True, (240, 170, 41)), ((240 + i * 100, 300)))
+                self.shop_room.blit(shopItems[i].sprite, ((self.pedestalX - storePedestal.get_width() - storePedestal.get_width() - storePedestal.get_width() // 2) + i * 142, self.pedestalY))
+                self.shop_room.blit(self.font.render(str(shopItems[i].cost), True, (240, 170, 41)), (((self.pedestalX - storePedestal.get_width() - storePedestal.get_width() - storePedestal.get_width() // 2 + 40) + i * 142, self.shop_room.get_height() // 1.7 - storePedestal.get_height() // 8 + 5)))
 
         for i in range(4):
             if shopItems[i] != 0:
-                if isSelected(shopItems[i].sprite, (200 + i * 100, 200), self.shop_room):
+                if isSelected(shopItems[i].sprite, ((self.pedestalX - storePedestal.get_width() - storePedestal.get_width() - storePedestal.get_width() // 2) + i * 142, self.pedestalY), self.shop_room):
                     tooltip = pygame.Surface((self.shop_room.get_width() // 2, self.shop_room.get_height() // 4))
                     #Viser navn og beskrivelse når musen føres over en item
                     tooltip.fill((0,0,0))

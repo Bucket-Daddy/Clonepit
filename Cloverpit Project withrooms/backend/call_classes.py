@@ -15,7 +15,7 @@ def callInit():
         description = 'Increase Charm\'s space by 1, permanently.'
         weight = 85
 
-        def trigger():
+        def trigger(self):
             config.shelfSpace += 1
             config.unlockedCalls.pop(0)
             config.callWeights.pop(0)
@@ -29,7 +29,7 @@ def callInit():
         description = 'Double Jackpot\'s value'
         weight = 100
 
-        def trigger():
+        def trigger(self):
             config.patternValues['jackpot'] *= 2
 
     config.unlockedCalls.append(jackpotValueCall)
@@ -40,7 +40,7 @@ def callInit():
         description = '+5 Clover Tickets'
         weight = 100
 
-        def trigger():
+        def trigger(self):
             config.tickets += 5
 
     config.unlockedCalls.append(ticketCall)
@@ -51,7 +51,7 @@ def callInit():
         description = 'Lucky Charms at the store are discounted by 2 until the next Restock of the store.'
         weight = 100
     
-        def trigger():
+        def trigger(self):
             for item in shop.shopItems:
                 item.cost -= 2
             
@@ -63,7 +63,7 @@ def callInit():
         description = 'Restore all Charges on all Charms triggered by the Red Button.'
         weight = 100
 
-        def trigger():
+        def trigger(self):
             for item in config.shelfItems:
                 if item.type == 'button' and item.charges < item.chargeSlots:
                     item.charges = item.chargeSlots
@@ -76,7 +76,7 @@ def callInit():
         description = 'Lemons manifest more often (+1), permanently.'
         weight = 100
 
-        def trigger():
+        def trigger(self):
             config.symbolWeights[0] += 1
 
     config.unlockedCalls.append(lemonCall)
@@ -87,7 +87,7 @@ def callInit():
         description = 'Cherries manifest more often (+1), permanently.'
         weight = 100
 
-        def trigger():
+        def trigger(self):
             config.symbolWeights[1] += 1
 
     config.unlockedCalls.append(cherryCall)
@@ -98,7 +98,7 @@ def callInit():
         description = 'Clovers manifest more often (+1), permanently.'
         weight = 85
 
-        def trigger():
+        def trigger(self):
             config.symbolWeights[2] += 1
 
     config.unlockedCalls.append(cloverCall)
@@ -109,7 +109,7 @@ def callInit():
         description = 'Bells manifest more often (+1), permanently.'
         weight = 85
 
-        def trigger():
+        def trigger(self):
             config.symbolWeights[3] += 1
 
     config.unlockedCalls.append(bellCall)
@@ -120,7 +120,7 @@ def callInit():
         description = 'Diamonds manifest more often (+1), permanently.'
         weight = 65
 
-        def trigger():
+        def trigger(self):
             config.symbolWeights[4] += 1
 
     config.unlockedCalls.append(diamondCall)
@@ -130,7 +130,7 @@ def callInit():
         name = 'I need money!'
         description = 'Diamonds manifest more often (+1), permanently.'
         weight = 65
-        def trigger():
+        def trigger(self):
             config.symbolWeights[5] += 1
 
     config.unlockedCalls.append(treasureCall)
@@ -141,7 +141,7 @@ def callInit():
         description = 'Sevens manifest more often (+1), permanently.'
         weight = 40
 
-        def trigger():
+        def trigger(self):
             config.symbolWeights[6] += 1
 
     config.unlockedCalls.append(sevenCall)
@@ -164,7 +164,7 @@ def callInit():
         description = 'Double the value of Clovers and Bells.'
         weight = 100
 
-        def trigger():
+        def trigger(self):
             config.symbolValues[2] *= 2 
             config.symbolValues[3] *= 2
 
@@ -176,7 +176,7 @@ def callInit():
         description = 'Double the value of Diamonds and Treasures.'
         weight = 85
 
-        def trigger():
+        def trigger(self):
             config.symbolValues[4] *= 2 
             config.symbolValues[5] *= 2
 
@@ -188,7 +188,7 @@ def callInit():
         description = 'Triple the value of the Seven.'
         weight = 85
 
-        def trigger():
+        def trigger(self):
             config.symbolValues[6] *= 3
 
     config.unlockedCalls.append(sevenValue)
@@ -199,7 +199,7 @@ def callInit():
         description = 'Increase the value of Patterns with 3 or less symbols by their base value.'
         weight = 85
 
-        def trigger():
+        def trigger(self):
             config.patternValues['hor'] += config.basePatternValues['hor']
             config.patternValues['vert'] += config.basePatternValues['vert']
             config.patternValues['diag'] += config.basePatternValues['diag']
@@ -212,7 +212,7 @@ def callInit():
         description = 'Increase the value of Patterns with 4+ symbols by their base value.'
         weight = 85
 
-        def trigger():
+        def trigger(self):
             config.patternValues['horL'] += config.basePatternValues['horL']
             config.patternValues['horXL'] += config.basePatternValues['horXL']
             config.patternValues['zig'] += config.basePatternValues['zig']

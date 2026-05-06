@@ -62,6 +62,19 @@ def main():
 
     running = True
 
+    # Navigationspile tegnes oven på alle rum som klikbare overlejringer
+    arrowW, arrowH = 28, 52
+    arrowPad = 6
+    arrowY = 750 // 2
+    leftArrowPts  = [(arrowPad + arrowW, arrowY - arrowH // 2),
+                     (arrowPad,           arrowY),
+                     (arrowPad + arrowW, arrowY + arrowH // 2)]
+    rightArrowPts = [(1200 - arrowPad - arrowW, arrowY - arrowH // 2),
+                     (1200 - arrowPad,            arrowY),
+                     (1200 - arrowPad - arrowW, arrowY + arrowH // 2)]
+    leftArrowRect  = pygame.Rect(arrowPad,                 arrowY - arrowH // 2, arrowW, arrowH)
+    rightArrowRect = pygame.Rect(1200 - arrowPad - arrowW, arrowY - arrowH // 2, arrowW, arrowH)
+
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -89,6 +102,13 @@ def main():
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 if currentRoom == 2:
                     rooms[2].on_click(event.pos)
+                # Navigationspile
+                if leftArrowRect.collidepoint(event.pos):
+                    currentRoom = (currentRoom - 1) % len(rooms)
+                    pygame.display.set_caption(roomNames[currentRoom])
+                if rightArrowRect.collidepoint(event.pos):
+                    currentRoom = (currentRoom + 1) % len(rooms)
+                    pygame.display.set_caption(roomNames[currentRoom])
 
 
         screen.fill((0, 0, 0))
@@ -114,6 +134,15 @@ def main():
         hudSurf.blit(ticketText, (hudPadding + hudIconSize + textGap, hudPadding + hudIconSize + rowGap + hudIconSize // 2 - ticketText.get_height() // 2))
 
         screen.blit(hudSurf, (1200 - hudW - hudPadding, hudPadding))
+
+        # Tegner navigationspile — subtile trekanter langs skærmens kanter
+        mousePos = pygame.mouse.get_pos()
+        leftHover  = leftArrowRect.collidepoint(mousePos)
+        rightHover = rightArrowRect.collidepoint(mousePos)
+        leftColor  = (246, 250, 10) if leftHover  else (160, 140, 60)
+        rightColor = (246, 250, 10) if rightHover else (160, 140, 60)
+        pygame.draw.polygon(screen, leftColor,  leftArrowPts)
+        pygame.draw.polygon(screen, rightColor, rightArrowPts)
 
         pygame.display.flip()
         clock.tick(60)

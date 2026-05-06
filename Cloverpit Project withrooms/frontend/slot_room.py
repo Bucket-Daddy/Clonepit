@@ -10,7 +10,7 @@ from backend.shelf_backend import buttonTrigger, lastSpinTrigger, roundEndTrigge
 
 class SlotRoom:
 
-    def __init__(self):
+    def __init__(self, resolution, xScaling, yScaling):
 
         #Definerer grafik variabler
         self.overallScale = 2
@@ -156,7 +156,7 @@ class SlotRoom:
             offsets.append(offsets[-1] + int(dur))
         self.patternFrameOffsets = offsets
 
-    def _build_reels(self):
+    def _build_reels(self, resolution, xScaling, yScaling):
         #Danner reels ud fra det nuværende resultat
         self.reels = []
         for i in range(5):
@@ -180,7 +180,7 @@ class SlotRoom:
 
             self.reels.append(reel)
 
-    def on_space(self):
+    def on_space(self, resolution, xScaling, yScaling):
         #Spinner kun hvis reelsene er landet, pattern animationen er færdig, og der er spins tilbage
         totalPatternFrames = self.patternFrameOffsets[-1] if len(self.patternFrameOffsets) > 1 else 0
         patternsDone = self.patternTimer >= totalPatternFrames or config.is666
@@ -217,7 +217,7 @@ class SlotRoom:
         self.hasSpun = True
 
         #Bygger reels og spiller rullende lyd
-        self._build_reels()
+        self._build_reels(resolution, xScaling, yScaling)
         self.rollingSFX.play()
 
     def _get_spin_options(self):
@@ -294,7 +294,7 @@ class SlotRoom:
         # Fallback gratis spin
         return (1, 0, 1, None, None, None)
 
-    def on_click(self, mousePos):
+    def on_click(self, mousePos, resolution, xScaling, yScaling):
         #Håndterer klik på køb knapper når buyschreen vises
         if config.spinsLeft > 0:
             return
@@ -334,7 +334,7 @@ class SlotRoom:
             self.roundEndDelay = 0
             self.hasSpun = False
 
-    def _draw_buy_screen(self):
+    def _draw_buy_screen(self, resolution, xScaling, yScaling):
         #Tegner buyschreen når spilleren ikke har flere spins (sort baggrund)
         self.slotMachine.fill((0, 0, 0))
 
@@ -410,7 +410,7 @@ class SlotRoom:
         self.slotMachine.blit(self.machine, (self.machineX, self.machineY))
         self.slotMachine.blit(self.Button, (self.buttonX, self.buttonY))
 
-    def draw(self, screen):
+    def draw(self, screen, resolution, xScaling, yScaling):
         self.slotMachine.fill((0, 0, 0))
 
         #Tegner slot machine surface på skærmen
@@ -427,7 +427,7 @@ class SlotRoom:
                 #Tæller forsinkelsen op viser stadig reelsene i mellemtiden
                 self.roundEndDelay += 1
             else:
-                self._draw_buy_screen()
+                self._draw_buy_screen(resolution, xScaling, yScaling)
                 screen.blit(self.slotMachine, (0, 0))
                 return
 

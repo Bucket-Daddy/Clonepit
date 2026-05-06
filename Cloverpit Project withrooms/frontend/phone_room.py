@@ -4,13 +4,13 @@ import pygame
 
 class PhoneRoom:
 
-    def __init__(self):
+    def __init__(self, resolution, xScaling, yScaling):
 
         overallScale = 2
         self.font = pygame.font.Font(None, size = 15 * overallScale)
 
         # danner baggrunden
-        self.phone_room = pygame.Surface((1200, 750), pygame.SRCALPHA)
+        self.phone_room = pygame.Surface(resolution, pygame.SRCALPHA)
         background = pygame.image.load('assets/Background.png')
         background = pygame.transform.scale(background, (1200, 750))
         self.phone_room.blit(background, (-3, -3))
@@ -57,5 +57,5 @@ class PhoneRoom:
         
         
 
-    def draw(self, screen):
+    def draw(self, screen, resolution, xScaling, yScaling):
         screen.blit(self.phone_room, (0, 0))

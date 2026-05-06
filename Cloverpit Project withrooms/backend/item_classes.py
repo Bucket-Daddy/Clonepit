@@ -733,7 +733,7 @@ def itemInit():
         type = 'roundEnd'
 
         def trigger(self):
-            shopRestock(config.unlockedItems, config.itemWeights)
+            shopRestock()
     
         def sold(self):
             pass
@@ -914,7 +914,7 @@ def itemInit():
             config.unlockedItems[44].cost += 1
             for i in range(7):
                 config.symbolValues[i] += config.baseSymbolValues[i]
-                shopRestock(config.unlockedItems, config.itemWeights)
+                shopRestock()
             config.shelfItems.pop(-1)
             shopBackend.shopItems[rand.randint(0, 3)] = cigarettes()
 

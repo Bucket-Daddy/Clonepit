@@ -54,6 +54,33 @@ class ATMRoom:
         self.background = pygame.image.load('assets/Background.png')
         self.background = pygame.transform.scale(self.background, (1200, 750))
 
+        # Advarsel om spin-budget: WarnShown = advarsel synlig nu, WarnUsed = er allerede set dette deadline
+        self.spinBudgetWarnShown = False
+        self.spinBudgetWarnUsed  = False
+
+    def _calcDepositChunk(self):
+        # Returnerer (depositChunk, wouldDipSpinBudget).
+        # wouldDipSpinBudget = True hvis indbetalingen ville tage coins under spinBudget.
+        if config.coins <= 0:
+            return 0, False
+        d = config.debtNum
+        if d == 1:   spinBudget, dripRate = 7,  1
+        elif d == 2: spinBudget, dripRate = 14, 2
+        elif d == 3: spinBudget, dripRate = 28, 4
+        elif d == 4: spinBudget, dripRate = 42, 6
+        else:        spinBudget, dripRate = 56, 8
+
+        remaining = max(0, config.debtAmount - config.depositedAmount)
+        rawChunk  = max(dripRate, int(config.debtAmount * 0.1))
+        wouldDip  = config.coins - rawChunk < spinBudget
+
+        if wouldDip:
+            rawChunk = max(dripRate, config.coins - spinBudget)
+        rawChunk = max(1, rawChunk)
+        rawChunk = min(rawChunk, config.coins)
+        rawChunk = min(rawChunk, remaining)
+        return rawChunk, wouldDip
+
     def draw(self, screen):
         # blitter baggrunden på overfladen
         self.atm.blit(self.background, (-3, -3))
@@ -74,54 +101,62 @@ class ATMRoom:
         # blit knappen og få den til at knappe
         self.atm.blit(self.atmButton, (self.debtX + 167, self.debtY + 59))
 
-        if isSelected(self.atmButton, (self.debtX + 167, self.debtY + 59), self.atm) and pygame.mouse.get_just_pressed()[0]:
-            if config.coins > 0:
-                # Find ud af hvad den store spin-pakke koster på dette deadline
-                d = config.debtNum
-                if d == 1:   spinBudget = 7
-                elif d == 2: spinBudget = 14
-                elif d == 3: spinBudget = 28
-                elif d == 4: spinBudget = 42
-                else:        spinBudget = 56
+        if isSelected(self.atmButton, (self.debtX + 167, self.debtY + 59), self.atm):
+            previewChunk, wouldDip = self._calcDepositChunk()
 
-                # Driprate per klik når man er inden for spin budgettet
-                if d == 1:   dripRate = 1
-                elif d == 2: dripRate = 2
-                elif d == 3: dripRate = 4
-                elif d == 4: dripRate = 6
-                else:        dripRate = 8
+            # Tooltip vis advarsel hvis warnflag er sat, ellers normal deposit preview
+            if previewChunk > 0:
+                if self.spinBudgetWarnShown:
+                    # Rød advarsel
+                    tooltip = pygame.Surface((260, 64))
+                    tooltip.fill((0, 0, 0))
+                    pygame.draw.rect(tooltip, (180, 40, 40), tooltip.get_rect(), 2, border_radius=6)
+                    line1 = self.font2.render('Deposit: ' + str(previewChunk) + ' coins', True, (246, 250, 10))
+                    line2 = self.font3.render("Don't forget to buy spins first!", True, (220, 160, 60))
+                    tooltip.blit(line1, line1.get_rect(center=(130, 22)))
+                    tooltip.blit(line2, line2.get_rect(center=(130, 46)))
+                    self.atm.blit(tooltip, (self.debtX + 140, self.debtY + 14))
+                else:
+                    # Normal tooltip
+                    tooltip = pygame.Surface((260, 44))
+                    tooltip.fill((0, 0, 0))
+                    pygame.draw.rect(tooltip, (120, 95, 26), tooltip.get_rect(), 2, border_radius=6)
+                    tipText = self.font2.render('Deposit: ' + str(previewChunk) + ' coins', True, (246, 250, 10))
+                    tooltip.blit(tipText, tipText.get_rect(center=(130, 22)))
+                    self.atm.blit(tooltip, (self.debtX + 140, self.debtY + 14))
 
-                remaining = max(0, config.debtAmount - config.depositedAmount)
+            if pygame.mouse.get_just_pressed()[0]:
+                if self.spinBudgetWarnShown:
+                    # Andet klik advarsel skjules, indbetalingen sker
+                    self.spinBudgetWarnShown = False
+                    self.spinBudgetWarnUsed  = True
+                    if config.coins > 0:
+                        config.depositedAmount += previewChunk
+                        config.coins -= previewChunk
+                elif wouldDip and not self.spinBudgetWarnUsed:
+                    # Første klik der ville ramme spin-budgettet vis advarsel
+                    self.spinBudgetWarnShown = True
+                else:
+                    # Normalt klik
+                    if config.coins > 0:
+                        config.depositedAmount += previewChunk
+                        config.coins -= previewChunk
 
-                # Fast 10% af TOTAL debt per klik så det ikke falder over tid
-                depositChunk = max(dripRate, int(config.debtAmount * 0.1))
-
-                # Beskyt spin-budgettet: lad ikke indbetalingen tage det ned under spinBudget
-                if config.coins - depositChunk < spinBudget:
-                    depositChunk = max(dripRate, config.coins - spinBudget)
-
-                depositChunk = max(1, depositChunk)
-                depositChunk = min(depositChunk, config.coins)
-                depositChunk = min(depositChunk, remaining)  # aldrig mere end hvad der mangler
-                config.depositedAmount += depositChunk
-                config.coins -= depositChunk
-
-            if config.depositedAmount >= config.debtAmount:
-                # Deadline klaret: bonus: 6 coins per deadline nummer, 4 tickets per sprunget runde
-                # roundNum er 1-indekseret: maks 3 runder, skipped = 3 - roundNum
-                bonusCoins = 6 * config.debtNum
-                bonusTickets = 4 * max(0, 3 - config.roundNum)
-                config.coins += bonusCoins
-                config.tickets += bonusTickets
-                # Nulstil til næste deadline
-                config.debtAmount = newDeadline(config.debtNum, 1)
-                config.debtNum += 1
-                config.roundNum = 1
-                config.spinsLeft = 0
-                deadlineEndTrigger()
-                for i in range(7):
-                    config.symbolWeights[i] -= config.tempSymbolWeights[i]
-                    config.tempSymbolWeights[i] = 0
+                if config.depositedAmount >= config.debtAmount:
+                    bonusCoins   = 6 * config.debtNum
+                    bonusTickets = 4 * max(0, 3 - config.roundNum)
+                    config.coins   += bonusCoins
+                    config.tickets += bonusTickets
+                    config.debtAmount      = newDeadline(config.debtNum, 1)
+                    config.debtNum        += 1
+                    config.roundNum        = 1
+                    config.spinsLeft       = 0
+                    self.spinBudgetWarnShown = False
+                    self.spinBudgetWarnUsed  = False
+                    deadlineEndTrigger()
+                    for i in range(7):
+                        config.symbolWeights[i] -= config.tempSymbolWeights[i]
+                        config.tempSymbolWeights[i] = 0
 
         # Rente-udbetalings panel (atmPayout) vises når der er opsparet rente
         # interestStorage opbygges af slot_room ved rundesslut og akkumulerer hvis ikke hentet

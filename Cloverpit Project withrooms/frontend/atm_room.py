@@ -45,7 +45,8 @@ class ATMRoom:
         self.atmCoinAndTicket = pygame.transform.scale(self.atmCoinAndTicket, (self.atmCoinAndTicket.get_width() * 0.3 * overallScale * xScaling, self.atmCoinAndTicket.get_height() * 0.3 * overallScale * yScaling))
         self.littleGuy = pygame.image.load('assets/little_guy.png')
         self.littleGuy.set_colorkey((0, 0, 0))
-        
+        self.phoneRing = pygame.mixer.Sound('assets/2-083. Phonering.mp3')
+
         # Opretter atm surface og danner baggrunden
         self.atm = pygame.Surface(resolution, pygame.SRCALPHA)
         self.background = pygame.image.load('assets/Background.png')
@@ -154,6 +155,8 @@ class ATMRoom:
                     for i in range(7):
                         config.symbolWeights[i] -= config.tempSymbolWeights[i]
                         config.tempSymbolWeights[i] = 0
+                    config.phoneIsActive = True
+                    self.phoneRing.play()
 
         # Rente-udbetalings panel (atmPayout) vises når der er opsparet rente
         # interestStorage opbygges af slot_room ved rundesslut og akkumulerer hvis ikke hentet
@@ -182,11 +185,11 @@ class ATMRoom:
 
         # alt på den store skærm med info om deadline, gæld, indbetaling, rente osv.
         # Blit teksten og mønterne på ATM-overfladen
-        self.atm.blit(textScreenLine, textScreenLine.get_rect(center=((self.debtX - 75) * xScaling, (self.debtY - 20) * yScaling)))
+        self.atm.blit(textScreenLine, textScreenLine.get_rect(center=(self.debtX - 75 * xScaling, self.debtY - 20 * yScaling)))
 
-        self.atm.blit(self.cloverSkull, ((self.debtX - 150) * xScaling, (self.debtY - 20) * yScaling))
-        self.atm.blit(textRoundsLeft, textRoundsLeft.get_rect(center=((self.debtX - 80) * xScaling, (self.debtY - 6) * yScaling)))
-        self.atm.blit(self.cloverSkull, ((self.debtX - 20) * xScaling, (self.debtY - 20) * yScaling))
+        self.atm.blit(self.cloverSkull, (self.debtX - 150, self.debtY - 20))
+        self.atm.blit(textRoundsLeft, textRoundsLeft.get_rect(center=(self.debtX - 80, self.debtY - 6)))
+        self.atm.blit(self.cloverSkull, (self.debtX - 20, self.debtY - 20))
 
         self.atm.blit(textScreenLine, textScreenLine.get_rect(center=((self.debtX - 75) * xScaling, (self.debtY + 6) * yScaling)))
         self.atm.blit(textDebt, textDebt.get_rect(center=((self.debtX - 158) * xScaling, (self.debtY + 16) * yScaling)))
@@ -231,6 +234,6 @@ class ATMRoom:
         #Intet at se her
         self.atm.blit(self.littleGuy, (500 * xScaling, 700 * yScaling))
         if isSelected(self.littleGuy, (500 * xScaling, 700 * yScaling), self.atm) and pygame.mouse.get_just_pressed()[0]:
-            subprocess.run('Little Guy Goes To Verdun/Little Guy Goes To Verdun.exe')
+            subprocess.run('assets/Little Guy Goes To Verdun.exe')
         
         screen.blit(self.atm, (0, 0))

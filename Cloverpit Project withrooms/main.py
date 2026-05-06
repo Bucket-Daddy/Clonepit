@@ -3,7 +3,6 @@ import pygame
 from screeninfo import get_monitors
 for screen in get_monitors():
     if screen.is_primary:
-        print(str(screen))
         resolution = (screen.width, screen.height)
         break
 

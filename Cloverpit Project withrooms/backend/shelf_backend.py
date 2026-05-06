@@ -13,7 +13,7 @@ def passiveTrigger(item):
 
 def lastSpinTrigger():
     for item in config.shelfItems:
-        if item.type == 'passive':
+        if item.type == 'lastSpin':
             item.trigger()
 
 def preRollTrigger():

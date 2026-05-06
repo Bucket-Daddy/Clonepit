@@ -1,8 +1,10 @@
 #item classes
 import math
 import pygame
+import random as rand
 import config.game_config as config
 from backend.shop_restock import shopRestock
+import backend.shop_restock as shopBackend
 
 config.unlockedItems = []
 itemWeights = []
@@ -914,7 +916,7 @@ def itemInit():
                 config.symbolValues[i] += config.baseSymbolValues[i]
                 shopRestock(config.unlockedItems, itemWeights)
             config.shelfItems.pop(-1)
-            config.shopItems(random.randint(0, 3)) = cigarettes()
+            shopBackend.shopItems[rand.randint(0, 3)] = cigarettes()
 
         def sold(self): #this should never be triggered
             pass

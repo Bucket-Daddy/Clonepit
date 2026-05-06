@@ -1,5 +1,11 @@
 # main.py
 import pygame
+from screeninfo import get_monitors
+resolution = (get_monitors()[0].width, get_monitors()[0].width)
+print(resolution)
+
+xScaling = resolution[0] / 1200
+yScaling = resolution[1] / 750
 
 from frontend.slot_room import SlotRoom
 from frontend.atm_room import ATMRoom
@@ -19,7 +25,7 @@ def main():
     pygame.mixer.music.load('assets/mondamusic-retro-arcade-game-music-512837.mp3')
     pygame.mixer.music.play(loops = -1)
 
-    screen = pygame.display.set_mode((1200, 750))
+    screen = pygame.display.set_mode(resolution, pygame.FULLSCREEN)
     pygame.display.set_caption('Clonepit Slots')
     clock = pygame.time.Clock()
 
@@ -27,7 +33,7 @@ def main():
     hudIconSize = 48
     hudCoinIcon = pygame.transform.scale(pygame.image.load('assets/Coin.webp'), (hudIconSize, hudIconSize))
     hudTicketIcon = pygame.transform.scale(pygame.image.load('assets/ModifierTicket.webp'), (hudIconSize, hudIconSize))
-    hudFont = pygame.font.Font(None, size=40)
+    hudFont = pygame.font.Font(None, size = round(40 * xScaling))
 
     #Definerer items og deres weights
     unlockedItems, itemWeights = itemInit()
@@ -37,13 +43,14 @@ def main():
 
     # Opretter alle rum en gang ved start
     rooms = [
-        ATMRoom(),
-        ShopRoom(),
-        SlotRoom(),
-        PostersRoom(),
-        PhoneRoom(),
-        shelfRoom()
+        ATMRoom(resolution, xScaling, yScaling),
+        ShopRoom(resolution, xScaling, yScaling),
+        SlotRoom(resolution, xScaling, yScaling),
+        PostersRoom(resolution, xScaling, yScaling),
+        PhoneRoom(resolution, xScaling, yScaling),
+        shelfRoom(resolution, xScaling, yScaling)
     ]
+
 
     # Navne til caption så man kan se hvilket rum man er i
     roomNames = [
@@ -63,17 +70,17 @@ def main():
     running = True
 
     # Navigationspile tegnes oven på alle rum som klikbare overlejringer
-    arrowW, arrowH = 28, 52
+    arrowW, arrowH = 28 * xScaling, 52 * yScaling
     arrowPad = 6
-    arrowY = 750 // 2
+    arrowY = resolution[1] // 2
     leftArrowPts  = [(arrowPad + arrowW, arrowY - arrowH // 2),
                      (arrowPad,           arrowY),
                      (arrowPad + arrowW, arrowY + arrowH // 2)]
-    rightArrowPts = [(1200 - arrowPad - arrowW, arrowY - arrowH // 2),
-                     (1200 - arrowPad,            arrowY),
-                     (1200 - arrowPad - arrowW, arrowY + arrowH // 2)]
+    rightArrowPts = [(resolution[0] - arrowPad - arrowW, arrowY - arrowH // 2),
+                     (resolution[0] - arrowPad,            arrowY),
+                     (resolution[0] - arrowPad - arrowW, arrowY + arrowH // 2)]
     leftArrowRect  = pygame.Rect(arrowPad,                 arrowY - arrowH // 2, arrowW, arrowH)
-    rightArrowRect = pygame.Rect(1200 - arrowPad - arrowW, arrowY - arrowH // 2, arrowW, arrowH)
+    rightArrowRect = pygame.Rect(resolution[0] - arrowPad - arrowW, arrowY - arrowH // 2, arrowW, arrowH)
 
     while running:
         for event in pygame.event.get():
@@ -93,7 +100,7 @@ def main():
 
                 # Space spinner kun i slots rummet
                 if event.key == pygame.K_SPACE and currentRoom == 2:
-                    rooms[2].on_space()
+                    rooms[2].on_space(resolution, xScaling, yScaling)
         
                 if event.key == pygame.K_SPACE and currentRoom == 1:
                     shopRestock(unlockedItems, itemWeights)
@@ -101,7 +108,7 @@ def main():
             #Museklik sendes til slots rummet (køb-knapper)
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 if currentRoom == 2:
-                    rooms[2].on_click(event.pos)
+                    rooms[2].on_click(event.pos, resolution, xScaling, yScaling)
                 # Navigationspile
                 if leftArrowRect.collidepoint(event.pos):
                     currentRoom = (currentRoom - 1) % len(rooms)
@@ -112,7 +119,7 @@ def main():
 
 
         screen.fill((0, 0, 0))
-        rooms[currentRoom].draw(screen)
+        rooms[currentRoom].draw(screen, resolution, xScaling, yScaling)
 
         #Tegner HUD med coins og tickets altid øverst i alle rum
         hudPadding = 12
@@ -133,7 +140,7 @@ def main():
         hudSurf.blit(hudTicketIcon, (hudPadding, hudPadding + hudIconSize + rowGap))
         hudSurf.blit(ticketText, (hudPadding + hudIconSize + textGap, hudPadding + hudIconSize + rowGap + hudIconSize // 2 - ticketText.get_height() // 2))
 
-        screen.blit(hudSurf, (1200 - hudW - hudPadding, hudPadding))
+        screen.blit(hudSurf, (resolution[0] - hudW - hudPadding, hudPadding))
 
         # Tegner navigationspile — subtile trekanter langs skærmens kanter
         mousePos = pygame.mouse.get_pos()

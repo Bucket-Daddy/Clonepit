@@ -4,12 +4,12 @@ import config.game_config as config
 
 class PostersRoom:
 
-    def __init__(self):
+    def __init__(self, resolution, xScaling, yScaling):
 
         posterScale = 0.80
         self.symbolScale = 1
         overallScale = 2
-        self.font = pygame.font.Font(None, size = 15 * overallScale)
+        self.font = pygame.font.Font(None, size = round(15 * overallScale * xScaling))
     
         #Loader billeder
         self.lemon = pygame.image.load('assets/SymbolLemon.webp')
@@ -36,38 +36,37 @@ class PostersRoom:
         self.posterBackground = pygame.image.load('assets/PosterBackground.png').convert()
 
         #Skalerer billeder
-        self.lemon = pygame.transform.scale(self.lemon, (36 * self.symbolScale, 36 * self.symbolScale))
-        self.cherry = pygame.transform.scale(self.cherry, (36 * self.symbolScale, 36 * self.symbolScale))
-        self.clover = pygame.transform.scale(self.clover, (36 * self.symbolScale, 36 * self.symbolScale))
-        self.bell = pygame.transform.scale(self.bell, (36 * self.symbolScale, 36 * self.symbolScale))
-        self.diamond = pygame.transform.scale(self.diamond, (36 * self.symbolScale, 36 * self.symbolScale))
-        self.treasure = pygame.transform.scale(self.treasure, (36 * self.symbolScale, 36 * self.symbolScale))
-        self.seven = pygame.transform.scale(self.seven, (36 * self.symbolScale, 36 * self.symbolScale))
-        self.patternHor = pygame.transform.scale(self.patternHor, (self.patternHor.get_width() * 2/7, self.patternHor.get_height() * 2/7))
-        self.patternVer = pygame.transform.scale(self.patternVer, (self.patternVer.get_width() * 2/7, self.patternVer.get_height() * 2/7))
-        self.patternDiag = pygame.transform.scale(self.patternDiag, (self.patternDiag.get_width() * 2/7, self.patternDiag.get_height() * 2/7))
-        self.patternHorL = pygame.transform.scale(self.patternHorL, (self.patternHorL.get_width() * 2/7, self.patternHorL.get_height() * 2/7))
-        self.patternHorXL = pygame.transform.scale(self.patternHorXL, (self.patternHorXL.get_width() * 2/7, self.patternHorXL.get_height() * 2/7))
-        self.patternZag = pygame.transform.scale(self.patternZag, (self.patternZag.get_width() * 2/7, self.patternZag.get_height() * 2/7))
-        self.patternZig = pygame.transform.scale(self.patternZig, (self.patternZig.get_width() * 2/7, self.patternZig.get_height() * 2/7))
-        self.patternAbove = pygame.transform.scale(self.patternAbove, (self.patternAbove.get_width() * 2/7, self.patternAbove.get_height() * 2/7))
-        self.patternBelow = pygame.transform.scale(self.patternBelow, (self.patternBelow.get_width() * 2/7, self.patternBelow.get_height() * 2/7))
-        self.patternEye = pygame.transform.scale(self.patternEye, (self.patternEye.get_width() * 2/7, self.patternEye.get_height() * 2/7))
-        self.patternJackpot = pygame.transform.scale(self.patternJackpot, (self.patternJackpot.get_width() * 2/7, self.patternJackpot.get_height() * 2/7))
-        self.coin = pygame.transform.scale(self.coin, (self.coin.get_width() * 0.15, self.coin.get_height() * 0.15))
-        self.coin2 = pygame.transform.scale(self.coin2, (self.coin2.get_width() * 0.12, self.coin2.get_height() * 0.12))
-        self.dice = pygame.transform.scale(self.dice, (self.dice.get_width() * 0.05, self.dice.get_height() * 0.05)).convert()
+        self.cherry = pygame.transform.scale(self.cherry, (36 * self.symbolScale * xScaling, 36 * self.symbolScale * yScaling))
+        self.clover = pygame.transform.scale(self.clover, (36 * self.symbolScale * xScaling, 36 * self.symbolScale * yScaling))
+        self.bell = pygame.transform.scale(self.bell, (36 * self.symbolScale * xScaling, 36 * self.symbolScale * yScaling))
+        self.diamond = pygame.transform.scale(self.diamond, (36 * self.symbolScale * xScaling, 36 * self.symbolScale * yScaling))
+        self.treasure = pygame.transform.scale(self.treasure, (36 * self.symbolScale * xScaling, 36 * self.symbolScale * yScaling))
+        self.seven = pygame.transform.scale(self.seven, (36 * self.symbolScale * xScaling, 36 * self.symbolScale * yScaling))
+        self.patternHor = pygame.transform.scale(self.patternHor, (self.patternHor.get_width() * 2/7 * xScaling, self.patternHor.get_height() * 2/7 * yScaling))
+        self.patternVer = pygame.transform.scale(self.patternVer, (self.patternVer.get_width() * 2/7 * xScaling, self.patternVer.get_height() * 2/7 * yScaling))
+        self.patternDiag = pygame.transform.scale(self.patternDiag, (self.patternDiag.get_width() * 2/7 * xScaling, self.patternDiag.get_height() * 2/7 * yScaling))
+        self.patternHorL = pygame.transform.scale(self.patternHorL, (self.patternHorL.get_width() * 2/7 * xScaling, self.patternHorL.get_height() * 2/7 * yScaling))
+        self.patternHorXL = pygame.transform.scale(self.patternHorXL, (self.patternHorXL.get_width() * 2/7 * xScaling, self.patternHorXL.get_height() * 2/7 * yScaling))
+        self.patternZag = pygame.transform.scale(self.patternZag, (self.patternZag.get_width() * 2/7 * xScaling, self.patternZag.get_height() * 2/7))
+        self.patternZig = pygame.transform.scale(self.patternZig, (self.patternZig.get_width() * 2/7 * xScaling, self.patternZig.get_height() * 2/7))
+        self.patternAbove = pygame.transform.scale(self.patternAbove, (self.patternAbove.get_width() * 2/7 * xScaling, self.patternAbove.get_height() * 2/7 * yScaling))
+        self.patternBelow = pygame.transform.scale(self.patternBelow, (self.patternBelow.get_width() * 2/7 * xScaling, self.patternBelow.get_height() * 2/7 * yScaling))
+        self.patternEye = pygame.transform.scale(self.patternEye, (self.patternEye.get_width() * 2/7 * xScaling, self.patternEye.get_height() * 2/7 * yScaling))
+        self.patternJackpot = pygame.transform.scale(self.patternJackpot, (self.patternJackpot.get_width() * 2/7 * xScaling, self.patternJackpot.get_height() * 2/7 * yScaling))
+        self.coin = pygame.transform.scale(self.coin, (self.coin.get_width() * 0.15 * xScaling, self.coin.get_height() * 0.15 * yScaling))
+        self.coin2 = pygame.transform.scale(self.coin2, (self.coin2.get_width() * 0.12 * xScaling, self.coin2.get_height() * 0.12 * yScaling))
+        self.dice = pygame.transform.scale(self.dice, (self.dice.get_width() * 0.05 * xScaling, self.dice.get_height() * 0.05 * yScaling)).convert()
         self.dice.set_colorkey((255, 0, 214))
         self.posterBackground = pygame.transform.scale(self.posterBackground, (self.posterBackground.get_width() * posterScale, self.posterBackground.get_height() * posterScale))
         self.posterBackground.set_colorkey((0, 0, 0))
 
         # danner baggrunden
         background = pygame.image.load('assets/Background.png')
-        background = pygame.transform.scale(background, (1200, 750))
-        self.posters = pygame.Surface((1200, 750), pygame.SRCALPHA)
+        background = pygame.transform.scale(background, resolution)
+        self.posters = pygame.Surface(resolution, pygame.SRCALPHA)
         self.posters.blit(background, (-3, -3))
 
-    def draw(self, screen):
+    def draw(self, screen, resolution, xScaling, yScaling):
         screen.blit(self.posters, (0, 0))
 
         ##############################################################################################################

@@ -9,18 +9,18 @@ import config.game_config as config
 
 class ShopRoom:
 
-    def __init__(self):
+    def __init__(self, resolution, xScaling, yScaling):
 
         overallScale = 2
         self.font = pygame.font.Font(None, size = 16 * overallScale)
         self.titleFont = pygame.font.Font(None, size = 32 * overallScale)
+        self.shop_room = pygame.Surface(resolution, pygame.SRCALPHA)
+        self.background = pygame.image.load('assets/Background.png')
+        self.background = pygame.transform.scale(self.background, resolution)
 
-    def draw(self, screen):
+    def draw(self, screen, resolution, xScaling, yScaling):
                 # danner baggrunden
-        self.shop_room = pygame.Surface((1200, 750), pygame.SRCALPHA)
-        background = pygame.image.load('assets/Background.png')
-        background = pygame.transform.scale(background, (1200, 750))
-        self.shop_room.blit(background, (-3, -3))
+        self.shop_room.blit(self.background, (-3, -3))
 
         #Loader billeder
         storePedestal = pygame.image.load('assets/StorePedestal.png')

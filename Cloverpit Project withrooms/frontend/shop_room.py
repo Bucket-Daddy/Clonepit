@@ -62,7 +62,7 @@ class ShopRoom:
         self.shop_room.blit(self.priceTag, (self.pedestalX + self.storePedestal.get_width() + self.storePedestal.get_width() // 2 + 2.8, self.shop_room.get_height() // 1.7 - self.storePedestal.get_height() // 8 - 2.8))
 
         if isSelected(self.refresh, (self.pedestalX + self.storePedestal.get_width() + self.storePedestal.get_width() // 2, self.pedestalY), self.shop_room) and pygame.mouse.get_just_pressed()[0]:
-            shopRestock(config.unlockedItems, config.itemWeights)
+            shopRestock()
 
         for item in shopItems:
             if item != 0:

@@ -6,17 +6,17 @@ from frontend.text_rendering import renderText
 
 class shelfRoom:
 
-    def __init__(self):
+    def __init__(self, resolution, xScaling, yScaling):
         #Opretter fonts
         self.font = pygame.font.Font(None, size = 32)
         self.titleFont = pygame.font.Font(None, size = 64)
 
         #Opretter shelf surface og danner baggrunden
-        self.shelf_room = pygame.Surface((1200, 750), pygame.SRCALPHA)
+        self.shelf_room = pygame.Surface(resolution, pygame.SRCALPHA)
         self.background = pygame.image.load('assets/Background.png')
         self.background = pygame.transform.scale(self.background, (1200, 750))
 
-    def draw(self, screen):
+    def draw(self, screen, resolution, xScaling, yScaling):
         #Indsætter baggrunden
         self.shelf_room.blit(self.background, (-3, -3))
 

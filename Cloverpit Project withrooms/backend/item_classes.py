@@ -710,7 +710,7 @@ def itemInit():
 
         def trigger(self, result, pityCounter):
             for i in result:
-                if len(config.patterns[result[i][0]]) > 3:
+                if len(config.patterns[i[0]]) > 3:
                     config.symbolValues[4] += config.baseSymbolValues[4]
                     config.symbolValues[5] += config.baseSymbolValues[5]
                     break

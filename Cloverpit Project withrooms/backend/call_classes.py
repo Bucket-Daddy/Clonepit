@@ -11,7 +11,7 @@ config.callWeights = []
 def callInit():
 
     class itemSpaceCall():
-        Name = 'Please don\'t throw my stuff away!'
+        name = 'Please don\'t throw my stuff away!'
         description = 'Increase Charm\'s space by 1, permanently.'
         weight = 85
 

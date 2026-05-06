@@ -1,5 +1,6 @@
 #Shop script
 import pygame
+from math import ceil
 
 from backend.shop_restock import shopItems
 from frontend.mouseCheck import isSelected
@@ -71,7 +72,7 @@ class ShopRoom:
             (resolution[0] // 2 - self.storeSign.get_width() // 2,
              round(resolution[1] * 0.02)))
 
-        # Tegn de 4 item-standere + 1 restock-stander
+        # Tegn de 4 item-standere
         for i in range(4):
             self.shop_room.blit(self.storePedestal, (self.pedestalXs[i], self.pedestalY))
             self.shop_room.blit(self.priceTag,      (self.pedestalXs[i], self.priceTagY))
@@ -80,9 +81,21 @@ class ShopRoom:
         self.shop_room.blit(self.refresh,   (self.pedestalXs[4], self.pedestalY))
         self.shop_room.blit(self.priceTag,  (self.pedestalXs[4], self.priceTagY))
 
-        if isSelected(self.refresh, (self.pedestalXs[4], self.pedestalY), self.shop_room) \
-                and pygame.mouse.get_just_pressed()[0]:
+        if config.freeRestocks > 0:
+            restockText = self.font.render('Free', True, (240, 170, 41))
+        else:
+            restockText = self.font.render(str(config.restockCost), True, (240, 170, 41))
+        
+        self.shop_room.blit(restockText, restockText.get_rect(center=(self.pedestalXs[4] + pw // 2, self.priceTagY + self.priceTag.get_height() // 2)))
+
+        if isSelected(self.refresh, (self.pedestalXs[4], self.pedestalY), self.shop_room) and pygame.mouse.get_just_pressed()[0] and (config.freeRestocks < 0 or config.coins >= config.restockCost):
             shopRestock()
+            if config.freeRestocks > 0:
+                config.freeRestocks -= 1
+            else:
+                config.coins -= config.restockCost
+                config.restockCost = ceil(config.restockCost * 1.2)
+
 
         # Skaler item sprites til glaspanelstørrelse
         for item in shopItems:
@@ -96,8 +109,7 @@ class ShopRoom:
             if shopItems[i] != 0:
                 self.shop_room.blit(shopItems[i].sprite, (self.pedestalXs[i], self.pedestalY))
                 costText = self.font.render(str(shopItems[i].cost), True, (240, 170, 41))
-                self.shop_room.blit(costText,
-                    costText.get_rect(center=(self.pedestalXs[i] + pw // 2, self.priceTagY + self.priceTag.get_height() // 2)))
+                self.shop_room.blit(costText, costText.get_rect(center=(self.pedestalXs[i] + pw // 2, self.priceTagY + self.priceTag.get_height() // 2)))
 
         # Hover tooltip og buying logic for items
         for i in range(4):

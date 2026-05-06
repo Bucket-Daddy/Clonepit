@@ -914,6 +914,7 @@ def itemInit():
                 config.symbolValues[i] += config.baseSymbolValues[i]
                 shopRestock(config.unlockedItems, itemWeights)
             config.shelfItems.pop(-1)
+            config.shopItems(random.randint(0, 3)) = cigarettes()
 
         def sold(self): #this should never be triggered
             pass

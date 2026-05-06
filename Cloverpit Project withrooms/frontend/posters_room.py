@@ -13,6 +13,7 @@ class PostersRoom:
     
         #Loader billeder
         self.lemon = pygame.image.load('assets/SymbolLemon.webp')
+        self.lemon = pygame.transform.scale(self.lemon, (round(36 * self.symbolScale * xScaling), round(36 * self.symbolScale * yScaling)))
         self.cherry = pygame.image.load('assets/SymbolCherry.webp')
         self.clover = pygame.image.load('assets/SymbolClover.webp')
         self.bell = pygame.image.load('assets/SymbolBell.webp')
@@ -57,7 +58,9 @@ class PostersRoom:
         self.coin2 = pygame.transform.scale(self.coin2, (self.coin2.get_width() * 0.12 * xScaling, self.coin2.get_height() * 0.12 * yScaling))
         self.dice = pygame.transform.scale(self.dice, (self.dice.get_width() * 0.05 * xScaling, self.dice.get_height() * 0.05 * yScaling)).convert()
         self.dice.set_colorkey((255, 0, 214))
-        self.posterBackground = pygame.transform.scale(self.posterBackground, (self.posterBackground.get_width() * posterScale, self.posterBackground.get_height() * posterScale))
+        self.posterBackground = pygame.transform.scale(self.posterBackground,
+            (round(self.posterBackground.get_width() * 0.80 * xScaling),
+             round(self.posterBackground.get_height() * 0.80 * yScaling)))
         self.posterBackground.set_colorkey((0, 0, 0))
 
         # danner baggrunden
@@ -69,11 +72,13 @@ class PostersRoom:
     def draw(self, screen, resolution, xScaling, yScaling):
         screen.blit(self.posters, (0, 0))
 
+        sx, sy = xScaling, yScaling
+
         ##############################################################################################################
-        # placering af plakaten
-        symbolPosterX = 30
-        symbolPosterY = 45
-        self.posters.blit(self.posterBackground, (symbolPosterX, symbolPosterY - 15))
+        # Symbol-plakat
+        symbolPosterX = round(30  * sx)
+        symbolPosterY = round(45  * sy)
+        self.posters.blit(self.posterBackground, (symbolPosterX, symbolPosterY - round(15 * sy)))
 
         # texten på plakaten defineres
         textSymbols = self.font.render('---     SYMBOLS     ---', True, (0, 0, 0))
@@ -81,310 +86,148 @@ class PostersRoom:
         SymbolsMult = self.font.render(' X ' + str(config.symbolMult), True, (0, 0, 0))
 
         # værdien for hver symbol, hvis værdien er >= 7 cifre, vil den blive vist i videnskabelig notation
-        # Lemon - placering af værdi
+        # Lemon placering af værdi
         if len(str(config.symbolValues[0])) >= 7:
             symbolValue = round(config.symbolValues[0] * 10**(-1 * (len(str(config.symbolValues[0])) - 1)), 2)
             textLemonValue = self.font.render(': ' + str(symbolValue) + 'E+' + str(len(str(config.symbolValues[0])) - 1), True, (0, 0, 0))
         else:
             textLemonValue = self.font.render(': ' + str(config.symbolValues[0]), True, (0, 0, 0))
 
-        # Cherry - placering af værdi
         if len(str(config.symbolValues[1])) >= 7:
             symbolValue = round(config.symbolValues[1] * 10**(-1 * (len(str(config.symbolValues[1])) - 1)), 2)
             textCherryValue = self.font.render(': ' + str(symbolValue) + 'E+' + str(len(str(config.symbolValues[1])) - 1), True, (0, 0, 0))
         else:
             textCherryValue = self.font.render(': ' + str(config.symbolValues[1]), True, (0, 0, 0))
 
-        # Clover - placering af værdi
         if len(str(config.symbolValues[2])) >= 7:
             symbolValue = round(config.symbolValues[2] * 10**(-1 * (len(str(config.symbolValues[2])) - 1)), 2)
             textCloverValue = self.font.render(': ' + str(symbolValue) + 'E+' + str(len(str(config.symbolValues[2])) - 1), True, (0, 0, 0))
         else:
             textCloverValue = self.font.render(': ' + str(config.symbolValues[2]), True, (0, 0, 0))
 
-        # Bell - placering af værdi
         if len(str(config.symbolValues[3])) >= 7:
             symbolValue = round(config.symbolValues[3] * 10**(-1 * (len(str(config.symbolValues[3])) - 1)), 2)
             textBellValue = self.font.render(': ' + str(symbolValue) + 'E+' + str(len(str(config.symbolValues[3])) - 1), True, (0, 0, 0))
         else:
             textBellValue = self.font.render(': ' + str(config.symbolValues[3]), True, (0, 0, 0))
 
-        # Diamond - placering af værdi
         if len(str(config.symbolValues[4])) >= 7:
             symbolValue = round(config.symbolValues[4] * 10**(-1 * (len(str(config.symbolValues[4])) - 1)), 2)
             textDiamondValue = self.font.render(': ' + str(symbolValue) + 'E+' + str(len(str(config.symbolValues[4])) - 1), True, (0, 0, 0))
         else:
             textDiamondValue = self.font.render(': ' + str(config.symbolValues[4]), True, (0, 0, 0))
 
-        # Treasure - placering af værdi
         if len(str(config.symbolValues[5])) >= 7:
             symbolValue = round(config.symbolValues[5] * 10**(-1 * (len(str(config.symbolValues[5])) - 1)), 2)
             textTreasureValue = self.font.render(': ' + str(symbolValue) + 'E+' + str(len(str(config.symbolValues[5])) - 1), True, (0, 0, 0))
         else:
             textTreasureValue = self.font.render(': ' + str(config.symbolValues[5]), True, (0, 0, 0))
 
-        # Seven - placering af værdi
         if len(str(config.symbolValues[6])) >= 7:
             symbolValue = round(config.symbolValues[6] * 10**(-1 * (len(str(config.symbolValues[6])) - 1)), 2)
             textSevenValue = self.font.render(': ' + str(symbolValue) + 'E+' + str(len(str(config.symbolValues[6])) - 1), True, (0, 0, 0))
         else:
             textSevenValue = self.font.render(': ' + str(config.symbolValues[6]), True, (0, 0, 0))
 
-        # Chancen for hver symbol, vist som en procentdel med 1 decimal.
-        textLemonChance = self.font.render(': ' + str(round(config.symbolWeights[0]/sum(config.symbolWeights)*100, 1)) + '%', True, (0, 0, 0))
-        textCherryChance = self.font.render(': ' + str(round(config.symbolWeights[1]/sum(config.symbolWeights)*100, 1)) + '%', True, (0, 0, 0))
-        textCloverChance = self.font.render(': ' + str(round(config.symbolWeights[2]/sum(config.symbolWeights)*100, 1)) + '%', True, (0, 0, 0))
-        textBellChance = self.font.render(': ' + str(round(config.symbolWeights[3]/sum(config.symbolWeights)*100, 1)) + '%', True, (0, 0, 0))
+        textLemonChance   = self.font.render(': ' + str(round(config.symbolWeights[0]/sum(config.symbolWeights)*100, 1)) + '%', True, (0, 0, 0))
+        textCherryChance  = self.font.render(': ' + str(round(config.symbolWeights[1]/sum(config.symbolWeights)*100, 1)) + '%', True, (0, 0, 0))
+        textCloverChance  = self.font.render(': ' + str(round(config.symbolWeights[2]/sum(config.symbolWeights)*100, 1)) + '%', True, (0, 0, 0))
+        textBellChance    = self.font.render(': ' + str(round(config.symbolWeights[3]/sum(config.symbolWeights)*100, 1)) + '%', True, (0, 0, 0))
         textDiamondChance = self.font.render(': ' + str(round(config.symbolWeights[4]/sum(config.symbolWeights)*100, 1)) + '%', True, (0, 0, 0))
-        textTreasureChance = self.font.render(': ' + str(round(config.symbolWeights[5]/sum(config.symbolWeights)*100, 1)) + '%', True, (0, 0, 0))
-        textSevenChance = self.font.render(': ' + str(round(config.symbolWeights[6]/sum(config.symbolWeights)*100, 1)) + '%', True, (0, 0, 0))
+        textTreasureChance= self.font.render(': ' + str(round(config.symbolWeights[5]/sum(config.symbolWeights)*100, 1)) + '%', True, (0, 0, 0))
+        textSevenChance   = self.font.render(': ' + str(round(config.symbolWeights[6]/sum(config.symbolWeights)*100, 1)) + '%', True, (0, 0, 0))
 
-        # texten på plakaten
-        self.posters.blit(textSymbols, textSymbols.get_rect(center=(self.posterBackground.get_width()/2 + symbolPosterX, symbolPosterY + 30)))
-        self.posters.blit(textSymbolsMult, textSymbolsMult.get_rect(center=(self.posterBackground.get_width()/2 + symbolPosterX, symbolPosterY + 36 * self.symbolScale + 305)))
-        self.posters.blit(SymbolsMult, SymbolsMult.get_rect(center=(symbolPosterX + 240, symbolPosterY + 370)))
-        self.posters.blit(textLemonValue, (symbolPosterX + 100, symbolPosterY + 40))
-        self.posters.blit(textCherryValue, (symbolPosterX + 100, symbolPosterY + 80))
-        self.posters.blit(textCloverValue, (symbolPosterX + 100, symbolPosterY + 120))
-        self.posters.blit(textBellValue, (symbolPosterX + 100, symbolPosterY + 160))
-        self.posters.blit(textDiamondValue, (symbolPosterX + 100, symbolPosterY + 200))
-        self.posters.blit(textTreasureValue, (symbolPosterX + 100, symbolPosterY + 245))
-        self.posters.blit(textSevenValue, (symbolPosterX + 100, symbolPosterY + 288))
-        self.posters.blit(textLemonChance, (symbolPosterX + 220, symbolPosterY + 40))
-        self.posters.blit(textCherryChance, (symbolPosterX + 220, symbolPosterY + 80))
-        self.posters.blit(textCloverChance, (symbolPosterX + 220, symbolPosterY + 120))
-        self.posters.blit(textBellChance, (symbolPosterX + 220, symbolPosterY + 160))
-        self.posters.blit(textDiamondChance, (symbolPosterX + 220, symbolPosterY + 200))
-        self.posters.blit(textTreasureChance, (symbolPosterX + 220, symbolPosterY + 245))
-        self.posters.blit(textSevenChance, (symbolPosterX + 220, symbolPosterY + 287.5))
+        # Rækker er 40px fra hinanden på 1200×750; skaleres med sy
+        row = [round((symbolPosterY + 40 + i * 40) * sy / sy) for i in range(7)]
+        # (symbolPosterY er allerede skaleret, brug blot offset * sy)
+        rows = [symbolPosterY + round(40 * sy) + i * round(40 * sy) for i in range(7)]
 
-        # Symboler på plakaten
-        self.posters.blit(self.lemon, (symbolPosterX + 25, symbolPosterY + 40))
-        self.posters.blit(self.coin, (symbolPosterX + 75, symbolPosterY + 40))
-        self.posters.blit(self.dice, (symbolPosterX + 190, symbolPosterY + 40))
-        self.posters.blit(self.cherry, (symbolPosterX + 25, symbolPosterY + 36 * self.symbolScale + 40))
-        self.posters.blit(self.coin, (symbolPosterX + 75, symbolPosterY + 36 * self.symbolScale + 42))
-        self.posters.blit(self.dice, (symbolPosterX + 190, symbolPosterY + 36 * self.symbolScale + 43))
-        self.posters.blit(self.clover, (symbolPosterX + 25, symbolPosterY + 36 * self.symbolScale + 80))
-        self.posters.blit(self.coin, (symbolPosterX + 75, symbolPosterY + 36 * self.symbolScale + 82))
-        self.posters.blit(self.dice, (symbolPosterX + 190, symbolPosterY + 36 * self.symbolScale + 83))
-        self.posters.blit(self.bell, (symbolPosterX + 25, symbolPosterY + 36 * self.symbolScale + 120))
-        self.posters.blit(self.coin, (symbolPosterX + 75, symbolPosterY + 36 * self.symbolScale + 122))
-        self.posters.blit(self.dice, (symbolPosterX + 190, symbolPosterY + 36 * self.symbolScale + 123))
-        self.posters.blit(self.diamond, (symbolPosterX + 25, symbolPosterY + 36 * self.symbolScale + 162.5))
-        self.posters.blit(self.coin, (symbolPosterX + 75, symbolPosterY + 36 * self.symbolScale + 164.5))
-        self.posters.blit(self.dice, (symbolPosterX + 190, symbolPosterY + 36 * self.symbolScale + 163))
-        self.posters.blit(self.treasure, (symbolPosterX + 25, symbolPosterY + 36 * self.symbolScale + 205))
-        self.posters.blit(self.coin, (symbolPosterX + 75, symbolPosterY + 36 * self.symbolScale + 207))
-        self.posters.blit(self.dice, (symbolPosterX + 190, symbolPosterY + 36 * self.symbolScale + 208))
-        self.posters.blit(self.seven, (symbolPosterX + 25, symbolPosterY + 36 * self.symbolScale + 247.5))
-        self.posters.blit(self.coin, (symbolPosterX + 75, symbolPosterY + 36 * self.symbolScale + 249.5))
-        self.posters.blit(self.dice, (symbolPosterX + 190, symbolPosterY + 36 * self.symbolScale + 250))
-        self.posters.blit(self.coin, (symbolPosterX + 200, symbolPosterY + 355))
+        self.posters.blit(textSymbols,      textSymbols.get_rect(center=(self.posterBackground.get_width() // 2 + symbolPosterX, symbolPosterY + round(30 * sy))))
+        self.posters.blit(textSymbolsMult,  textSymbolsMult.get_rect(center=(self.posterBackground.get_width() // 2 + symbolPosterX, symbolPosterY + round(340 * sy))))
+        self.posters.blit(self.coin,        (symbolPosterX + round(200 * sx), symbolPosterY + round(355 * sy)))
+        self.posters.blit(SymbolsMult,      SymbolsMult.get_rect(center=(symbolPosterX + round(240 * sx), symbolPosterY + round(365 * sy))))
+
+        valueX  = symbolPosterX + round(100 * sx)
+        chanceX = symbolPosterX + round(220 * sx)
+        iconX   = symbolPosterX + round(25  * sx)
+        coinX   = symbolPosterX + round(75  * sx)
+        diceX   = symbolPosterX + round(190 * sx)
+
+        symbolTexts  = [textLemonValue,   textCherryValue,  textCloverValue,  textBellValue,  textDiamondValue,  textTreasureValue,  textSevenValue]
+        chanceTexts  = [textLemonChance,  textCherryChance, textCloverChance, textBellChance, textDiamondChance, textTreasureChance, textSevenChance]
+        iconImgs     = [None, self.cherry, self.clover, self.bell, self.diamond, self.treasure, self.seven]
+
+        for i, r in enumerate(rows):
+            self.posters.blit(symbolTexts[i],  (valueX,  r))
+            self.posters.blit(chanceTexts[i],  (chanceX, r))
+            self.posters.blit(self.coin,        (coinX,   r + round(2 * sy)))
+            self.posters.blit(self.dice,        (diceX,   r + round(3 * sy)))
+
+        # Lemon har ikke scaled sprite i listen blit separat
+        self.posters.blit(self.lemon,  (iconX, rows[0]))
+        for i in range(1, 7):
+            self.posters.blit(iconImgs[i], (iconX, rows[i]))
+
+        self.posters.blit(self.coin, (symbolPosterX + round(200 * sx), symbolPosterY + round(355 * sy)))
 
         ##############################################################################################################
         # Plakaten med værdierne for mønstrene
-        patternPosterX = symbolPosterX + self.posterBackground.get_width() + 30
+        patternPosterX = symbolPosterX + round(self.posterBackground.get_width() * sx + 30 * sx)
         patternPosterY = symbolPosterY
-        self.posters.blit(self.posterBackground, (patternPosterX, patternPosterY - 15))
+        self.posters.blit(self.posterBackground, (patternPosterX, patternPosterY - round(15 * sy)))
 
-        # texten på plakaten
-        textPatterns = self.font.render('---     PATTERNS     ---', True, (0, 0, 0))
-        textPatternsMult = self.font.render('  PATTERN     MULTIPLIER ', True, (0, 0, 0))
-        PatternsMult = self.font.render(' X ' + str(config.patternMult), True, (0, 0, 0))
-        textHor = self.font.render('HOR', True, (0, 0, 0))
-        textVer = self.font.render('VER', True, (0, 0, 0))
-        textDiag = self.font.render('DIAG', True, (0, 0, 0))
-        textHorL = self.font.render('HOR-L', True, (0, 0, 0))
-        textHorXL = self.font.render('HOR-XL', True, (0, 0, 0))
-        textZig = self.font.render('ZIG', True, (0, 0, 0))
-        textZag = self.font.render('ZAG', True, (0, 0, 0))
-        textAbove = self.font.render('ABOVE', True, (0, 0, 0))
-        textBelow = self.font.render('BELOW', True, (0, 0, 0))
-        textEye = self.font.render('EYE', True, (0, 0, 0))
+        # Tekst-labels
+        textPatterns    = self.font.render('---     PATTERNS     ---', True, (0, 0, 0))
+        textPatternsMult= self.font.render('  PATTERN     MULTIPLIER ', True, (0, 0, 0))
+        PatternsMult    = self.font.render(' X ' + str(config.patternMult), True, (0, 0, 0))
+        textHor     = self.font.render('HOR',     True, (0, 0, 0))
+        textVer     = self.font.render('VER',     True, (0, 0, 0))
+        textDiag    = self.font.render('DIAG',    True, (0, 0, 0))
+        textHorL    = self.font.render('HOR-L',   True, (0, 0, 0))
+        textHorXL   = self.font.render('HOR-XL',  True, (0, 0, 0))
+        textZig     = self.font.render('ZIG',     True, (0, 0, 0))
+        textZag     = self.font.render('ZAG',     True, (0, 0, 0))
+        textAbove   = self.font.render('ABOVE',   True, (0, 0, 0))
+        textBelow   = self.font.render('BELOW',   True, (0, 0, 0))
+        textEye     = self.font.render('EYE',     True, (0, 0, 0))
         textJackpot = self.font.render('JACKPOT', True, (0, 0, 0))
 
-        # hor mønsteret
-        if len(str(config.patternValues['hor'])) >= 11:
-            patternValue = round(config.patternValues['hor'] * 10**(-1 * (len(str(config.patternValues['hor'])) - 1)), 2)
-            textHorMult = self.font.render('X ' + str(patternValue) + 'E+' + str(len(str(config.patternValues['hor'])) - 1), True, (0, 0, 0))
-            self.posters.blit(self.coin2, (patternPosterX + 250 - 5 * (len(str(patternValue)) + 3)**(1.50 - 0.012 * len(str(patternValue))), patternPosterY + 40))
-            self.posters.blit(textHorMult, (patternPosterX + 270 - 5 * (len(str(patternValue)) + 3)**(1.50 - 0.012 * (len(str(patternValue)))), patternPosterY + 40))
-        else:
-            textHorMult = self.font.render('X ' + str(config.patternValues['hor']), True, (0, 0, 0))
-            self.posters.blit(self.coin2, (patternPosterX + 250 - 5 * len(str(config.patternValues['hor']))**(1.50 - 0.012 * len(str(config.patternValues['hor']))), patternPosterY + 40))
-            self.posters.blit(textHorMult, (patternPosterX + 270 - 5 * len(str(config.patternValues['hor']))**(1.50 - 0.012 * len(str(config.patternValues['hor']))), patternPosterY + 40))
+        # Hjælpefunktion til at rendere en pattern-linje
+        def blitPatternRow(patternKey, rowImg, rowLabel, rowY, labelOffX=105):
+            val = config.patternValues[patternKey]
+            valStr = str(val)
+            if len(valStr) >= 8:
+                v = round(val * 10 ** (-(len(valStr) - 1)), 2)
+                multText = self.font.render('X ' + str(v) + 'E+' + str(len(valStr) - 1), True, (0, 0, 0))
+            else:
+                multText = self.font.render('X ' + valStr, True, (0, 0, 0))
+            coinOffX = round(250 * sx) - round(5 * len(str(val)) ** (1.50 - 0.012 * len(str(val))) * sx)
+            self.posters.blit(rowImg,   (patternPosterX + round(25 * sx), rowY))
+            self.posters.blit(rowLabel, rowLabel.get_rect(center=(patternPosterX + round(labelOffX * sx), rowY + round(15 * sy))))
+            self.posters.blit(self.coin2, (patternPosterX + coinOffX, rowY - round(3 * sy)))
+            self.posters.blit(multText,   (patternPosterX + coinOffX + round(20 * sx), rowY))
 
-        # vert mønsteret
-        if len(str(config.patternValues['vert'])) >= 11:
-            patternValue = round(config.patternValues['vert'] * 10**(-1 * (len(str(config.patternValues['vert'])) - 1)), 2)
-            textVerMult = self.font.render('X ' + str(patternValue) + 'E+' + str(len(str(config.patternValues['vert'])) - 1), True, (0, 0, 0))
-            self.posters.blit(textVerMult, (patternPosterX + 270 - 5 * (len(str(patternValue)) + 3)**(1.50 - 0.012 * (len(str(patternValue)))), patternPosterY + 68.5))
-            self.posters.blit(self.coin2, (patternPosterX + 250 - 5 * (len(str(patternValue)) + 3)**(1.50 - 0.012 * len(str(patternValue))), patternPosterY + 65))
-        else:
-            textVerMult = self.font.render('X ' + str(config.patternValues['vert']), True, (0, 0, 0))
-            self.posters.blit(textVerMult, (patternPosterX + 270 - 5 * len(str(config.patternValues['vert']))**(1.50 - 0.012 * len(str(config.patternValues['vert']))), patternPosterY + 68.5))
-            self.posters.blit(self.coin2, (patternPosterX + 250 - 5 * len(str(config.patternValues['vert']))**(1.50 - 0.012 * len(str(config.patternValues['vert']))), patternPosterY + 65))
+        # Rækker 27px mellemrum på 750px høj, skaleret med sy
+        step = round(27 * sy)
+        pr = [patternPosterY + round(40 * sy) + i * step for i in range(11)]
 
-        # diag mønsteret
-        if len(str(config.patternValues['diag'])) >= 11:
-            patternValue = round(config.patternValues['diag'] * 10**(-1 * (len(str(config.patternValues['diag'])) - 1)), 2)
-            textDiagMult = self.font.render('X ' + str(patternValue) + 'E+' + str(len(str(config.patternValues['diag'])) - 1), True, (0, 0, 0))
-            if len(str(config.patternValues['diag'])) >= 11:
-                self.posters.blit(textDiagMult, (patternPosterX + 270 - 5 * (len(str(patternValue)) + 3)**(1.50 - 0.012 * (len(str(patternValue)))), patternPosterY + 96))
-                self.posters.blit(self.coin2, (patternPosterX + 250 - 5 * (len(str(patternValue)) + 3)**(1.50 - 0.012 * len(str(patternValue))), patternPosterY + 92.5))
-            if len(str(config.patternValues['diag'])) < 11:
-                self.posters.blit(textDiagMult, (patternPosterX + 212, patternPosterY + 96))
-                self.posters.blit(self.coin2, (patternPosterX + 192, patternPosterY + 92.5))
-        else:
-            textDiagMult = self.font.render('X ' + str(config.patternValues['diag']), True, (0, 0, 0))
-            self.posters.blit(textDiagMult, (patternPosterX + 270 - 5 * len(str(config.patternValues['diag']))**(1.50 - 0.012 * len(str(config.patternValues['diag']))), patternPosterY + 96))
-            self.posters.blit(self.coin2, (patternPosterX + 250 - 5 * len(str(config.patternValues['diag']))**(1.50 - 0.012 * len(str(config.patternValues['diag']))), patternPosterY + 92.5))
+        blitPatternRow('hor',     self.patternHor,     textHor,     pr[0])
+        blitPatternRow('vert',    self.patternVer,     textVer,     pr[1])
+        blitPatternRow('diag',    self.patternDiag,    textDiag,    pr[2])
+        blitPatternRow('horL',    self.patternHorL,    textHorL,    pr[3])
+        blitPatternRow('horXL',   self.patternHorXL,   textHorXL,   pr[4])
+        blitPatternRow('zig',     self.patternZig,     textZig,     pr[5])
+        blitPatternRow('zag',     self.patternZag,     textZag,     pr[6])
+        blitPatternRow('above',   self.patternAbove,   textAbove,   pr[7])
+        blitPatternRow('below',   self.patternBelow,   textBelow,   pr[8])
+        blitPatternRow('eye',     self.patternEye,     textEye,     pr[9])
+        blitPatternRow('jackpot', self.patternJackpot, textJackpot, pr[10], labelOffX=130)
 
-        # horL mønsteret
-        if len(str(config.patternValues['horL'])) >= 10:
-            patternValue = round(config.patternValues['horL'] * 10**(-1 * (len(str(config.patternValues['horL'])) - 1)), 2)
-            textHorLMult = self.font.render('X ' + str(patternValue) + 'E+' + str(len(str(config.patternValues['horL'])) - 1), True, (0, 0, 0))
-            if len(str(config.patternValues['horL'])) >= 10:
-                self.posters.blit(textHorLMult, (patternPosterX + 270 - 5 * (len(str(patternValue)) + 3)**(1.50 - 0.012 * (len(str(patternValue)))), patternPosterY + 123.5))
-                self.posters.blit(self.coin2, (patternPosterX + 250 - 5 * (len(str(patternValue)) + 3)**(1.50 - 0.012 * len(str(patternValue))), patternPosterY + 119.5))
-            if len(str(config.patternValues['horL'])) < 10:
-                self.posters.blit(textHorLMult, (patternPosterX + 212, patternPosterY + 123.5))
-                self.posters.blit(self.coin2, (patternPosterX + 192, patternPosterY + 119.5))
-        else:
-            textHorLMult = self.font.render('X ' + str(config.patternValues['horL']), True, (0, 0, 0))
-            self.posters.blit(textHorLMult, (patternPosterX + 270 - 5 * len(str(config.patternValues['horL']))**(1.50 - 0.012 * len(str(config.patternValues['horL']))), patternPosterY + 123.5))
-            self.posters.blit(self.coin2, (patternPosterX + 250 - 5 * len(str(config.patternValues['horL']))**(1.50 - 0.012 * len(str(config.patternValues['horL']))), patternPosterY + 119.5))
+        self.posters.blit(textPatterns,     textPatterns.get_rect(center=(self.posterBackground.get_width() // 2 + patternPosterX, patternPosterY + round(30 * sy))))
+        self.posters.blit(textPatternsMult, textPatternsMult.get_rect(center=(self.posterBackground.get_width() // 2 + patternPosterX, patternPosterY + round(355 * sy))))
+        self.posters.blit(PatternsMult,     PatternsMult.get_rect(center=(patternPosterX + round(240 * sx), patternPosterY + round(380 * sy))))
+        self.posters.blit(self.coin,        (patternPosterX + round(200 * sx), patternPosterY + round(364 * sy)))
 
-        # horXL mønsteret
-        if len(str(config.patternValues['horXL'])) >= 8:
-            patternValue = round(config.patternValues['horXL'] * 10**(-1 * (len(str(config.patternValues['horXL'])) - 1)), 2)
-            textHorXLMult = self.font.render('X ' + str(patternValue) + 'E+' + str(len(str(config.patternValues['horXL'])) - 1), True, (0, 0, 0))
-            if len(str(config.patternValues['horXL'])) >= 10:
-                self.posters.blit(textHorXLMult, (patternPosterX + 270 - 5 * (len(str(patternValue)) + 3)**(1.50 - 0.012 * (len(str(patternValue)))), patternPosterY + 151.5))
-                self.posters.blit(self.coin2, (patternPosterX + 250 - 5 * (len(str(patternValue)) + 3)**(1.50 - 0.012 * len(str(patternValue))), patternPosterY + 148.5))
-            if len(str(config.patternValues['horXL'])) < 10:
-                self.posters.blit(textHorXLMult, (patternPosterX + 212, patternPosterY + 151.5))
-                self.posters.blit(self.coin2, (patternPosterX + 192, patternPosterY + 148.5))
-        else:
-            textHorXLMult = self.font.render('X ' + str(config.patternValues['horXL']), True, (0, 0, 0))
-            self.posters.blit(textHorXLMult, (patternPosterX + 270 - 5 * len(str(config.patternValues['horXL']))**(1.50 - 0.012 * len(str(config.patternValues['horXL']))), patternPosterY + 151.5))
-            self.posters.blit(self.coin2, (patternPosterX + 250 - 5 * len(str(config.patternValues['horXL']))**(1.50 - 0.012 * len(str(config.patternValues['horXL']))), patternPosterY + 146.5))
 
-        # zig mønsteret
-        if len(str(config.patternValues['zig'])) >= 11:
-            patternValue = round(config.patternValues['zig'] * 10**(-1 * (len(str(config.patternValues['zig'])) - 1)), 2)
-            textZigMult = self.font.render('X ' + str(patternValue) + 'E+' + str(len(str(config.patternValues['zig'])) - 1), True, (0, 0, 0))
-            self.posters.blit(textZigMult, (patternPosterX + 270 - 5 * (len(str(patternValue)) + 3)**(1.50 - 0.012 * (len(str(patternValue)))), patternPosterY + 179.5))
-            self.posters.blit(self.coin2, (patternPosterX + 250 - 5 * (len(str(patternValue)) + 3)**(1.50 - 0.012 * len(str(patternValue))), patternPosterY + 176.5))
-        else:
-            textZigMult = self.font.render('X ' + str(config.patternValues['zig']), True, (0, 0, 0))
-            self.posters.blit(textZigMult, (patternPosterX + 270 - 5 * len(str(config.patternValues['zig']))**(1.50 - 0.012 * len(str(config.patternValues['zig']))), patternPosterY + 179.5))
-            self.posters.blit(self.coin2, (patternPosterX + 250 - 5 * len(str(config.patternValues['zig']))**(1.50 - 0.012 * len(str(config.patternValues['zig']))), patternPosterY + 176.5))
 
-        # zag mønsteret
-        if len(str(config.patternValues['zag'])) >= 11:
-            patternValue = round(config.patternValues['zag'] * 10**(-1 * (len(str(config.patternValues['zag'])) - 1)), 2)
-            textZagMult = self.font.render('X ' + str(patternValue) + 'E+' + str(len(str(config.patternValues['zag'])) - 1), True, (0, 0, 0))
-            self.posters.blit(textZagMult, (patternPosterX + 270 - 5 * (len(str(patternValue)) + 3)**(1.50 - 0.012 * (len(str(patternValue)))), patternPosterY + 206.5))
-            self.posters.blit(self.coin2, (patternPosterX + 250 - 5 * (len(str(patternValue)) + 3)**(1.50 - 0.012 * len(str(patternValue))), patternPosterY + 204.5))
-        else:
-            textZagMult = self.font.render('X ' + str(config.patternValues['zag']), True, (0, 0, 0))
-            self.posters.blit(textZagMult, (patternPosterX + 270 - 5 * len(str(config.patternValues['zag']))**(1.50 - 0.012 * len(str(config.patternValues['zag']))), patternPosterY + 206.5))
-            self.posters.blit(self.coin2, (patternPosterX + 250 - 5 * len(str(config.patternValues['zag']))**(1.50 - 0.012 * len(str(config.patternValues['zag']))), patternPosterY + 204.5))
-
-        # above mønsteret
-        if len(str(config.patternValues['above'])) >= 8:
-            patternValue = round(config.patternValues['above'] * 10**(-1 * (len(str(config.patternValues['above'])) - 1)), 2)
-            textAboveMult = self.font.render('X ' + str(patternValue) + 'E+' + str(len(str(config.patternValues['above'])) - 1), True, (0, 0, 0))
-            if len(str(config.patternValues['above'])) >= 10:
-                self.posters.blit(textAboveMult, (patternPosterX + 270 - 5 * (len(str(patternValue)) + 3)**(1.50 - 0.012 * (len(str(patternValue)))), patternPosterY + 233.5))
-                self.posters.blit(self.coin2, (patternPosterX + 250 - 5 * (len(str(patternValue)) + 3)**(1.50 - 0.012 * len(str(patternValue))), patternPosterY + 230.5))
-            if len(str(config.patternValues['above'])) < 10:
-                self.posters.blit(textAboveMult, (patternPosterX + 212, patternPosterY + 233.5))
-                self.posters.blit(self.coin2, (patternPosterX + 192, patternPosterY + 230.5))
-        else:
-            textAboveMult = self.font.render('X ' + str(config.patternValues['above']), True, (0, 0, 0))
-            self.posters.blit(textAboveMult, (patternPosterX + 270 - 5 * len(str(config.patternValues['above']))**(1.50 - 0.012 * len(str(config.patternValues['above']))), patternPosterY + 233.5))
-            self.posters.blit(self.coin2, (patternPosterX + 250 - 5 * len(str(config.patternValues['above']))**(1.50 - 0.012 * len(str(config.patternValues['above']))), patternPosterY + 230.5))
-
-        # below mønsteret
-        if len(str(config.patternValues['below'])) >= 8:
-            patternValue = round(config.patternValues['below'] * 10**(-1 * (len(str(config.patternValues['below'])) - 1)), 2)
-            textBelowMult = self.font.render('X ' + str(patternValue) + 'E+' + str(len(str(config.patternValues['below'])) - 1), True, (0, 0, 0))
-            if len(str(config.patternValues['below'])) >= 10:
-                self.posters.blit(textBelowMult, (patternPosterX + 270 - 5 * (len(str(patternValue)) + 3)**(1.50 - 0.012 * (len(str(patternValue)))), patternPosterY + 260))
-                self.posters.blit(self.coin2, (patternPosterX + 250 - 5 * (len(str(patternValue)) + 3)**(1.50 - 0.012 * len(str(patternValue))), patternPosterY + 257.5))
-            if len(str(config.patternValues['below'])) < 10:
-                self.posters.blit(textBelowMult, (patternPosterX + 212, patternPosterY + 260))
-                self.posters.blit(self.coin2, (patternPosterX + 192, patternPosterY + 257.5))
-        else:
-            textBelowMult = self.font.render('X ' + str(config.patternValues['below']), True, (0, 0, 0))
-            self.posters.blit(textBelowMult, (patternPosterX + 270 - 5 * len(str(config.patternValues['below']))**(1.50 - 0.012 * len(str(config.patternValues['below']))), patternPosterY + 260.5))
-            self.posters.blit(self.coin2, (patternPosterX + 250 - 5 * len(str(config.patternValues['below']))**(1.50 - 0.012 * len(str(config.patternValues['below']))), patternPosterY + 257.5))
-
-        # eye mønsteret
-        if len(str(config.patternValues['eye'])) >= 11:
-            patternValue = round(config.patternValues['eye'] * 10**(-1 * (len(str(config.patternValues['eye'])) - 1)), 2)
-            textEyeMult = self.font.render('X ' + str(patternValue) + 'E+' + str(len(str(config.patternValues['eye'])) - 1), True, (0, 0, 0))
-            self.posters.blit(textEyeMult, (patternPosterX + 270 - 5 * (len(str(patternValue)) + 3)**(1.50 - 0.012 * (len(str(patternValue)))), patternPosterY + 287.5))
-            self.posters.blit(self.coin2, (patternPosterX + 250 - 5 * (len(str(patternValue)) + 3)**(1.50 - 0.012 * len(str(patternValue))), patternPosterY + 284.5))
-        else:
-            textEyeMult = self.font.render('X ' + str(config.patternValues['eye']), True, (0, 0, 0))
-            self.posters.blit(textEyeMult, (patternPosterX + 270 - 5 * len(str(config.patternValues['eye']))**(1.50 - 0.012 * len(str(config.patternValues['eye']))), patternPosterY + 287.5))
-            self.posters.blit(self.coin2, (patternPosterX + 250 - 5 * len(str(config.patternValues['eye']))**(1.50 - 0.012 * len(str(config.patternValues['eye']))), patternPosterY + 284.5))
-
-        # jackpot mønsteret
-        if len(str(config.patternValues['jackpot'])) >= 8:
-            patternValue = round(config.patternValues['jackpot'] * 10**(-1 * (len(str(config.patternValues['jackpot'])) - 1)), 2)
-            textJackpotMult = self.font.render('X ' + str(patternValue) + 'E+' + str(len(str(config.patternValues['jackpot'])) - 1), True, (0, 0, 0))
-            if len(str(config.patternValues['jackpot'])) >= 10:
-                self.posters.blit(textJackpotMult, (patternPosterX + 270 - 5 * (len(str(patternValue)) + 3)**(1.50 - 0.012 * (len(str(patternValue)))), patternPosterY + 314.5))
-                self.posters.blit(self.coin2, (patternPosterX + 250 - 5 * (len(str(patternValue)) + 3)**(1.50 - 0.012 * len(str(patternValue))), patternPosterY + 310.5))
-            if len(str(config.patternValues['jackpot'])) < 10:
-                self.posters.blit(textJackpotMult, (patternPosterX + 212, patternPosterY + 314.5))
-                self.posters.blit(self.coin2, (patternPosterX + 192, patternPosterY + 310.5))
-        else:
-            textJackpotMult = self.font.render('X ' + str(config.patternValues['jackpot']), True, (0, 0, 0))
-            self.posters.blit(textJackpotMult, (patternPosterX + 270 - 5 * len(str(config.patternValues['jackpot']))**(1.50 - 0.012 * len(str(config.patternValues['jackpot']))), patternPosterY + 314.5))
-            self.posters.blit(self.coin2, (patternPosterX + 250 - 5 * len(str(config.patternValues['jackpot']))**(1.50 - 0.012 * len(str(config.patternValues['jackpot']))), patternPosterY + 310.5))
-
-        # text og mønstre på plakaten
-        self.posters.blit(self.patternHor, (patternPosterX + 25, patternPosterY + 40))
-        self.posters.blit(textHor, textHor.get_rect(center=(patternPosterX + 95, patternPosterY + 55)))
-
-        self.posters.blit(self.patternVer, (patternPosterX + 25, patternPosterY + 66))
-        self.posters.blit(textVer, textVer.get_rect(center=(patternPosterX + 93, patternPosterY + 81)))
-
-        self.posters.blit(self.patternDiag, (patternPosterX + 25, patternPosterY + 93.5))
-        self.posters.blit(textDiag, textDiag.get_rect(center=(patternPosterX + 98, patternPosterY + 108.5)))
-
-        self.posters.blit(self.patternHorL, (patternPosterX + 25, patternPosterY + 120.5))
-        self.posters.blit(textHorL, textHorL.get_rect(center=(patternPosterX + 105, patternPosterY + 136.5)))
-
-        self.posters.blit(self.patternHorXL, (patternPosterX + 25, patternPosterY + 146.5))
-        self.posters.blit(textHorXL, textHorXL.get_rect(center=(patternPosterX + 110, patternPosterY + 161.5)))
-
-        self.posters.blit(self.patternZig, (patternPosterX + 25, patternPosterY + 173.5))
-        self.posters.blit(textZig, textZig.get_rect(center=(patternPosterX + 90, patternPosterY + 188.5)))
-
-        self.posters.blit(self.patternZag, (patternPosterX + 25, patternPosterY + 200.5))
-        self.posters.blit(textZag, textZag.get_rect(center=(patternPosterX + 95, patternPosterY + 215.5)))
-
-        self.posters.blit(self.patternAbove, (patternPosterX + 25, patternPosterY + 227.5))
-        self.posters.blit(textAbove, textAbove.get_rect(center=(patternPosterX + 108, patternPosterY + 242.5)))
-
-        self.posters.blit(self.patternBelow, (patternPosterX + 25, patternPosterY + 254.5))
-        self.posters.blit(textBelow, textBelow.get_rect(center=(patternPosterX + 110, patternPosterY + 269.5)))
-
-        self.posters.blit(self.patternEye, (patternPosterX + 25, patternPosterY + 281.5))
-        self.posters.blit(textEye, textEye.get_rect(center=(patternPosterX + 92, patternPosterY + 296.5)))
-
-        self.posters.blit(self.patternJackpot, (patternPosterX + 25, patternPosterY + 308.5))
-        self.posters.blit(textJackpot, textJackpot.get_rect(center=(patternPosterX + 120, patternPosterY + 323.5)))
-
-        self.posters.blit(textPatterns, textPatterns.get_rect(center=(self.posterBackground.get_width()/2+patternPosterX, patternPosterY + 30)))
-        self.posters.blit(textPatternsMult, textPatternsMult.get_rect(center=(self.posterBackground.get_width()/2+patternPosterX, patternPosterY + 355)))
-        self.posters.blit(PatternsMult, PatternsMult.get_rect(center=(patternPosterX + 240, patternPosterY + 380)))
-        self.posters.blit(self.coin, (patternPosterX + 200, patternPosterY + 364.5))
 

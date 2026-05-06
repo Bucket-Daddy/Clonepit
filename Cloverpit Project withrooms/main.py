@@ -39,14 +39,14 @@ def main():
     hudTicketIcon = pygame.transform.scale(pygame.image.load('assets/ModifierTicket.webp'), (hudIconSize, hudIconSize))
     hudFont = pygame.font.Font(None, size = round(40 * xScaling))
 
-    #Definerer items og deres weights
-    unlockedItems, itemWeights = itemInit()
+    #Initialiserer items
+    itemInit()
 
     #Initialserer telefonen
-    callInit
+    callInit()
 
     #Fylder shoppen
-    shopRestock(unlockedItems, itemWeights)
+    shopRestock()
 
     # Opretter alle rum en gang ved start
     rooms = [
@@ -108,9 +108,6 @@ def main():
                 # Space spinner kun i slots rummet
                 if event.key == pygame.K_SPACE and currentRoom == 2:
                     rooms[2].on_space(resolution, xScaling, yScaling)
-        
-                if event.key == pygame.K_SPACE and currentRoom == 1:
-                    shopRestock(unlockedItems, itemWeights)
 
             #Museklik sendes til slots rummet (køb-knapper)
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:

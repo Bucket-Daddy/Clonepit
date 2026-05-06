@@ -11,7 +11,6 @@ from backend.shelf_backend import buttonTrigger, lastSpinTrigger, roundEndTrigge
 class SlotRoom:
 
     def __init__(self, resolution, xScaling, yScaling):
-
         #Definerer grafik variabler
         self.overallScale = 2
         self.symbolScale = 2 * self.overallScale
@@ -24,14 +23,12 @@ class SlotRoom:
         self.dividerLineWidth = 8 * self.overallScale
 
         #temp skærmstørrelse slot machine surface dækker hele skærmen
-        self.screenW = 1200
-        self.screenH = 750
-        self.slotMachine = pygame.Surface((self.screenW, self.screenH))
+        self.slotMachine = pygame.Surface((resolution))
 
         #X og Y offset så reelsene er centreret på skærmen
         #reelOriginX bruges til både at placere reels og til at tegne highlight kasser
-        self.reelOriginX = (self.screenW - self.symbolSpaceHor * 5) // 2
-        self.reelOriginY = (self.screenH - ((18 * self.symbolScale + self.symbolSpaceVer) * 3 + self.symbolSpaceVer)) // 2
+        self.reelOriginX = ((resolution[0] - self.symbolSpaceHor * 5) // 2) * xScaling
+        self.reelOriginY = ((resolution[1] - ((18 * self.symbolScale + self.symbolSpaceVer) * 3 + self.symbolSpaceVer)) // 2) * yScaling
 
         pygame.mixer.set_num_channels(32)
 
@@ -62,29 +59,31 @@ class SlotRoom:
         self.rollingSFX = pygame.mixer.Sound('assets/2-228. Slotmachinerollingtick.mp3')
 
         #Skalerer billeder
-        lemon = pygame.transform.scale(lemon, (18 * self.symbolScale, 18 * self.symbolScale))
-        cherry = pygame.transform.scale(cherry, (18 * self.symbolScale, 18 * self.symbolScale))
-        clover = pygame.transform.scale(clover, (18 * self.symbolScale, 18 * self.symbolScale))
-        bell = pygame.transform.scale(bell, (18 * self.symbolScale, 18 * self.symbolScale))
-        diamond = pygame.transform.scale(diamond, (18 * self.symbolScale, 18 * self.symbolScale))
-        treasure = pygame.transform.scale(treasure, (18 * self.symbolScale, 18 * self.symbolScale))
-        seven = pygame.transform.scale(seven, (18 * self.symbolScale, 18 * self.symbolScale))
-        six = pygame.transform.scale(six, (18 * self.symbolScale, 18 * self.symbolScale))
+        lemon = pygame.transform.scale(lemon, (18 * self.symbolScale * xScaling, 18 * self.symbolScale * yScaling))
+        cherry = pygame.transform.scale(cherry, (18 * self.symbolScale * xScaling, 18 * self.symbolScale * yScaling))
+        clover = pygame.transform.scale(clover, (18 * self.symbolScale * xScaling, 18 * self.symbolScale * yScaling))
+        bell = pygame.transform.scale(bell, (18 * self.symbolScale * xScaling, 18 * self.symbolScale * yScaling))
+        diamond = pygame.transform.scale(diamond, (18 * self.symbolScale * xScaling, 18 * self.symbolScale * yScaling))
+        treasure = pygame.transform.scale(treasure, (18 * self.symbolScale * xScaling, 18 * self.symbolScale * yScaling))
+        seven = pygame.transform.scale(seven, (18 * self.symbolScale * xScaling, 18 * self.symbolScale * yScaling))
+        six = pygame.transform.scale(six, (18 * self.symbolScale * xScaling, 18 * self.symbolScale * yScaling))
 
-        golden = pygame.transform.scale(golden, (9 * self.symbolScale, 9 * self.symbolScale))
-        token = pygame.transform.scale(token, (9 * self.symbolScale, 9 * self.symbolScale))
-        ticket = pygame.transform.scale(ticket, (9 * self.symbolScale, 9 * self.symbolScale))
-        repetition = pygame.transform.scale(repetition, (9 * self.symbolScale, 9 * self.symbolScale))
-        battery = pygame.transform.scale(battery, (9 * self.symbolScale, 9 * self.symbolScale))
-        chain = pygame.transform.scale(chain, (9 * self.symbolScale, 9 * self.symbolScale))
+        golden = pygame.transform.scale(golden, (9 * self.symbolScale * xScaling, 9 * self.symbolScale * yScaling))
+        token = pygame.transform.scale(token, (9 * self.symbolScale * xScaling, 9 * self.symbolScale * yScaling))
+        ticket = pygame.transform.scale(ticket, (9 * self.symbolScale * xScaling, 9 * self.symbolScale * yScaling))
+        repetition = pygame.transform.scale(repetition, (9 * self.symbolScale * xScaling, 9 * self.symbolScale * yScaling))
+        battery = pygame.transform.scale(battery, (9 * self.symbolScale * xScaling, 9 * self.symbolScale * yScaling))
+        chain = pygame.transform.scale(chain, (9 * self.symbolScale * xScaling, 9 * self.symbolScale * yScaling))
 
-        self.Button = pygame.transform.scale(self.button, (self.button.get_width(), self.button.get_height()))
-        self.Crancker = pygame.transform.scale(self.crancker, (self.crancker.get_width() * 0.5, self.crancker.get_height() * 0.5))
-        self.machineX = self.slotMachine.get_width() // 2.6 - self.machine.get_width() // 2
-        self.machineY = self.slotMachine.get_height() // 2 - self.machine.get_height() // 7.2
-        self.buttonX = self.slotMachine.get_width() // 1.17 - self.Button.get_width() // 2
-        self.buttonY = self.slotMachine.get_height() // 1.17 - self.Button.get_height() // 2
-        
+        self.machine = pygame.transform.scale(self.machine, (self.machine.get_width() / 1.2 * xScaling, self.machine.get_height() / 1.2 * yScaling))
+        self.button = pygame.transform.scale(self.button, (self.button.get_width() / 1.2 * xScaling, self.button.get_height() / 1.2 * yScaling))
+        self.crancker = pygame.transform.scale(self.crancker, (self.crancker.get_width() / 1.2 * xScaling, self.crancker.get_height() / 1.2 * yScaling))
+        self.machineX = (resolution[0] // 2 - self.machine.get_width() // 2) * xScaling
+        self.machineY = (resolution[1] // 2 - self.machine.get_height() // 7.2) * yScaling
+        self.buttonX = resolution[0] // 1.17 - (self.button.get_width() // 2 + 60) * xScaling
+        self.buttonY = resolution[1] // 1.17 - (self.button.get_height() // 2) * yScaling
+        print(self.buttonX)
+        print(self.buttonY)
         #Tuples og dictionaries til fortolkning af resultat
         self.symbolsTuple = (lemon, cherry, clover, bell, diamond, treasure, seven, six)
         self.symbolsTuple2 = (lemon, cherry, clover, bell, diamond, treasure, seven)
@@ -111,8 +110,8 @@ class SlotRoom:
         self.coinImg = pygame.transform.scale(pygame.image.load('assets/Coin.webp'), (36, 36))
 
         #Knap rektangler for buyschreen beregnes en gang her
-        self.btn3Rect = pygame.Rect(self.screenW // 2 - 300, self.screenH // 2 + 50, 280, 100)
-        self.btn7Rect = pygame.Rect(self.screenW // 2 + 20, self.screenH // 2 + 50, 280, 100)
+        self.btn3Rect = pygame.Rect(resolution[0] // 2 - 300, resolution[1] // 2 + 50, 280, 100)
+        self.btn7Rect = pygame.Rect(resolution[0] // 2 + 20, resolution[1] // 2 + 50, 280, 100)
 
         # Per-pattern frame offsets beregnes i _build_pattern_offsets() ved hvert nyt spin.
         # patternFrameOffsets[i] = total frames brugt op til (ikke inklusiv) pattern i.
@@ -349,25 +348,25 @@ class SlotRoom:
         if isLastRound and canPayDebt:
             # Har råd til debt vis besked om at gå til ATM, ingen køb-knapper
             msg = self.msgFont.render("Go to the ATM to pay your debt!", True, (246, 250, 10))
-            self.slotMachine.blit(msg, msg.get_rect(center=(self.screenW // 2, self.screenH // 2)))
+            self.slotMachine.blit(msg, msg.get_rect(center=(resolution[0] // 2, resolution[1] // 2)))
             self.slotMachine.blit(self.machine, (self.machineX, self.machineY))
-            self.slotMachine.blit(self.Button, (self.buttonX, self.buttonY))
+            self.slotMachine.blit(self.button, (self.buttonX, self.buttonY))
             return
         if isLastRound and not canPayDebt:
             # Vis deathschreen
             loseText    = self.loseFont.render('GAME OVER', True, (200, 40, 40))
             loseSubText  = self.loseSubFont.render('You could not pay the debt on deadline #' + str(config.debtNum), True, (200, 200, 200))
             loseSubText2 = self.loseSubFont.render('Reached deadline ' + str(config.debtNum) + ' round ' + str(config.roundNum), True, (160, 160, 160))
-            self.slotMachine.blit(loseText,     loseText.get_rect(center=(self.screenW // 2, self.screenH // 2 - 80)))
-            self.slotMachine.blit(loseSubText,  loseSubText.get_rect(center=(self.screenW // 2, self.screenH // 2)))
-            self.slotMachine.blit(loseSubText2, loseSubText2.get_rect(center=(self.screenW // 2, self.screenH // 2 + 50)))
+            self.slotMachine.blit(loseText,     loseText.get_rect(center=((resolution[0] // 2) * xScaling, (resolution[1] // 2 - 80) * yScaling)))
+            self.slotMachine.blit(loseSubText,  loseSubText.get_rect(center=(resolution[0] // 2 * xScaling, resolution[1] // 2 * yScaling)))
+            self.slotMachine.blit(loseSubText2, loseSubText2.get_rect(center=((resolution[0] // 2) * xScaling, (resolution[1] // 2 + 50) * yScaling)))
             self.slotMachine.blit(self.machine, (self.machineX, self.machineY))
-            self.slotMachine.blit(self.Button, (self.buttonX, self.buttonY))
+            self.slotMachine.blit(self.button, (self.buttonX, self.buttonY))
             return
 
         #Rundenummer og deadline øverst i midten
         roundText = buyFont.render('ROUND ' + str(config.roundNum) + '  |  DEADLINE #' + str(config.debtNum), True, (246, 250, 10))
-        self.slotMachine.blit(roundText, roundText.get_rect(center=(self.screenW // 2, 80)))
+        self.slotMachine.blit(roundText, roundText.get_rect(center=((resolution[0] // 2) * xScaling, (80 * yScaling))))
 
         big, big_cost, big_tick, small, small_cost, small_tick = self._get_spin_options()
 
@@ -408,14 +407,14 @@ class SlotRoom:
 
         #Tegner slot machine surface på skærmen
         self.slotMachine.blit(self.machine, (self.machineX, self.machineY))
-        self.slotMachine.blit(self.Button, (self.buttonX, self.buttonY))
+        self.slotMachine.blit(self.button, (self.buttonX, self.buttonY))
 
     def draw(self, screen, resolution, xScaling, yScaling):
         self.slotMachine.fill((0, 0, 0))
 
         #Tegner slot machine surface på skærmen
         self.slotMachine.blit(self.machine, (self.machineX, self.machineY))
-        self.slotMachine.blit(self.Button, (self.buttonX, self.buttonY))
+        self.slotMachine.blit(self.button, (self.buttonX, self.buttonY))
 
         #Buyschreen vises kun når spins er 0, animation er færdig, og forsinkelsen er talt ned
         totalPatternFrames = self.patternFrameOffsets[-1] if len(self.patternFrameOffsets) > 1 else 0
@@ -433,7 +432,7 @@ class SlotRoom:
 
         #Viser spin-tæller øverst i midten under normal spil
         spinCountText = self.spinCountFont.render('SPINS: ' + str(config.spinsLeft), True, (246, 250, 10))
-        self.slotMachine.blit(spinCountText, spinCountText.get_rect(center=(self.screenW // 2 - 30, 70)))
+        self.slotMachine.blit(spinCountText, spinCountText.get_rect(center=(resolution[0] // 2 - 30, 70)))
 
         #Viser tomt felt hvis der ikke er spinnet endnu i denne runde
         if not self.hasSpun:
@@ -510,16 +509,16 @@ class SlotRoom:
                     text = self.font.render('+' + str(patternPayout) + 'E+' + str(len(str(self.result[currentPatternIdx][1])) - 1), True, (250, 10, 10))
                 else:
                     text = self.font.render('+' + str(self.result[currentPatternIdx][1]), True, (246, 250, 10))
-                self.slotMachine.blit(text, text.get_rect(center=(self.screenW / 2, self.screenH / 2)))
+                self.slotMachine.blit(text, text.get_rect(center=(resolution[0] / 2, resolution[1] / 2)))
 
             self.patternTimer += 1
         
         # Tegner slot machine surface på skærmen
         self.slotMachine.blit(self.machine, (self.machineX, self.machineY))
-        self.slotMachine.blit(self.Button, (self.buttonX, self.buttonY))
+        self.slotMachine.blit(self.button, (self.buttonX, self.buttonY))
 
         # Får knappen til at knappe
-        if isSelected(self.Button, (self.buttonX, self.buttonY), self.slotMachine) and pygame.mouse.get_just_pressed()[0]:
+        if isSelected(self.button, (self.buttonX, self.buttonY), self.slotMachine) and pygame.mouse.get_just_pressed()[0]:
             buttonTrigger()
 
         screen.blit(self.slotMachine, (0, 0))

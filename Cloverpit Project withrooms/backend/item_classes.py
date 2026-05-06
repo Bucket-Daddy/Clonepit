@@ -7,7 +7,7 @@ from backend.shop_restock import shopRestock
 import backend.shop_restock as shopBackend
 
 config.unlockedItems = []
-itemWeights = []
+config.itemWeights = []
 
 
 def itemInit():    
@@ -58,7 +58,7 @@ def itemInit():
             config.affBattChance -= 6
 
     config.unlockedItems.append(AABatteries)
-    itemWeights.append(AABatteries.weight)
+    config.itemWeights.append(AABatteries.weight)
 
     class rotatedHamsa(lastSpin):
         name = 'Rotated Hamsa'
@@ -76,7 +76,7 @@ def itemInit():
             pass
 
     config.unlockedItems.append(rotatedHamsa)
-    itemWeights.append(rotatedHamsa.weight)
+    config.itemWeights.append(rotatedHamsa.weight)
 
     #class painKillers(postRoll):
         #name = ''
@@ -104,7 +104,7 @@ def itemInit():
         space = 1
         type = 'postRoll'
 
-        def trigger(self, pityCounter, result):
+        def trigger(self, result, pityCounter):
             if pityCounter >= 3:
                 for i in range(7):
                     config.symbolValues[i] += config.baseSymbolValues[i]
@@ -113,7 +113,7 @@ def itemInit():
             pass
 
     config.unlockedItems.append(steamLocomotive)
-    itemWeights.append(steamLocomotive.weight)
+    config.itemWeights.append(steamLocomotive.weight)
 
     class horseshoe(passive):
         name = 'Horseshoe'
@@ -131,7 +131,7 @@ def itemInit():
             config.randomTriggerMult *= 0.5
 
     config.unlockedItems.append(horseshoe)
-    itemWeights.append(horseshoe.weight)
+    config.itemWeights.append(horseshoe.weight)
 
     class luckyCat(postRoll):
         name = 'Lucky Cat'
@@ -142,7 +142,7 @@ def itemInit():
         space = 1
         type = 'postRoll'
 
-        def trigger(self, pityCounter, result):
+        def trigger(self, result, pityCounter):
             if len(result) > 2:
                 config.coins += (config.interest - 1) * config.depositedAmount
     
@@ -150,7 +150,7 @@ def itemInit():
             pass
 
     config.unlockedItems.append(luckyCat)
-    itemWeights.append(luckyCat.weight)
+    config.itemWeights.append(luckyCat.weight)
 
     class grandmasPurse(roundEnd):
         name = ' Grandma\'s Purse'
@@ -176,7 +176,7 @@ def itemInit():
             config.interest -= 0.15 - 0.03 * (config.roundNum - self.startRound)
 
     config.unlockedItems.append(grandmasPurse)
-    itemWeights.append(grandmasPurse.weight)
+    config.itemWeights.append(grandmasPurse.weight)
 
     class stonks(passive):
         name = 'Stonks'
@@ -194,7 +194,7 @@ def itemInit():
             config.interest -= 0.05
 
     config.unlockedItems.append(stonks)
-    itemWeights.append(stonks.weight)
+    config.itemWeights.append(stonks.weight)
 
     class megaphone(passive):
         name = 'Megaphone'
@@ -214,7 +214,7 @@ def itemInit():
             config.shelfSpace += 1
 
     config.unlockedItems.append(megaphone)
-    itemWeights.append(megaphone.weight)
+    config.itemWeights.append(megaphone.weight)
 
     class lostBriefcase(passive):
         name = 'Lost Briefcase'
@@ -233,7 +233,7 @@ def itemInit():
             pass
 
     config.unlockedItems.append(lostBriefcase)
-    itemWeights.append(lostBriefcase.weight)
+    config.itemWeights.append(lostBriefcase.weight)
 
     class fakeCoin(random):
         name = 'Fake Coin'
@@ -245,14 +245,14 @@ def itemInit():
         space = 1
         type = 'random'
 
-        def trigger(self, pityCounter, result):
+        def trigger(self, result, pityCounter):
             config.fakeCoinSpins += 1
     
         def sold(self):
             pass
 
     config.unlockedItems.append(fakeCoin)
-    itemWeights.append(fakeCoin.weight)
+    config.itemWeights.append(fakeCoin.weight)
 
     class catFood(passive):
         name = 'Cat Food'
@@ -270,7 +270,7 @@ def itemInit():
             config.bonusSpins -= 2
 
     config.unlockedItems.append(catFood)
-    itemWeights.append(catFood.weight)
+    config.itemWeights.append(catFood.weight)
 
     class toyTrain(postRoll):
         name = 'Toy Train'
@@ -285,7 +285,7 @@ def itemInit():
             self.init = False
             self.extraLuck = 0
 
-        def trigger(self, pityCounter, result):
+        def trigger(self, result, pityCounter):
             if pityCounter >= 2:
                 if self.init:
                     config.luck += 5
@@ -301,7 +301,7 @@ def itemInit():
             config.luck -= self.extraLuck
 
     config.unlockedItems.append(toyTrain)
-    itemWeights.append(toyTrain.weight)
+    config.itemWeights.append(toyTrain.weight)
 
     class goldenLemon(passive):
         name = 'Golden Lemon'
@@ -319,7 +319,7 @@ def itemInit():
             config.lemonGoldChance -= 20
 
     config.unlockedItems.append(goldenLemon)
-    itemWeights.append(goldenLemon.weight)
+    config.itemWeights.append(goldenLemon.weight)
 
     class goldenCherry(passive):
         name = 'Golden Cherry'
@@ -337,7 +337,7 @@ def itemInit():
             config.cherryGoldChance -= 20
 
     config.unlockedItems.append(goldenCherry)
-    itemWeights.append(goldenCherry.weight)
+    config.itemWeights.append(goldenCherry.weight)
 
     class goldenClover(passive):
         name = 'Golden Clover'
@@ -355,7 +355,7 @@ def itemInit():
             config.cloverGoldChance -= 20
 
     config.unlockedItems.append(goldenClover)
-    itemWeights.append(goldenClover.weight)
+    config.itemWeights.append(goldenClover.weight)
 
     class goldenBell(passive):
         name = 'Golden Bell'
@@ -373,7 +373,7 @@ def itemInit():
             config.bellGoldChance -= 20
 
     config.unlockedItems.append(goldenBell)
-    itemWeights.append(goldenBell.weight)
+    config.itemWeights.append(goldenBell.weight)
 
     class goldenDiamond(passive):
         name = 'Golden Diamond'
@@ -391,7 +391,7 @@ def itemInit():
             config.diamondGoldChance -= 25
 
     config.unlockedItems.append(goldenDiamond)
-    itemWeights.append(goldenDiamond.weight)
+    config.itemWeights.append(goldenDiamond.weight)
 
     class goldenTreasure(passive):
         name = 'Golden Treasure'
@@ -409,7 +409,7 @@ def itemInit():
             config.treasureGoldChance -= 25
 
     config.unlockedItems.append(goldenTreasure)
-    itemWeights.append(goldenTreasure.weight)
+    config.itemWeights.append(goldenTreasure.weight)
 
     class goldenSeven(passive):
         name = 'Golden Seven'
@@ -427,7 +427,7 @@ def itemInit():
             config.sevenGoldChance -= 30
 
     config.unlockedItems.append(goldenSeven)
-    itemWeights.append(goldenSeven.weight)
+    config.itemWeights.append(goldenSeven.weight)
 
     class bricks(passive):
         name = 'Bricks'
@@ -445,7 +445,7 @@ def itemInit():
             config.lemonTokenChance -= 20
 
     config.unlockedItems.append(bricks)
-    itemWeights.append(bricks.weight)
+    config.itemWeights.append(bricks.weight)
 
     class wood(passive):
         name = 'Wood'
@@ -463,7 +463,7 @@ def itemInit():
             config.cherryTokenChance -= 20
 
     config.unlockedItems.append(wood)
-    itemWeights.append(wood.weight)
+    config.itemWeights.append(wood.weight)
 
     class sheep(passive):
         name = 'Sheep'
@@ -481,7 +481,7 @@ def itemInit():
             config.cloverTokenChance -= 15
 
     config.unlockedItems.append(sheep)
-    itemWeights.append(sheep.weight)
+    config.itemWeights.append(sheep.weight)
 
     class wheat(passive):
         name = 'Wheat'
@@ -499,7 +499,7 @@ def itemInit():
             config.bellTokenChance -= 15
 
     config.unlockedItems.append(wheat)
-    itemWeights.append(wheat.weight)
+    config.itemWeights.append(wheat.weight)
 
     class stone(passive):
         name = 'Stone'
@@ -517,7 +517,7 @@ def itemInit():
             config.diamondTokenChance -= 10
 
     config.unlockedItems.append(stone)
-    itemWeights.append(stone.weight)
+    config.itemWeights.append(stone.weight)
 
     class harbor(passive):
         name = 'Harbor'
@@ -535,7 +535,7 @@ def itemInit():
             config.treasureTokenChance -= 10
 
     config.unlockedItems.append(harbor)
-    itemWeights.append(harbor.weight)
+    config.itemWeights.append(harbor.weight)
 
     class thief(passive):
         name = 'Thief'
@@ -553,7 +553,7 @@ def itemInit():
             config.sevenTokenChance -= 10
 
     config.unlockedItems.append(thief)
-    itemWeights.append(thief.weight)
+    config.itemWeights.append(thief.weight)
 
     class wheelbarrow(passive):
         name = 'Wheelbarrow'
@@ -571,7 +571,7 @@ def itemInit():
             config.lemonTicketChance -= 20
 
     config.unlockedItems.append(wheelbarrow)
-    itemWeights.append(wheelbarrow.weight)
+    config.itemWeights.append(wheelbarrow.weight)
 
     class shoe(passive):
         name = 'Shoe'
@@ -589,7 +589,7 @@ def itemInit():
             config.cherryTicketChance -= 20
 
     config.unlockedItems.append(shoe)
-    itemWeights.append(shoe.weight)
+    config.itemWeights.append(shoe.weight)
 
     class thimble(passive):
         name = 'Thimble'
@@ -607,7 +607,7 @@ def itemInit():
             config.cloverTicketChance -= 20
 
     config.unlockedItems.append(thimble)
-    itemWeights.append(thimble.weight)
+    config.itemWeights.append(thimble.weight)
 
     class iron(passive):
         name = 'Iron'
@@ -625,7 +625,7 @@ def itemInit():
             config.bellTicketChance -= 20
 
     config.unlockedItems.append(iron)
-    itemWeights.append(iron.weight)
+    config.itemWeights.append(iron.weight)
 
     class car(passive):
         name = 'Car'
@@ -643,7 +643,7 @@ def itemInit():
             config.diamondTicketChance -= 20
 
     config.unlockedItems.append(car)
-    itemWeights.append(car.weight)
+    config.itemWeights.append(car.weight)
 
     class ship(passive):
         name = 'Ship'
@@ -661,7 +661,7 @@ def itemInit():
             config.treasureTicketChance -= 20
 
     config.unlockedItems.append(ship)
-    itemWeights.append(ship.weight)
+    config.itemWeights.append(ship.weight)
 
     class tubaHat(passive):
         name = 'Tuba Hat'
@@ -679,7 +679,7 @@ def itemInit():
             config.sevenTicketChance -= 20
 
     config.unlockedItems.append(tubaHat)
-    itemWeights.append(tubaHat.weight)
+    config.itemWeights.append(tubaHat.weight)
 
     class aceOfHearts(postRoll):
         name = 'Ace of Hearts'
@@ -690,7 +690,7 @@ def itemInit():
         space = 1
         type = 'postRoll'
 
-        def trigger(self, pityCounter, result):
+        def trigger(self, result, pityCounter):
             if len(result) >= 3:
                 config.symbolValues[0] += config.baseSymbolValues[0]
                 config.symbolValues[1] += config.baseSymbolValues[1]
@@ -699,7 +699,7 @@ def itemInit():
             pass
 
     config.unlockedItems.append(aceOfHearts)
-    itemWeights.append(aceOfHearts.weight)
+    config.itemWeights.append(aceOfHearts.weight)
 
     class aceOfDiamonds(postRoll):
         name = 'Ace of Diamonds'
@@ -710,7 +710,7 @@ def itemInit():
         space = 1
         type = 'postRoll'
 
-        def trigger(self, pityCounter, result):
+        def trigger(self, result, pityCounter):
             for i in result:
                 if len(config.patterns[i[0]]) > 3:
                     config.symbolValues[4] += config.baseSymbolValues[4]
@@ -721,7 +721,7 @@ def itemInit():
             pass
 
     config.unlockedItems.append(aceOfDiamonds)
-    itemWeights.append(aceOfDiamonds.weight)
+    config.itemWeights.append(aceOfDiamonds.weight)
 
     class d6(roundEnd):
         name = 'D6'
@@ -733,13 +733,13 @@ def itemInit():
         type = 'roundEnd'
 
         def trigger(self):
-            shopRestock(config.unlockedItems, itemWeights)
+            shopRestock(config.unlockedItems, config.itemWeights)
     
         def sold(self):
             pass
 
     config.unlockedItems.append(d6)
-    itemWeights.append(d6.weight)
+    config.itemWeights.append(d6.weight)
 
     class d20(roundEnd):
         name = 'D20'
@@ -758,7 +758,7 @@ def itemInit():
             pass
 
     config.unlockedItems.append(d20)
-    itemWeights.append(d20.weight)
+    config.itemWeights.append(d20.weight)
 
     class crystalSphere(passive):
         name = 'Crystal Sphere'
@@ -776,7 +776,7 @@ def itemInit():
             config.affChainChance -= 12
 
     config.unlockedItems.append(crystalSphere)
-    itemWeights.append(crystalSphere.weight)
+    config.itemWeights.append(crystalSphere.weight)
 
     class clicker(passive):
         name = 'Clicker'
@@ -794,7 +794,7 @@ def itemInit():
             config.affRepChance -= 15
 
     config.unlockedItems.append(clicker)
-    itemWeights.append(clicker.weight)
+    config.itemWeights.append(clicker.weight)
 
     class ritualBell(postRoll):
         name = 'Ritual Bell'
@@ -805,7 +805,7 @@ def itemInit():
         space = 1
         type = 'postRoll'
 
-        def trigger(self, pityCounter, result):
+        def trigger(self, result, pityCounter):
             if config.is666:
                 config.freeRestocks += 3
     
@@ -813,7 +813,7 @@ def itemInit():
             pass
 
     config.unlockedItems.append(ritualBell)
-    itemWeights.append(ritualBell.weight)
+    config.itemWeights.append(ritualBell.weight)
 
     class necronomicon(passive):
         name = 'Necronomicon'
@@ -833,7 +833,7 @@ def itemInit():
             config.chance666 -= 3
 
     config.unlockedItems.append(necronomicon)
-    itemWeights.append(necronomicon.weight)
+    config.itemWeights.append(necronomicon.weight)
 
     class redPepper(random):
         name = 'Red Pepper'
@@ -848,7 +848,7 @@ def itemInit():
         def __init__(self):
             self.activations = 0
 
-        def trigger(self, pityCounter, result):
+        def trigger(self, result, pityCounter):
             config.tempLuck += 5
             self.activations += 1
             if self.activations == 12:
@@ -858,7 +858,7 @@ def itemInit():
             pass
 
     config.unlockedItems.append(redPepper)
-    itemWeights.append(redPepper.weight)
+    config.itemWeights.append(redPepper.weight)
 
     class cloverPot(deadlineEnd):
         name = 'CloverPot'
@@ -876,7 +876,7 @@ def itemInit():
             pass
 
     config.unlockedItems.append(cloverPot)
-    itemWeights.append(cloverPot.weight)
+    config.itemWeights.append(cloverPot.weight)
 
     class cloverPet(preRoll):
         name = 'CloverPet'
@@ -899,7 +899,7 @@ def itemInit():
             config.symbolMult -= self.extraMult
 
     config.unlockedItems.append(cloverPet)
-    itemWeights.append(cloverPet.weight)        
+    config.itemWeights.append(cloverPet.weight)        
 
     class cigarettes(passive):
         name = 'Cigarettes'
@@ -914,7 +914,7 @@ def itemInit():
             config.unlockedItems[44].cost += 1
             for i in range(7):
                 config.symbolValues[i] += config.baseSymbolValues[i]
-                shopRestock(config.unlockedItems, itemWeights)
+                shopRestock(config.unlockedItems, config.itemWeights)
             config.shelfItems.pop(-1)
             shopBackend.shopItems[rand.randint(0, 3)] = cigarettes()
 
@@ -922,7 +922,7 @@ def itemInit():
             pass
 
     config.unlockedItems.append(cigarettes)
-    itemWeights.append(cigarettes.weight)
+    config.itemWeights.append(cigarettes.weight)
 
     class cardboardHouse(passive):
         name = 'Cardboard House'
@@ -942,7 +942,7 @@ def itemInit():
             pass
 
     config.unlockedItems.append(cardboardHouse)
-    itemWeights.append(cardboardHouse.weight)
+    config.itemWeights.append(cardboardHouse.weight)
 
     class propertyCertificate(passive):
         name = 'Property Certificate'
@@ -960,7 +960,7 @@ def itemInit():
             config.shelfSpace -= 2
 
     config.unlockedItems.append(propertyCertificate)
-    itemWeights.append(propertyCertificate.weight)
+    config.itemWeights.append(propertyCertificate.weight)
 
     class crowbar(passive):
         name = 'Crowbar'
@@ -979,7 +979,7 @@ def itemInit():
             pass
 
     config.unlockedItems.append(crowbar)
-    itemWeights.append(crowbar.weight)
+    config.itemWeights.append(crowbar.weight)
 
     class consolationPrize(random):
         name = 'Consolation Prize'
@@ -991,7 +991,7 @@ def itemInit():
         space = 1
         type = 'random'
 
-        def trigger(self, pityCounter, result):
+        def trigger(self, result, pityCounter):
             if pityCounter > 0:
                 for i in range(7):
                     config.symbolValues[i] += config.baseSymbolValues[i]
@@ -1000,7 +1000,7 @@ def itemInit():
             pass
 
     config.unlockedItems.append(consolationPrize)
-    itemWeights.append(consolationPrize.weight)
+    config.itemWeights.append(consolationPrize.weight)
 
     class lemonPicture(button):
         name = 'Lemon Picture'
@@ -1022,7 +1022,7 @@ def itemInit():
             config.tempSymbolWeights[0] -= 2
 
     config.unlockedItems.append(lemonPicture)
-    itemWeights.append(lemonPicture.weight)
+    config.itemWeights.append(lemonPicture.weight)
 
     class cherryPicture(button):
         name = 'Cherry Picture'
@@ -1044,7 +1044,7 @@ def itemInit():
             config.tempSymbolWeights[1] -= 2
 
     config.unlockedItems.append(cherryPicture)
-    itemWeights.append(cherryPicture.weight)
+    config.itemWeights.append(cherryPicture.weight)
 
     class cloverPicture(button):
         name = 'Clover Picture'
@@ -1066,7 +1066,7 @@ def itemInit():
             config.tempSymbolWeights[2] -= 2
 
     config.unlockedItems.append(cloverPicture)
-    itemWeights.append(cloverPicture.weight)
+    config.itemWeights.append(cloverPicture.weight)
 
     class bellPicture(button):
         name = 'Bell Picture'
@@ -1088,7 +1088,7 @@ def itemInit():
             config.tempSymbolWeights[3] -= 2
 
     config.unlockedItems.append(bellPicture)
-    itemWeights.append(bellPicture.weight)
+    config.itemWeights.append(bellPicture.weight)
 
     class diamondPicture(button):
         name = 'Diamond Picture'
@@ -1110,7 +1110,7 @@ def itemInit():
             config.tempSymbolWeights[4] -= 2
 
     config.unlockedItems.append(diamondPicture)
-    itemWeights.append(diamondPicture.weight)
+    config.itemWeights.append(diamondPicture.weight)
 
     class treasurePicture(button):
         name = 'Treasure Picture'
@@ -1132,7 +1132,7 @@ def itemInit():
             config.tempSymbolWeights[5] -= 2
 
     config.unlockedItems.append(treasurePicture)
-    itemWeights.append(treasurePicture.weight)
+    config.itemWeights.append(treasurePicture.weight)
 
     class sevenPicture(button):
         name = 'Seven Picture'
@@ -1154,7 +1154,7 @@ def itemInit():
             config.tempSymbolWeights[6] -= 2
     
     config.unlockedItems.append(sevenPicture)
-    itemWeights.append(sevenPicture.weight)    
+    config.itemWeights.append(sevenPicture.weight)    
 
     class carBattery(passive):
         name = 'Car Battery'
@@ -1175,6 +1175,6 @@ def itemInit():
             pass   
     
     config.unlockedItems.append(carBattery)
-    itemWeights.append(sevenPicture.weight)
+    config.itemWeights.append(sevenPicture.weight)
 
-    return config.unlockedItems, itemWeights
+    return config.unlockedItems, config.itemWeights

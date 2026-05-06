@@ -134,6 +134,9 @@ luck = 0
 #Shop variabler
 freeRestocks = 0
 
+restockCost = 3
+restockCosts = (0, 3, 6, 20, 69, 300, 1000, 2000, 7000, 43000)
+
 #Shelf variabler
 shelfSpace = 6
 shelfRoom = 6

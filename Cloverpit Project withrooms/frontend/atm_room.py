@@ -10,7 +10,7 @@ from backend.shelf_backend import deadlineEndTrigger
 
 class ATMRoom:
 
-    def __init__(self):
+    def __init__(self, resolution, xScaling, yScaling):
 
         overallScale = 2
         self.font = pygame.font.Font(None, size = 15 * overallScale)
@@ -50,7 +50,7 @@ class ATMRoom:
         self.littleGuy.set_colorkey((0, 0, 0))
                 
         # Opretter atm surface og danner baggrunden
-        self.atm = pygame.Surface((1200, 750), pygame.SRCALPHA)
+        self.atm = pygame.Surface(resolution, pygame.SRCALPHA)
         self.background = pygame.image.load('assets/Background.png')
         self.background = pygame.transform.scale(self.background, (1200, 750))
 
@@ -81,7 +81,7 @@ class ATMRoom:
         rawChunk = min(rawChunk, remaining)
         return rawChunk, wouldDip
 
-    def draw(self, screen):
+    def draw(self, screen, resolution, xScaling, yScaling):
         # blitter baggrunden på overfladen
         self.atm.blit(self.background, (-3, -3))
 
@@ -144,7 +144,7 @@ class ATMRoom:
 
                 if config.depositedAmount >= config.debtAmount:
                     bonusCoins   = 6 * config.debtNum
-                    bonusTickets = 4 * max(0, 4 - config.roundNum)
+                    bonusTickets = 4 * max(0, 3 - config.roundNum)
                     config.coins   += bonusCoins
                     config.tickets += bonusTickets
                     config.debtAmount      = newDeadline(config.debtNum, 1)

@@ -111,7 +111,7 @@ def main():
 
                 # Space spinner kun i slots rummet
                 if event.key == pygame.K_SPACE and currentRoom == 2:
-                    rooms[2].on_space(resolution, xScaling, yScaling)
+                    rooms[2].spin_reels(resolution, xScaling, yScaling)
 
             #Museklik sendes til slots rummet (køb-knapper)
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:

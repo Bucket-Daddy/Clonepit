@@ -87,6 +87,9 @@ class ATMRoom:
         # Tegner baggrunden på skærmen
         self.atmScreen.fill((0, 0, 0))
 
+        #Tegner ATM
+        self.atmRoom.blit(self.atmBackground, (0 , 0))
+
         #Teksten på maskinen
         textDeadline = self.font.render('DEADLINE: ' + '#' + str(config.debtNum), True, (246, 250, 10))
         self.atmBackground.blit(textDeadline, textDeadline.get_rect(center=(self.deadlineX * xScaling, self.deadlineY * yScaling)))
@@ -100,7 +103,7 @@ class ATMRoom:
         # blit knappen og få den til at knappe
         self.atmBackground.blit(self.atmButton, (271 * 0.67 * 2 * xScaling, 257 * 0.67 * 2 * yScaling))
 
-        if isSelected(self.atmButton, (271 * 0.67 * 2 * xScaling, 257 * 0.67 * 2 * yScaling), self.atmBackground):
+        if isSelected(self.atmButton, (271 * 0.67 * 2 * xScaling, 257 * 0.67 * 2 * yScaling), self.atmRoom):
             previewChunk, wouldDip = self._calcDepositChunk()
 
             # Tooltip vis advarsel hvis warnflag er sat, ellers normal deposit preview

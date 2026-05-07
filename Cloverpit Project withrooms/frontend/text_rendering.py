@@ -32,5 +32,5 @@ def renderText(text, font, surface, origin, width):
             surface.blit(frag, (x, y))
             x += frag.get_width()
     
-        y += 24
+        y += font.size('A')[1]
         text = text[i:]

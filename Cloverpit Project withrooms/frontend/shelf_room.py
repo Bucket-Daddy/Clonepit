@@ -35,8 +35,8 @@ class shelfRoom:
 
         #Selve items i shelf
         for i in range(len(config.shelfItems)):
-            self.shelf_room.blit(config.shelfItems[i].sprite, ((200 + i * 133) * xScaling, 200 * yScaling))
-            self.shelf_room.blit(self.font.render(str(config.shelfItems[i].cost), True, (240, 170, 41)), ((240 + i * 133) * xScaling, 310 * yScaling))
+            self.shelf_room.blit(config.shelfItems[i].sprite, ((200 + i % 6 * 133) * xScaling, (200 + ((i) // 6) * 200) * yScaling))
+            self.shelf_room.blit(self.font.render(str(config.shelfItems[i].cost), True, (240, 170, 41)), ((240 + i % 6 * 133) * xScaling, (310 + (i // 6) * 200) * yScaling))
 
         for i in range(len(config.shelfItems)):
             if i < len(config.shelfItems):

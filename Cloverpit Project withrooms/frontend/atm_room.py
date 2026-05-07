@@ -103,7 +103,7 @@ class ATMRoom:
         # blit knappen og få den til at knappe
         self.atmBackground.blit(self.atmButton, (271 * 0.67 * 2 * xScaling, 257 * 0.67 * 2 * yScaling))
 
-        if isSelected(self.atmButton, (271 * 0.67 * 2 * xScaling, 257 * 0.67 * 2 * yScaling), self.atmRoom):
+        if isSelected(self.atmButton, (271 * 0.67 * 2 * xScaling, 257 * 0.67 * 2 * yScaling), self.atmBackground):
             previewChunk, wouldDip = self._calcDepositChunk()
 
             # Tooltip vis advarsel hvis warnflag er sat, ellers normal deposit preview

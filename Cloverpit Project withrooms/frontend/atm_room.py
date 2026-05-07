@@ -87,11 +87,12 @@ class ATMRoom:
         # Blit atm på overfladen
         self.atmRoom.blit(self.atmBackground, (self.deadlineX - 275, self.deadlineY - 50))
 
-
+        # Tegner baggrunden på skærmen
+        self.atmScreen.fill((0, 0, 0))
 
         #Teksten på maskinen
         textDeadline = self.font.render('DEADLINE: ' + '#' + str(config.debtNum), True, (246, 250, 10))
-        self.atmScreen.blit(textDeadline, textDeadline.get_rect(center=((self.deadlineX - 40) * xScaling, (self.deadlineY - 5) * yScaling)))
+        self.atmRoom.blit(textDeadline, textDeadline.get_rect(center=((self.deadlineX - 40) * xScaling, (self.deadlineY - 5) * yScaling)))
         textRoundsLeft = self.font2.render(str(4 - config.roundNum) + ' ROUNDS LEFT', True, (246, 250, 10))
         textDebt = self.font3.render('DEBT:', True, (246, 250, 10))
         textDeposited = self.font3.render('DEPOSITED:', True, (246, 250, 10))
@@ -170,7 +171,7 @@ class ATMRoom:
         if config.interestStorage > 0:
             self.atmRoom.blit(self.atmPayout, ((self.debtX - 155) * xScaling, (self.debtY + 195) * yScaling))
             interestText = self.font2.render(str(round(config.interestStorage)) + ' coins', True, (246, 250, 10))
-            self.atmRoom.blit(interestText, interestText.get_rect(center=((self.debtX - 120) * xScaling, (self.debtY + 245) * yScaling)))
+            self.atmS.blit(interestText, interestText.get_rect(center=((self.debtX - 120) * xScaling, (self.debtY + 245) * yScaling)))
 
             if isSelected(self.atmPayout, ((self.debtX - 155) * xScaling, (self.debtY + 195) * yScaling), self.atm) and pygame.mouse.get_just_pressed()[0]:
                 config.coins += round(config.interestStorage)
@@ -192,56 +193,56 @@ class ATMRoom:
 
         # alt på den store skærm med info om deadline, gæld, indbetaling, rente osv.
         # Blit teksten og mønterne på ATM-overfladen
-        self.atmRoom.blit(textScreenLine, textScreenLine.get_rect(center=(self.debtX - 75 * xScaling, self.debtY - 20 * yScaling)))
+        self.atmScreen.blit(textScreenLine, textScreenLine.get_rect(center=(self.atmScreen.get_width() / 2, self.atmScreen.get_height() / 50)))
 
-        self.atmRoom.blit(self.cloverSkull, (self.debtX - 150, self.debtY - 20))
-        self.atmRoom.blit(textRoundsLeft, textRoundsLeft.get_rect(center=(self.debtX - 80, self.debtY - 6)))
-        self.atmRoom.blit(self.cloverSkull, (self.debtX - 20, self.debtY - 20))
+        self.atmScreen.blit(self.cloverSkull, (self.atmScreen.get_width() / 40, self.atmScreen.get_height() / 50))
+        self.atmScreen.blit(textRoundsLeft, textRoundsLeft.get_rect(center=(self.atmScreen.get_width() / 2, self.atmScreen.get_height() / 9)))
+        self.atmScreen.blit(self.cloverSkull, (self.atmScreen.get_width() / 1.15, self.atmScreen.get_height() / 50))
 
-        self.atmRoom.blit(textScreenLine, textScreenLine.get_rect(center=((self.debtX - 75) * xScaling, (self.debtY + 6) * yScaling)))
-        self.atmRoom.blit(textDebt, textDebt.get_rect(center=((self.debtX - 158) * xScaling, (self.debtY + 16) * yScaling)))
-        self.atmRoom.blit(self.coin, ((self.debtX + 8) * xScaling, (self.debtY + 13) * yScaling))
+        self.atmScreen.blit(textScreenLine, textScreenLine.get_rect(center=(self.atmScreen.get_width() / 2, self.atmScreen.get_height() / 6)))
+        self.atmScreen.blit(textDebt, textDebt.get_rect(center=(self.atmScreen.get_width() / 12.5, self.atmScreen.get_height() / 4.5)))
+        self.atmScreen.blit(self.coin, (self.atmScreen.get_width() / 1.125, self.atmScreen.get_height() / 5.5))
 
         if math.log10(config.debtAmount) >= 7 and math.log10(config.debtAmount) < 100:
             deposit = round(config.debtAmount * 10**(-1 * (len(str(config.debtAmount)) - 1)), 2)
             textDebtAmount = self.font2.render(str(deposit) + 'E+' + str(len(str(config.debtAmount)) - 1), True, (246, 250, 10))
-            self.atmRoom.blit(textDebtAmount, textDebtAmount.get_rect(center=((self.debtX + 30) * xScaling, (self.debtY + 30) * yScaling)))
+            self.atmScreen.blit(textDebtAmount, textDebtAmount.get_rect(center=(self.atmScreen.get_width() / 1.35, self.atmScreen.get_height() / 5.5)))
         if math.log10(config.debtAmount) >= 100:
             deposit = round(config.debtAmount * 10**(-1 * (len(str(config.debtAmount)) - 1)), 2)
             textDebtAmount = self.font2.render(str(deposit) + 'E+' + str(len(str(config.debtAmount)) - 1), True, (246, 250, 10))
-            self.atmRoom.blit(textDebtAmount, textDebtAmount.get_rect(center=((self.debtX + 25) * xScaling, (self.debtY + 30) * yScaling)))
-        if math.log10(config.debtAmount) < 7:
+            self.atmScreen.blit(textDebtAmount, textDebtAmount.get_rect(center=(self.atmScreen.get_width() / 1.3, self.atmScreen.get_height() / 5.5)))
             textDebtAmount = self.font2.render(str(config.debtAmount), True, (246, 250, 10))
-            self.atmRoom.blit(textDebtAmount, textDebtAmount.get_rect(center=((self.debtX + 50 - math.log10(config.debtAmount)**(1.50 - 0.012 * math.log10(config.debtAmount))), (self.debtY + 30) * yScaling)))
+            self.atmScreen.blit(textDebtAmount, textDebtAmount.get_rect(center=((self.atmScreen.get_width() / 1.2 - math.log10(config.debtAmount)**(1.50 - 0.012 * math.log10(config.debtAmount))), self.atmScreen.get_height() / 5.5)))
 
-        self.atmRoom.blit(textScreenLine, textScreenLine.get_rect(center=((self.debtX - 75) * xScaling, (self.debtY + 45) * yScaling)))
-        self.atmRoom.blit(textDeposited, textDeposited.get_rect(center=((self.debtX - 145) * xScaling, (self.debtY + 55) * yScaling)))
-        self.atmRoom.blit(self.coin, ((self.debtX + 8) * xScaling, (self.debtY + 55) * yScaling))
+        self.atmScreen.blit(textScreenLine, textScreenLine.get_rect(center=(self.atmScreen.get_width() / 2, self.atmScreen.get_height() / 2.5)))
+        self.atmScreen.blit(textDeposited, textDeposited.get_rect(center=(self.atmScreen.get_width() / 6, self.atmScreen.get_height() / 2.2)))
+        self.atmScreen.blit(self.coin, (self.atmScreen.get_width() / 1.125, self.atmScreen.get_height() / 2.4))
 
         if config.depositedAmount <= 0:
             textDepositedAmount = self.font2.render('0', True, (246, 250, 10))
-            self.atmRoom.blit(textDepositedAmount, textDepositedAmount.get_rect(center=((self.debtX + 50) * xScaling, (self.debtY + 70) * yScaling)))
+            self.atmScreen.blit(textDepositedAmount, textDepositedAmount.get_rect(center=((self.debtX + 50) * xScaling, self.atmScreen.get_height() / 2)))
         elif math.log10(config.depositedAmount) >= 6 and math.log10(config.depositedAmount) < 100:
             deposit = round(config.depositedAmount * 10**(-1 * (len(str(config.depositedAmount)) - 1)), 2)
             textDepositedAmount = self.font2.render(str(deposit) + 'E+' + str(len(str(config.depositedAmount)) - 1), True, (246, 250, 10))
-            self.atmRoom.blit(textDepositedAmount, textDepositedAmount.get_rect(center=((self.debtX + 30) * xScaling, (self.debtY + 70) * yScaling)))
+            self.atmScreen.blit(textDepositedAmount, textDepositedAmount.get_rect(center=(self.atmScreen.get_width() / 1.35, self.atmScreen.get_height() / 2)))
         elif math.log10(config.depositedAmount) >= 100:
             deposit = round(config.depositedAmount * 10**(-1 * (len(str(config.depositedAmount)) - 1)), 2)
             textDepositedAmount = self.font2.render(str(deposit) + 'E+' + str(len(str(config.depositedAmount)) - 1), True, (246, 250, 10))
-            self.atmRoom.blit(textDepositedAmount, textDepositedAmount.get_rect(center=((self.debtX + 25) * xScaling, (self.debtY + 70) * yScaling)))
+            self.atmScreen.blit(textDepositedAmount, textDepositedAmount.get_rect(center=(self.atmScreen.get_width() / 1.3, self.atmScreen.get_height() / 2)))
         else:
             textDepositedAmount = self.font2.render(str(config.depositedAmount), True, (246, 250, 10))
-            self.atmRoom.blit(textDepositedAmount, textDepositedAmount.get_rect(center=((self.debtX + 50 - math.log10(config.depositedAmount)**(1.50 - 0.012 * math.log10(config.depositedAmount))), (self.debtY + 70) * yScaling)))
+            self.atmScreen.blit(textDepositedAmount, textDepositedAmount.get_rect(center=((self.atmScreen.get_width() / 1.2 - math.log10(config.depositedAmount)**(1.50 - 0.012 * math.log10(config.depositedAmount))), self.atmScreen.get_height() / 2)))
 
-        self.atmRoom.blit(textScreenLine, textScreenLine.get_rect(center=((self.debtX - 75) * xScaling, (self.debtY + 82.5) * yScaling)))
-        self.atmRoom.blit(textInterest, textInterest.get_rect(center=((self.debtX - 149) * xScaling, (self.debtY + 92.5) * yScaling)))
-        self.atmRoom.blit(textInterestValue, textInterestValue.get_rect(center=(self.debtX * xScaling, (self.debtY + 92.5) * yScaling)))
-        self.atmRoom.blit(textScreenLine, textScreenLine.get_rect(center=((self.debtX - 75) * xScaling, (self.debtY + 100) * yScaling)))
+        self.atmScreen.blit(textScreenLine, textScreenLine.get_rect(center=(self.atmScreen.get_width() / 2, self.atmScreen.get_height() / 1.65)))
+        self.atmScreen.blit(textInterest, textInterest.get_rect(center=((self.debtX - 149) * xScaling, (self.debtY + 92.5) * yScaling)))
+        self.atmScreen.blit(textInterestValue, textInterestValue.get_rect(center=(self.debtX * xScaling, (self.debtY + 92.5) * yScaling)))
+        self.atmScreen.blit(textScreenLine, textScreenLine.get_rect(center=(self.atmScreen.get_width() / 2, self.atmScreen.get_height() / 1.05)))
 
         #Intet at se her
         self.atmRoom.blit(self.littleGuy, (500 * xScaling, 700 * yScaling))
         if isSelected(self.littleGuy, (500 * xScaling, 700 * yScaling), self.atmRoom) and pygame.mouse.get_just_pressed()[0]:
             subprocess.run('assets/Little Guy Goes To Verdun.exe')
         
-        self.atmRoom.blit(self.atmScreen, (62 * xScaling, 194 * yScaling))
+        #self.atmRoom.blit(self.atmScreen, (self.atmRoom.get_width() / 23 * xScaling, self.atmRoom.get_height() / 4.15 * yScaling))
         screen.blit(self.atmRoom, (0, 0))
+        screen.blit(self.atmScreen, (self.atmRoom.get_width() / 23 * xScaling, self.atmRoom.get_height() / 4.15 * yScaling))

@@ -57,7 +57,7 @@ class PostersRoom:
         self.coin = pygame.transform.scale(self.coin, (self.coin.get_width() * 0.15 * xScaling, self.coin.get_height() * 0.15 * yScaling))
         self.coin2 = pygame.transform.scale(self.coin2, (self.coin2.get_width() * 0.12 * xScaling, self.coin2.get_height() * 0.12 * yScaling))
         self.dice = pygame.transform.scale(self.dice, (self.dice.get_width() * 0.05 * xScaling, self.dice.get_height() * 0.05 * yScaling)).convert()
-        self.dice.set_colorkey((255, 0, 214))
+        self.dice.set_colorkey((51, 46, 46))
         self.posterBackground = pygame.transform.scale(self.posterBackground,
             (round(self.posterBackground.get_width() * 0.80 * xScaling),
              round(self.posterBackground.get_height() * 0.80 * yScaling)))

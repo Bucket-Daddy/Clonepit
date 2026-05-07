@@ -80,10 +80,10 @@ class SlotRoom:
         self.crancker = pygame.transform.scale(self.crancker, (self.crancker.get_width() / 1.5 * xScaling, self.crancker.get_height() / 1.5 * yScaling))
         self.button.set_colorkey((0, 0, 0))
         self.crancker.set_colorkey((0, 0, 0))
-        self.machineX = (resolution[0] / 2.2 - self.machine.get_width() / 2) * xScaling
-        self.machineY = (resolution[1] / 5.5 - self.machine.get_height() / 7.2) * yScaling
-        self.buttonX = resolution[0] / 1.134 - (self.button.get_width() / 2 + 60) * xScaling
-        self.buttonY = resolution[1] / 1.2 - (self.button.get_height() / 2) * yScaling
+        self.machineX = (resolution[0] / 2.2 - self.machine.get_width() / 2)
+        self.machineY = (resolution[1] / 5.5 - self.machine.get_height() / 7.2)
+        self.buttonX = resolution[0] / 1.134 - (self.button.get_width() / 2 + 60)
+        self.buttonY = resolution[1] / 1.2 - (self.button.get_height() / 2)
 
         #Tuples og dictionaries til fortolkning af resultat
         self.symbolsTuple = (lemon, cherry, clover, bell, diamond, treasure, seven, six)

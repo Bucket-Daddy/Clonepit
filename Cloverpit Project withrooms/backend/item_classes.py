@@ -104,7 +104,7 @@ def itemInit():
         space = 1
         type = 'postRoll'
 
-        def trigger(self, result, pityCounter):
+        def trigger(self, pityCounter, result ):
             if pityCounter >= 3:
                 for i in range(7):
                     config.symbolValues[i] += config.baseSymbolValues[i]
@@ -142,7 +142,7 @@ def itemInit():
         space = 1
         type = 'postRoll'
 
-        def trigger(self, result, pityCounter):
+        def trigger(self, pityCounter, result ):
             if len(result) > 2:
                 config.coins += (config.interest - 1) * config.depositedAmount
     
@@ -245,7 +245,7 @@ def itemInit():
         space = 1
         type = 'random'
 
-        def trigger(self, result, pityCounter):
+        def trigger(self, pityCounter, result ):
             config.fakeCoinSpins += 1
     
         def sold(self):
@@ -285,7 +285,7 @@ def itemInit():
             self.init = False
             self.extraLuck = 0
 
-        def trigger(self, result, pityCounter):
+        def trigger(self, pityCounter, result ):
             if pityCounter >= 2:
                 if self.init:
                     config.luck += 5
@@ -690,7 +690,7 @@ def itemInit():
         space = 1
         type = 'postRoll'
 
-        def trigger(self, result, pityCounter):
+        def trigger(self, pityCounter, result ):
             if len(result) >= 3:
                 config.symbolValues[0] += config.baseSymbolValues[0]
                 config.symbolValues[1] += config.baseSymbolValues[1]
@@ -710,7 +710,7 @@ def itemInit():
         space = 1
         type = 'postRoll'
 
-        def trigger(self, result, pityCounter):
+        def trigger(self, pityCounter, result ):
             for i in result:
                 if len(config.patterns[i[0]]) > 3:
                     config.symbolValues[4] += config.baseSymbolValues[4]
@@ -805,7 +805,7 @@ def itemInit():
         space = 1
         type = 'postRoll'
 
-        def trigger(self, result, pityCounter):
+        def trigger(self, pityCounter, result ):
             if config.is666:
                 config.freeRestocks += 3
     
@@ -848,7 +848,7 @@ def itemInit():
         def __init__(self):
             self.activations = 0
 
-        def trigger(self, result, pityCounter):
+        def trigger(self, pityCounter, result ):
             config.tempLuck += 5
             self.activations += 1
             if self.activations == 12:
@@ -991,7 +991,7 @@ def itemInit():
         space = 1
         type = 'random'
 
-        def trigger(self, result, pityCounter):
+        def trigger(self, pityCounter, result ):
             if pityCounter > 0:
                 for i in range(7):
                     config.symbolValues[i] += config.baseSymbolValues[i]

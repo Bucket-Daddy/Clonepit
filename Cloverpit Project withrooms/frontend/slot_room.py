@@ -364,10 +364,6 @@ class SlotRoom:
             self.slotMachine.blit(self.button, (self.buttonX, self.buttonY))
             return
 
-        #Rundenummer og deadline øverst i midten
-        roundText = buyFont.render('ROUND ' + str(config.roundNum) + '  |  DEADLINE #' + str(config.debtNum), True, (246, 250, 10))
-        self.slotMachine.blit(roundText, roundText.get_rect(center=((resolution[0] / 4) * xScaling, (resolution[1] / 8) * yScaling)))
-
         big, big_cost, big_tick, small, small_cost, small_tick = self._get_spin_options()
 
         def draw_btn(rect, spins, cost, tickets, active):
@@ -410,6 +406,10 @@ class SlotRoom:
         self.slotMachine.blit(self.machine, (self.machineX, self.machineY))
         self.slotMachine.blit(self.button, (self.buttonX, self.buttonY))
 
+        #Rundenummer og deadline øverst i midten
+        roundText = buyFont.render('ROUND ' + str(config.roundNum) + '  |  DEADLINE #' + str(config.debtNum), True, (246, 250, 10))
+        self.slotMachine.blit(roundText, roundText.get_rect(center=((resolution[0] / 4) * xScaling, (resolution[1] / 8) * yScaling)))
+
     def draw(self, screen, resolution, xScaling, yScaling):
         self.slotMachine.fill((0, 0, 0))
 
@@ -439,10 +439,6 @@ class SlotRoom:
                 self._draw_buy_screen(resolution, xScaling, yScaling)
                 screen.blit(self.slotMachine, (0, 0))
                 return
-
-        #Viser spin-tæller øverst i midten under normal spil
-        spinCountText = self.spinCountFont.render('SPINS: ' + str(config.spinsLeft), True, (246, 250, 10))
-        self.slotMachine.blit(spinCountText, spinCountText.get_rect(center=(resolution[0] // 2 - 30, 70)))
 
         #Viser tomt felt hvis der ikke er spinnet endnu i denne runde
         if not self.hasSpun:
@@ -527,6 +523,10 @@ class SlotRoom:
         self.slotMachine.blit(self.crancker, (self.buttonX - self.button.get_width() / 3, self.buttonY - self.crancker.get_height()))
         self.slotMachine.blit(self.machine, (self.machineX, self.machineY))
         self.slotMachine.blit(self.button, (self.buttonX, self.buttonY))
+
+        #Viser spin-tæller øverst i midten under normal spil
+        spinCountText = self.spinCountFont.render('SPINS: ' + str(config.spinsLeft), True, (246, 250, 10))
+        self.slotMachine.blit(spinCountText, spinCountText.get_rect(center=(resolution[0] // 2, 120 * yScaling)))
 
         # Får knappen til at knappe
         if isSelected(self.button, (self.buttonX, self.buttonY), self.slotMachine) and pygame.mouse.get_just_pressed()[0]:

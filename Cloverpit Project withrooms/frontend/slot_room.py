@@ -78,12 +78,13 @@ class SlotRoom:
         self.machine = pygame.transform.scale(self.machine, (self.machine.get_width() / 1.2 * xScaling, self.machine.get_height() / 1.2 * yScaling))
         self.button = pygame.transform.scale(self.button, (self.button.get_width() / 1.2 * xScaling, self.button.get_height() / 1.2 * yScaling))
         self.crancker = pygame.transform.scale(self.crancker, (self.crancker.get_width() / 1.5 * xScaling, self.crancker.get_height() / 1.5 * yScaling))
+        self.button.set_colorkey((0, 0, 0))
+        self.crancker.set_colorkey((0, 0, 0))
         self.machineX = (resolution[0] / 2.2 - self.machine.get_width() / 2) * xScaling
         self.machineY = (resolution[1] / 5.5 - self.machine.get_height() / 7.2) * yScaling
         self.buttonX = resolution[0] / 1.134 - (self.button.get_width() / 2 + 60) * xScaling
         self.buttonY = resolution[1] / 1.2 - (self.button.get_height() / 2) * yScaling
-        print(self.buttonX)
-        print(self.buttonY)
+
         #Tuples og dictionaries til fortolkning af resultat
         self.symbolsTuple = (lemon, cherry, clover, bell, diamond, treasure, seven, six)
         self.symbolsTuple2 = (lemon, cherry, clover, bell, diamond, treasure, seven)
@@ -526,7 +527,7 @@ class SlotRoom:
 
         #Viser spin-tæller øverst i midten under normal spil
         spinCountText = self.spinCountFont.render('SPINS: ' + str(config.spinsLeft), True, (246, 250, 10))
-        self.slotMachine.blit(spinCountText, spinCountText.get_rect(center=(resolution[0] // 2, 120 * yScaling)))
+        self.slotMachine.blit(spinCountText, spinCountText.get_rect(center=((resolution[0] / 4) * xScaling, (resolution[1] / 8) * yScaling)))
 
         # Får knappen til at knappe
         if isSelected(self.button, (self.buttonX, self.buttonY), self.slotMachine) and pygame.mouse.get_just_pressed()[0]:

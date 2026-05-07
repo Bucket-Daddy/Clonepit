@@ -87,6 +87,9 @@ class ATMRoom:
         # Tegner baggrunden på skærmen
         self.atmScreen.fill((0, 0, 0))
 
+        #Tegner ATM
+        self.atmRoom.blit(self.atmBackground, (0 , 0))
+
         #Teksten på maskinen
         textDeadline = self.font.render('DEADLINE: ' + '#' + str(config.debtNum), True, (246, 250, 10))
         self.atmBackground.blit(textDeadline, textDeadline.get_rect(center=(self.deadlineX * xScaling, self.deadlineY * yScaling)))
@@ -107,22 +110,22 @@ class ATMRoom:
             if previewChunk > 0:
                 if self.spinBudgetWarnShown:
                     # Rød advarsel
-                    tooltip = pygame.Surface((260, 64))
-                    tooltip.fill((0, 0, 0))
-                    pygame.draw.rect(tooltip, (180, 40, 40), tooltip.get_rect(), 2, border_radius=6)
                     line1 = self.font2.render('Deposit: ' + str(previewChunk) + ' coins', True, (246, 250, 10))
                     line2 = self.font3.render("Don't forget to buy spins first!", True, (220, 160, 60))
-                    tooltip.blit(line1, line1.get_rect(center=(130, 22)))
-                    tooltip.blit(line2, line2.get_rect(center=(130, 46)))
-                    self.atmRoom.blit(tooltip, ((self.debtX + 140) * xScaling, (self.debtY + 14) * yScaling))
+                    tooltip = pygame.Surface((self.font2.size('Deposit: ' + str(previewChunk) + ' coins       ')[0], self.font2.size("A")[1] * 3))
+                    tooltip.fill((0, 0, 0))
+                    pygame.draw.rect(tooltip, (180, 40, 40), tooltip.get_rect(), 2, border_radius=6)
+                    tooltip.blit(line1, line1.get_rect(center=(tooltip.get_width() / 2, tooltip.get_height() / 2)))
+                    tooltip.blit(line2, line2.get_rect(center=(tooltip.get_width() / 2, tooltip.get_height() / 2 + self.font2.size("A")[1])))
+                    self.atmRoom.blit(tooltip, (271 * 0.67 * 2 * xScaling + self.atmButton.get_width() / 2 - tooltip.get_width() / 2, 257 * 0.67 * 2 * yScaling - tooltip.get_height() - 20 * yScaling))
                 else:
                     # Normal tooltip
-                    tooltip = pygame.Surface((260, 44))
+                    tipText = self.font2.render('Deposit: ' + str(previewChunk) + ' coins', True, (246, 250, 10))
+                    tooltip = pygame.Surface((self.font2.size('Deposit: ' + str(previewChunk) + ' coins')[0], self.font2.size("A")[1]))
                     tooltip.fill((0, 0, 0))
                     pygame.draw.rect(tooltip, (120, 95, 26), tooltip.get_rect(), 2, border_radius=6)
-                    tipText = self.font2.render('Deposit: ' + str(previewChunk) + ' coins', True, (246, 250, 10))
-                    tooltip.blit(tipText, tipText.get_rect(center=(130, 22)))
-                    self.atmRoom.blit(tooltip, ((self.debtX + 140) * xScaling, (self.debtY + 14) * yScaling))
+                    tooltip.blit(tipText, tipText.get_rect(center=(tooltip.get_width() / 2, tooltip.get_height() / 2)))
+                    self.atmRoom.blit(tooltip, (271 * 0.67 * 2 * xScaling + self.atmButton.get_width() / 2 - tooltip.get_width() / 2, 257 * 0.67 * 2 * yScaling - tooltip.get_height() - 20 * yScaling))
 
             if pygame.mouse.get_just_pressed()[0]:
                 if self.spinBudgetWarnShown:
@@ -242,12 +245,11 @@ class ATMRoom:
             self.atmBackground.set_colorkey((163, 73, 164))
             self.atmRoundBonus = pygame.image.load('assets/ATMRoundBonus.png')
             self.atmRoundBonus = pygame.transform.scale(self.atmRoundBonus, (self.atmRoundBonus.get_width() * 0.3 * 2 * xScaling, self.atmRoundBonus.get_height() * 0.3 * 2 * yScaling))
-            
+
         #Intet at se her
         self.atmRoom.blit(self.littleGuy, (500 * xScaling, 700 * yScaling))
         if isSelected(self.littleGuy, (500 * xScaling, 700 * yScaling), self.atmRoom) and pygame.mouse.get_just_pressed()[0]:
             subprocess.run('assets/Little Guy Goes To Verdun.exe')
 
-        self.atmRoom.blit(self.atmBackground, (0 , 0))
         self.atmBackground.blit(self.atmScreen, (62 * 0.67 * xScaling * 2, 194 * 0.67 * yScaling * 2))
         screen.blit(self.atmRoom, (0, 0))

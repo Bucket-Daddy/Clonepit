@@ -77,7 +77,7 @@ class SlotRoom:
 
         self.machine = pygame.transform.scale(self.machine, (self.machine.get_width() / 1.2 * xScaling, self.machine.get_height() / 1.2 * yScaling))
         self.button = pygame.transform.scale(self.button, (self.button.get_width() / 1.2 * xScaling, self.button.get_height() / 1.2 * yScaling))
-        self.crancker = pygame.transform.scale(self.crancker, (self.crancker.get_width() / 1.2 * xScaling, self.crancker.get_height() / 1.2 * yScaling))
+        self.crancker = pygame.transform.scale(self.crancker, (self.crancker.get_width() / 1.5 * xScaling, self.crancker.get_height() / 1.5 * yScaling))
         self.machineX = (resolution[0] / 2.2 - self.machine.get_width() / 2) * xScaling
         self.machineY = (resolution[1] / 5.5 - self.machine.get_height() / 7.2) * yScaling
         self.buttonX = resolution[0] / 1.134 - (self.button.get_width() / 2 + 60) * xScaling
@@ -179,7 +179,7 @@ class SlotRoom:
 
             self.reels.append(reel)
 
-    def on_space(self, resolution, xScaling, yScaling):
+    def spin_reels(self, resolution, xScaling, yScaling):
         #Spinner kun hvis reelsene er landet, pattern animationen er færdig, og der er spins tilbage
         totalPatternFrames = self.patternFrameOffsets[-1] if len(self.patternFrameOffsets) > 1 else 0
         patternsDone = self.patternTimer >= totalPatternFrames or config.is666
@@ -406,23 +406,25 @@ class SlotRoom:
             pygame.draw.rect(self.slotMachine, (40,35,15), self.btn3Rect, 3, border_radius=8)
 
         #Tegner slot machine surface på skærmen
+        self.slotMachine.blit(self.crancker, (self.buttonX - self.button.get_width() / 3, self.buttonY - self.crancker.get_height()))
         self.slotMachine.blit(self.machine, (self.machineX, self.machineY))
         self.slotMachine.blit(self.button, (self.buttonX, self.buttonY))
-
-        # Får knappen til at knappe
-        if isSelected(self.button, (self.buttonX, self.buttonY), self.slotMachine) and pygame.mouse.get_just_pressed()[0]:
-            buttonTrigger()
 
     def draw(self, screen, resolution, xScaling, yScaling):
         self.slotMachine.fill((0, 0, 0))
 
         #Tegner slot machine surface på skærmen
+        self.slotMachine.blit(self.crancker, (self.buttonX - self.button.get_width() / 3, self.buttonY - self.crancker.get_height()))
         self.slotMachine.blit(self.machine, (self.machineX, self.machineY))
         self.slotMachine.blit(self.button, (self.buttonX, self.buttonY))
 
         # Får knappen til at knappe
         if isSelected(self.button, (self.buttonX, self.buttonY), self.slotMachine) and pygame.mouse.get_just_pressed()[0]:
             buttonTrigger()
+
+        # Får håndtaget til at aktivere maskinen
+        if isSelected(self.crancker, (self.buttonX - self.button.get_width() / 3, self.buttonY - self.crancker.get_height()), self.slotMachine) and pygame.mouse.get_just_pressed()[0]:
+            self.spin_reels(resolution, xScaling, yScaling)
 
         #Buyschreen vises kun når spins er 0, animation er færdig, og forsinkelsen er talt ned
         totalPatternFrames = self.patternFrameOffsets[-1] if len(self.patternFrameOffsets) > 1 else 0
@@ -522,11 +524,16 @@ class SlotRoom:
             self.patternTimer += 1
         
         # Tegner slot machine surface på skærmen
+        self.slotMachine.blit(self.crancker, (self.buttonX - self.button.get_width() / 3, self.buttonY - self.crancker.get_height()))
         self.slotMachine.blit(self.machine, (self.machineX, self.machineY))
         self.slotMachine.blit(self.button, (self.buttonX, self.buttonY))
 
         # Får knappen til at knappe
         if isSelected(self.button, (self.buttonX, self.buttonY), self.slotMachine) and pygame.mouse.get_just_pressed()[0]:
             buttonTrigger()
+
+        # Får håndtaget til at aktivere maskinen
+        if isSelected(self.crancker, (self.buttonX - self.button.get_width() / 3, self.buttonY - self.crancker.get_height()), self.slotMachine) and pygame.mouse.get_just_pressed()[0]:
+            self.spin_reels(resolution, xScaling, yScaling)
 
         screen.blit(self.slotMachine, (0, 0))

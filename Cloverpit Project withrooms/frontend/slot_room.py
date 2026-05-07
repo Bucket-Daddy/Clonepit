@@ -7,28 +7,22 @@ from backend.spin_engine import GameState, spin
 from frontend.mouseCheck import isSelected
 from backend.shelf_backend import buttonTrigger, lastSpinTrigger, roundEndTrigger
 
-
 class SlotRoom:
-
+    
     def __init__(self, resolution, xScaling, yScaling):
         #Definerer grafik variabler
         self.overallScale = 2
         self.symbolScale = 2 * self.overallScale
-        self.symbolSpaceVer = 16 * self.overallScale
-        self.spinSpeed = 20 * self.overallScale
-        self.symbolSpaceHor = 100 * self.overallScale
+        self.symbolSpaceVer = (350 / 1.2 * yScaling) / 3
+        self.spinSpeed = 20 * self.overallScale * yScaling
+        self.symbolSpaceHor = (945 / 1.2 * xScaling) / 5
         self.squareDist = 5 * self.overallScale
         self.frameRate = 60
-        self.font = pygame.font.Font(None, size = 30 * self.overallScale)
-        self.dividerLineWidth = 8 * self.overallScale
+        self.font = pygame.font.Font(None, size = round(30 * self.overallScale * xScaling))
+        self.dividerLineWidth = 8 * self.overallScale * xScaling
 
         #temp skærmstørrelse slot machine surface dækker hele skærmen
         self.slotMachine = pygame.Surface((resolution))
-
-        #X og Y offset så reelsene er centreret på skærmen
-        #reelOriginX bruges til både at placere reels og til at tegne highlight kasser
-        self.reelOriginX = (((resolution[0] - self.symbolSpaceHor * 5) // 2) * xScaling) / 1.5
-        self.reelOriginY = (((resolution[1] - ((18 * self.symbolScale + self.symbolSpaceVer) * 3 + self.symbolSpaceVer)) // 2) * yScaling) / 1.4
 
         pygame.mixer.set_num_channels(32)
 
@@ -80,10 +74,17 @@ class SlotRoom:
         self.crancker = pygame.transform.scale(self.crancker, (self.crancker.get_width() / 1.5 * xScaling, self.crancker.get_height() / 1.5 * yScaling))
         self.button.set_colorkey((0, 0, 0))
         self.crancker.set_colorkey((0, 0, 0))
+
+
         self.machineX = (resolution[0] / 2.2 - self.machine.get_width() / 2)
         self.machineY = (resolution[1] / 5.5 - self.machine.get_height() / 7.2)
-        self.buttonX = resolution[0] / 1.134 - (self.button.get_width() / 2 + 60)
-        self.buttonY = resolution[1] / 1.2 - (self.button.get_height() / 2)
+        self.buttonX = self.machineX + 1112 / 1.2 * xScaling - self.button.get_width() / 2
+        self.buttonY = self.machineY + 610 / 1.2 * yScaling
+
+        #X og Y offset så reelsene er centreret på skærmen
+        #reelOriginX bruges til både at placere reels og til at tegne highlight kasser
+        self.reelOriginX = self.machineX + 154 / 1.2 * xScaling + (self.symbolSpaceHor - 18 * self.symbolScale * xScaling) / 2
+        self.reelOriginY = self.machineY + 208 / 1.2 * yScaling + (self.symbolSpaceVer - 18 * self.symbolScale * yScaling) / 2
 
         #Tuples og dictionaries til fortolkning af resultat
         self.symbolsTuple = (lemon, cherry, clover, bell, diamond, treasure, seven, six)
@@ -98,7 +99,7 @@ class SlotRoom:
         self.modifiers = []
         self.result = []
         self.is666 = False
-        self.reelsY = [-(18 * self.symbolScale + self.symbolSpaceVer) * 30] * 5
+        self.reelsY = [-(self.symbolSpaceVer) * 30] * 5
         self.patternTimer = 0
         self.patternDuration = 1
         self.lastPaidPattern = -1
@@ -111,28 +112,32 @@ class SlotRoom:
         self.coinImg = pygame.transform.scale(pygame.image.load('assets/Coin.webp'), (36, 36))
 
         #Knap rektangler for buyschreen beregnes en gang her
-        self.btn3Rect = pygame.Rect(resolution[0] // 2 - 300, resolution[1] // 2 + 50, 280, 100)
-        self.btn7Rect = pygame.Rect(resolution[0] // 2 + 20, resolution[1] // 2 + 50, 280, 100)
+        self.btn3Rect = pygame.Rect(self.machineX + 945 / 3.6 * xScaling - 10 * xScaling, self.machineY + 208 / 1.2 * yScaling + 350 / 2.4 * yScaling, 280, 100)
+        self.btn7Rect = pygame.Rect(self.machineX + 154 / 1.2 * xScaling + 945 / 3.6 * xScaling * 2 + 10 * xScaling, self.machineY + 208 / 1.2 * yScaling + 350 / 2.4 * yScaling, 280, 100)
+        #screen width = 945 / 1.2 * xScaling
+        #screen height = 350 / 1.2 * yScaling
+        #X offset 154 / 1.2 * xScaling
+        #Y offset 208 / 1.2 * yScaling
 
         # Per-pattern frame offsets beregnes i _build_pattern_offsets() ved hvert nyt spin.
         # patternFrameOffsets[i] = total frames brugt op til (ikke inklusiv) pattern i.
         self.patternFrameOffsets = [0]
 
         #Fonts caches en gang dosnt do pygame.font.Font inde i draw()
-        self.buyFont      = pygame.font.Font(None, size=40)
-        self.subFont      = pygame.font.Font(None, size=30)
+        self.buyFont      = pygame.font.Font(None, size = round(40 * xScaling))
+        self.subFont      = pygame.font.Font(None, size = round(16 * xScaling))
         self.msgFont      = pygame.font.Font(None, size=50)
         self.loseFont     = pygame.font.Font(None, size=80)
         self.loseSubFont  = pygame.font.Font(None, size=36)
-        self.spinCountFont = pygame.font.Font(None, size=50)
+        self.spinCountFont = pygame.font.Font(None, size = round(50 * xScaling))
 
         #Divider rektangler beregnes en gang ændres ikke under kørsel
         self.dividerRects = [
             pygame.Rect(
-                self.reelOriginX + (i + 1) * self.symbolSpaceHor - self.symbolScale * 9 - self.dividerLineWidth // 2,
-                self.reelOriginY,
+                self.reelOriginX + i * self.symbolSpaceHor + 18 * self.symbolScale * xScaling + 0.5 * (self.symbolSpaceHor - 18 * self.symbolScale * xScaling) - self.dividerLineWidth * 0.5,
+                self.reelOriginY - 20 * yScaling,
                 self.dividerLineWidth,
-                int((18 * self.symbolScale + self.symbolSpaceVer) * 2.8 + self.symbolSpaceVer)
+                int((self.symbolSpaceVer) * 2.8 + self.symbolSpaceVer)
             )
             for i in range(4)
         ]
@@ -141,8 +146,8 @@ class SlotRoom:
         # Beregner start-frame for hvert pattern med aftagende varighed.
         # Første pattern får fuld tid (baseDur), derefter falder mod minDur.
         # Jackpot får altid fuld tid.
-        baseDur = self.frameRate * 1.25 * self.patternDuration
-        minDur  = self.frameRate * 0.35 * self.patternDuration
+        baseDur = self.frameRate * 0.75 * self.patternDuration
+        minDur  = self.frameRate * 0.15 * self.patternDuration
         n = len(self.result)
         offsets = [0]
         for i in range(n):
@@ -160,23 +165,23 @@ class SlotRoom:
         #Danner reels ud fra det nuværende resultat
         self.reels = []
         for i in range(5):
-            reel = pygame.Surface((18 * self.symbolScale * xScaling, (18 * self.symbolScale + self.symbolSpaceVer) * 30 * yScaling), pygame.SRCALPHA)
+            reel = pygame.Surface((18 * self.symbolScale * xScaling, (self.symbolSpaceVer) * 30 * yScaling), pygame.SRCALPHA)
 
             if self.is666:
                 reel.blit(random.choice(self.symbolsTuple2), (0, 0))
                 if i < 4 and i > 0:
-                    reel.blit(self.symbolsTuple[7], (0, 18 * self.symbolScale + self.symbolSpaceVer))
+                    reel.blit(self.symbolsTuple[7], (0, self.symbolSpaceVer))
                 else:
-                    reel.blit(random.choice(self.symbolsTuple2), (0, 18 * self.symbolScale + self.symbolSpaceVer))
-                reel.blit(random.choice(self.symbolsTuple2), (0, 36 * self.symbolScale + 2 * self.symbolSpaceVer))
+                    reel.blit(random.choice(self.symbolsTuple2), (0, self.symbolSpaceVer))
+                reel.blit(random.choice(self.symbolsTuple2), (0, 2 * self.symbolSpaceVer))
             else:
                 for slot in range(3):
-                    reel.blit(self.symbolsTuple[self.res[slot * 5 + i]], (0, slot * (18 * self.symbolScale + self.symbolSpaceVer)))
+                    reel.blit(self.symbolsTuple[self.res[slot * 5 + i]], (0, slot * (self.symbolSpaceVer)))
                     if self.modifiers[slot * 5 + i] > 0:
-                        reel.blit(self.modifiersTuple[self.modifiers[slot * 5 + i]], (self.symbolScale * 9, slot * (18 * self.symbolScale + self.symbolSpaceVer) + 9 * self.symbolScale))
+                        reel.blit(self.modifiersTuple[self.modifiers[slot * 5 + i]], (self.symbolScale * 9, slot * (self.symbolSpaceVer) + 9 * self.symbolScale))
 
             for slot in range(27):
-                reel.blit(random.choice(self.symbolsTuple2), (0, (18 * self.symbolScale + self.symbolSpaceVer) * 3.5 + slot * (18 * self.symbolScale + self.symbolSpaceVer) * yScaling))
+                reel.blit(random.choice(self.symbolsTuple2), (0, (self.symbolSpaceVer) * 3 + slot * (self.symbolSpaceVer)))
 
             self.reels.append(reel)
 
@@ -209,7 +214,7 @@ class SlotRoom:
         config.spinsLeft -= 1
 
         #Nulstiller reel animation, pattern timer og runde slut forsinkelse
-        self.reelsY = [-(18 * self.symbolScale + self.symbolSpaceVer) * 30] * 5
+        self.reelsY = [-(self.symbolSpaceVer) * 30] * 5
         self.patternTimer = 0
         self.lastPaidPattern = -1
         self.roundEndDelay = 0
@@ -335,7 +340,7 @@ class SlotRoom:
             self.hasSpun = False
 
     def _draw_buy_screen(self, resolution, xScaling, yScaling):
-        #Tegner buyschreen når spilleren ikke har flere spins (sort baggrund)
+        #Tegner buyscreen når spilleren ikke har flere spins (sort baggrund)
         self.slotMachine.fill((0, 0, 0))
 
         buyFont = self.buyFont
@@ -364,6 +369,7 @@ class SlotRoom:
             self.slotMachine.blit(self.machine, (self.machineX, self.machineY))
             self.slotMachine.blit(self.button, (self.buttonX, self.buttonY))
             return
+        
 
         big, big_cost, big_tick, small, small_cost, small_tick = self._get_spin_options()
 
@@ -394,6 +400,7 @@ class SlotRoom:
                  big_tick if big_tick is not None else 0,
                  big is not None)
 
+
         # Højre knap (lille pakke) kun vist når small ikke er None
         if small is not None:
             draw_btn(self.btn3Rect, small, small_cost, small_tick, True)
@@ -401,7 +408,8 @@ class SlotRoom:
             # Tegner grå tom knap når der kun er en mulighed
             pygame.draw.rect(self.slotMachine, (15,15,15), self.btn3Rect, border_radius=8)
             pygame.draw.rect(self.slotMachine, (40,35,15), self.btn3Rect, 3, border_radius=8)
-
+        
+        
         #Tegner slot machine surface på skærmen
         self.slotMachine.blit(self.crancker, (self.buttonX - self.button.get_width() / 3, self.buttonY - self.crancker.get_height()))
         self.slotMachine.blit(self.machine, (self.machineX, self.machineY))
@@ -409,25 +417,17 @@ class SlotRoom:
 
         #Rundenummer og deadline øverst i midten
         roundText = buyFont.render('ROUND ' + str(config.roundNum) + '  |  DEADLINE #' + str(config.debtNum), True, (246, 250, 10))
-        self.slotMachine.blit(roundText, roundText.get_rect(center=((resolution[0] / 4) * xScaling, (resolution[1] / 8) * yScaling)))
+        self.slotMachine.blit(roundText, roundText.get_rect(center=(self.machineX + 623.5 / 1.2 * xScaling, self.machineY + 102.5 / 1.2 * yScaling)))
+
 
     def draw(self, screen, resolution, xScaling, yScaling):
         self.slotMachine.fill((0, 0, 0))
 
-        #Tegner slot machine surface på skærmen
+        #Tegner slot machine lever og button på skærmen
         self.slotMachine.blit(self.crancker, (self.buttonX - self.button.get_width() / 3, self.buttonY - self.crancker.get_height()))
-        self.slotMachine.blit(self.machine, (self.machineX, self.machineY))
         self.slotMachine.blit(self.button, (self.buttonX, self.buttonY))
 
-        # Får knappen til at knappe
-        if isSelected(self.button, (self.buttonX, self.buttonY), self.slotMachine) and pygame.mouse.get_just_pressed()[0]:
-            buttonTrigger()
-
-        # Får håndtaget til at aktivere maskinen
-        if isSelected(self.crancker, (self.buttonX - self.button.get_width() / 3, self.buttonY - self.crancker.get_height()), self.slotMachine) and pygame.mouse.get_just_pressed()[0]:
-            self.spin_reels(resolution, xScaling, yScaling)
-
-        #Buyschreen vises kun når spins er 0, animation er færdig, og forsinkelsen er talt ned
+        #Buyscreen vises kun når spins er 0, animation er færdig, og forsinkelsen er talt ned
         totalPatternFrames = self.patternFrameOffsets[-1] if len(self.patternFrameOffsets) > 1 else 0
         patternsDone = self.patternTimer >= totalPatternFrames or config.is666
         roundOver = config.spinsLeft <= 0 and not self.spinning and patternsDone
@@ -441,100 +441,103 @@ class SlotRoom:
                 screen.blit(self.slotMachine, (0, 0))
                 return
 
-        #Viser tomt felt hvis der ikke er spinnet endnu i denne runde
-        if not self.hasSpun:
-            screen.blit(self.slotMachine, (0, 0))
-            return
+        #Viser spin-tæller øverst i midten under normal spil
+        spinCountText = self.spinCountFont.render('SPINS: ' + str(config.spinsLeft), True, (246, 250, 10))
+        self.slotMachine.blit(spinCountText, spinCountText.get_rect(center=(self.machineX + 623.5 / 1.2 * xScaling, self.machineY + 102.5 / 1.2 * yScaling)))
 
         #Flytter reels ned langs skærmen
         allLanded = True
         for reel in range(5):
-            if self.reelsY[reel] < self.reelOriginY + self.symbolSpaceVer:
+            if self.reelsY[reel] < self.reelOriginY:
                 self.reelsY[reel] += self.spinSpeed - reel * self.spinSpeed / 10
                 allLanded = False
             else:
-                self.reelsY[reel] = self.reelOriginY + self.symbolSpaceVer
+                self.reelsY[reel] = self.reelOriginY
+
+        
 
         #Når alle reels lander sættes spinning til False så man kan spinne igen
         if allLanded:
             self.spinning = False
 
         #Loader reels til slot machine surface centreret horisontalt og vertikalt
-        for reel in range(5):
-            self.slotMachine.blit(self.reels[reel], (self.reelOriginX + reel * self.symbolSpaceHor, self.reelsY[reel]))
+        if self.spinning or not patternsDone:
+            for reel in range(5):
+                self.slotMachine.blit(self.reels[reel], (self.reelOriginX + reel * self.symbolSpaceHor, self.reelsY[reel]))
+            
+            pygame.draw.rect(self.slotMachine, (0, 0, 0), (0, 0, resolution[0], self.machineY))
 
-        #Tegner linjer mellem reels (pre-cached rects)
-        for rect in self.dividerRects:
-            pygame.draw.rect(self.slotMachine, (120, 95, 26), rect)
+            #Tegner linjer mellem reels (pre-cached rects)
+            for rect in self.dividerRects:
+                pygame.draw.rect(self.slotMachine, (120, 95, 26), rect)
 
-        #Pattern animation — aftagende varighed via patternFrameOffsets
-        totalPatternFrames = self.patternFrameOffsets[-1] if len(self.patternFrameOffsets) > 1 else 0
-        if self.reelsY.count(self.reelOriginY + self.symbolSpaceVer) == 5 and self.patternTimer < totalPatternFrames and not self.is666:
+            #Pattern animation — aftagende varighed via patternFrameOffsets
+            totalPatternFrames = self.patternFrameOffsets[-1] if len(self.patternFrameOffsets) > 1 else 0
+            if allLanded and self.patternTimer < totalPatternFrames and not self.is666:
 
-            # Find currentPatternIdx via offsets
-            currentPatternIdx = 0
-            for k in range(len(self.patternFrameOffsets) - 1):
-                if self.patternTimer >= self.patternFrameOffsets[k]:
-                    currentPatternIdx = k
-            patternStart = self.patternFrameOffsets[currentPatternIdx]
-            patternEnd   = self.patternFrameOffsets[currentPatternIdx + 1]
-            patternLen   = patternEnd - patternStart
-            # Highlight vises i de første 80% af patternets tid
-            showHighlight = self.patternTimer < patternStart + int(patternLen * 0.8)
+                # Find currentPatternIdx via offsets
+                currentPatternIdx = 0
+                for k in range(len(self.patternFrameOffsets) - 1):
+                    if self.patternTimer >= self.patternFrameOffsets[k]:
+                        currentPatternIdx = k
+                patternStart = self.patternFrameOffsets[currentPatternIdx]
+                patternEnd   = self.patternFrameOffsets[currentPatternIdx + 1]
+                patternLen   = patternEnd - patternStart
+                # Highlight vises i de første 80% af patternets tid
+                self.showHighlight = self.patternTimer < patternStart + int(patternLen * 0.8)
 
-            #Spiller lydeffekten og giver belønning når et nyt pattern starter
-            if self.patternTimer == patternStart:
-                if self.result[currentPatternIdx][0] == 'jackpot':
-                    self.jackpotSFX.play()
-                else:
-                    self.scoreSFX.play()
-                if currentPatternIdx != self.lastPaidPattern:
-                    config.coins += self.result[currentPatternIdx][1]
-                    #Giver tickets for ticket modifiers
-                    config.tickets += self.result[currentPatternIdx][2].count(3)
-                    #Giver coins for token modifiers (10% af pattern-udbetaling per token)
-                    config.coins += round(self.result[currentPatternIdx][2].count(2) * self.result[currentPatternIdx][1] * 0.1)
-                    #Giver item charges for battery modifiers
-                    for i in range(self.result[currentPatternIdx][2].count(5)):
-                        battItems = []
-                        for item in config.shelfItems:
-                            if item.type == 'button' and item.charges < item.chargeSlots:
-                                battItems.append(item)
-                        if len(battItems) != 0:
-                            config.shelfItems[config.shelfItems.index(random.choice(battItems))].charges += 1
-                    self.lastPaidPattern = currentPatternIdx
+                #Spiller lydeffekten og giver belønning når et nyt pattern starter
+                if self.patternTimer == patternStart:
+                    if self.result[currentPatternIdx][0] == 'jackpot':
+                        self.jackpotSFX.play()
+                    else:
+                        self.scoreSFX.play()
+                    if currentPatternIdx != self.lastPaidPattern:
+                        config.coins += self.result[currentPatternIdx][1]
+                        #Giver tickets for ticket modifiers
+                        config.tickets += self.result[currentPatternIdx][2].count(3)
+                        #Giver coins for token modifiers (10% af pattern-udbetaling per token)
+                        config.coins += round(self.result[currentPatternIdx][2].count(2) * self.result[currentPatternIdx][1] * 0.1)
+                        #Giver item charges for battery modifiers
+                        for i in range(self.result[currentPatternIdx][2].count(5)):
+                            battItems = []
+                            for item in config.shelfItems:
+                                if item.type == 'button' and item.charges < item.chargeSlots:
+                                    battItems.append(item)
+                            if len(battItems) != 0:
+                                config.shelfItems[config.shelfItems.index(random.choice(battItems))].charges += 1
+                        self.lastPaidPattern = currentPatternIdx
 
-            #Tegner kasser og payout-tekst mens highlight er aktiv
-            if showHighlight:
-                for slot in config.patterns[self.result[currentPatternIdx][0]]:
-                    boxX = self.reelOriginX + slot % 5 * self.symbolSpaceHor - self.squareDist
-                    boxY = self.reelOriginY + self.symbolSpaceVer - self.squareDist + math.floor(slot / 5) * (18 * self.symbolScale + self.symbolSpaceVer)
-                    pygame.draw.rect(self.slotMachine, (36, 252, 3), pygame.Rect(boxX, boxY, (18 * self.symbolScale + 2 * self.squareDist) * xScaling, (18 * self.symbolScale + 2 * self.squareDist) * yScaling), 2, 3)
+                #Tegner kasser og payout-tekst mens highlight er aktiv
+                if self.showHighlight:
+                    for slot in config.patterns[self.result[currentPatternIdx][0]]:
+                        boxX = self.reelOriginX + slot % 5 * self.symbolSpaceHor - self.squareDist * xScaling
+                        boxY = self.reelOriginY + math.floor(slot / 5) * self.symbolSpaceVer - self.squareDist * yScaling
+                        pygame.draw.rect(self.slotMachine, (36, 252, 3), pygame.Rect(boxX, boxY, (18 * self.symbolScale + 2 * self.squareDist) * xScaling, (18 * self.symbolScale + 2 * self.squareDist) * yScaling), round(2 * xScaling), round(3 * xScaling))
 
-                if len(str(self.result[currentPatternIdx][1])) > 7:
-                    patternPayout = round(self.result[currentPatternIdx][1] * 10**(-1 * (len(str(self.result[currentPatternIdx][1])) - 1)), 5)
-                    text = self.font.render('+' + str(patternPayout) + 'E+' + str(len(str(self.result[currentPatternIdx][1])) - 1), True, (250, 10, 10))
-                else:
-                    text = self.font.render('+' + str(self.result[currentPatternIdx][1]), True, (246, 250, 10))
-                self.slotMachine.blit(text, text.get_rect(center=(resolution[0] / 2, resolution[1] / 2)))
+                    if len(str(self.result[currentPatternIdx][1])) > 7:
+                        patternPayout = round(self.result[currentPatternIdx][1] * 10**(-1 * (len(str(self.result[currentPatternIdx][1])) - 1)), 5)
+                        text = self.font.render('+' + str(patternPayout) + 'E+' + str(len(str(self.result[currentPatternIdx][1])) - 1), True, (250, 10, 10))
+                    else:
+                        text = self.font.render('+' + str(self.result[currentPatternIdx][1]), True, (246, 250, 10))
+                    self.slotMachine.blit(text, text.get_rect(center=(self.machineX + 626.5 / 1.2 * xScaling, self.machineY + 383 / 1.2 * yScaling)))
 
-            self.patternTimer += 1
+
+                self.patternTimer += 1
         
-        # Tegner slot machine surface på skærmen
-        self.slotMachine.blit(self.crancker, (self.buttonX - self.button.get_width() / 3, self.buttonY - self.crancker.get_height()))
+        #Tegner slot machine surface på skærmen
+        #self.slotMachine.blit(self.crancker, (self.buttonX - self.button.get_width() / 3, self.buttonY - self.crancker.get_height()))
         self.slotMachine.blit(self.machine, (self.machineX, self.machineY))
         self.slotMachine.blit(self.button, (self.buttonX, self.buttonY))
+        self.slotMachine.blit(spinCountText, spinCountText.get_rect(center=(self.machineX + 623.5 / 1.2 * xScaling, self.machineY + 102.5 / 1.2 * xScaling)))
 
-        #Viser spin-tæller øverst i midten under normal spil
-        spinCountText = self.spinCountFont.render('SPINS: ' + str(config.spinsLeft), True, (246, 250, 10))
-        self.slotMachine.blit(spinCountText, spinCountText.get_rect(center=((resolution[0] / 4) * xScaling, (resolution[1] / 8) * yScaling)))
+        if not self.spinning and patternsDone:
+            # Får knappen til at knappe
+            if isSelected(self.button, (self.buttonX, self.buttonY), self.slotMachine) and pygame.mouse.get_just_pressed()[0]:
+                buttonTrigger()
 
-        # Får knappen til at knappe
-        if isSelected(self.button, (self.buttonX, self.buttonY), self.slotMachine) and pygame.mouse.get_just_pressed()[0]:
-            buttonTrigger()
-
-        # Får håndtaget til at aktivere maskinen
-        if isSelected(self.crancker, (self.buttonX - self.button.get_width() / 3, self.buttonY - self.crancker.get_height()), self.slotMachine) and pygame.mouse.get_just_pressed()[0]:
-            self.spin_reels(resolution, xScaling, yScaling)
+            # Får håndtaget til at aktivere maskinen
+            if isSelected(self.crancker, (self.buttonX - self.button.get_width() / 3, self.buttonY - self.crancker.get_height()), self.slotMachine) and pygame.mouse.get_just_pressed()[0]:
+                self.spin_reels(resolution, xScaling, yScaling)
 
         screen.blit(self.slotMachine, (0, 0))

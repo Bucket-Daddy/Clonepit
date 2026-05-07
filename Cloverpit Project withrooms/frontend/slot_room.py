@@ -461,7 +461,7 @@ class SlotRoom:
             self.spinning = False
 
         #Loader reels til slot machine surface centreret horisontalt og vertikalt
-        if self.spinning or not patternsDone:
+        if self.hasSpun:
             for reel in range(5):
                 self.slotMachine.blit(self.reels[reel], (self.reelOriginX + reel * self.symbolSpaceHor, self.reelsY[reel]))
             
